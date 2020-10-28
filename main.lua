@@ -59,6 +59,7 @@ function love.load()
 end
 
 function love.update(dt)
+  print("hola")
   world:update(dt) --this puts the world into motion
   
   cameraController:update(dt)
