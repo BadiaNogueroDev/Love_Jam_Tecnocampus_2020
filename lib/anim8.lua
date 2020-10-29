@@ -290,6 +290,14 @@ function Animation:getDimensions()
   return w,h
 end
 
+function Animation:getCurrentFrameCounter()
+  return self.position
+end
+
+function Animation:getTotalFrameCounter()
+  return #self.frames
+end
+
 -----------------------------------------------------------
 
 anim8.newGrid       = newGrid

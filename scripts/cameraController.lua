@@ -13,6 +13,9 @@ function cameraController:new()
   cameraOffSetY = -10
   
   self.smoothTime = 0.2
+  
+  self.forward = Vector.new(cam:getPosition())
+  cam:setPosition((self.forward.x - (self.forward.x-objects.player.body:getX() - cameraOffSetX)), self.forward.y - (self.forward.y-objects.player.body:getY() + cameraOffSetY))
 end
 
 function cameraController:update(dt) 

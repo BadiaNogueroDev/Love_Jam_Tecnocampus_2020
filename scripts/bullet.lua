@@ -5,15 +5,19 @@ function bullet:new(x, y, forward)
   self.position = Vector.new(x, y)
   self.posX = x
   self.posY = y
-  self.speed = 1000  --Initialize the paddle speed
+  self.speed = 1000
   self.maxSpeed = 100
   self.sprite = love.graphics.newImage("sprites/Handgun bullet.png")
   self.spriteScale = 1
-  self.weaponOffset = 15
+  self.weaponOffsetX = 30
+  self.weaponOffsetY = 20
   if forward.y == 0 then
     self.forward = Vector.new(forward.x, 0)
+    self.position.x = self.position.x + self.weaponOffsetX * self.forward.x
+    self.position.y = self.position.y - 5
   else
     self.forward = Vector.new(0, forward.y)
+    self.position. y = self.position.y + self.weaponOffsetX * self.forward.y
   end
   --print("X: "..self.forward.x)
   --print("Y: "..self.forward.y)
@@ -28,9 +32,9 @@ function bullet:draw(cam)
   --love.graphics.draw(self.image,xx,yy,rr,sx,sy,ox,oy,0,0)
   love.graphics.setColor(1, 1, 1)
   if self.forward.y == 0 then
-    love.graphics.draw(self.sprite, self.position.x + self.weaponOffset * self.forward.x, self.position.y, 0, 1, self.spriteScale,self.sprite:getWidth()/2, self.sprite:getHeight()/2)
+    love.graphics.draw(self.sprite, self.position.x, self.position.y, 0, 1, self.spriteScale,self.sprite:getWidth()/2, self.sprite:getHeight()/2)
   else
-    love.graphics.draw(self.sprite, self.position.x, self.position.y + self.weaponOffset * self.forward.y, math.rad(90), 1, self.spriteScale,self.sprite:getWidth()/2, self.sprite:getHeight()/2)
+    love.graphics.draw(self.sprite, self.position.x, self.position.y, math.rad(90), 1, self.spriteScale,self.sprite:getWidth()/2, self.sprite:getHeight()/2)
   end
 end
 

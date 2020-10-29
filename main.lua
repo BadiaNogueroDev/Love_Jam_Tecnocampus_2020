@@ -14,11 +14,7 @@ function love.load()
   w, h = love.graphics.getDimensions() -- Get the screen width and height
   
   love.graphics.setDefaultFilter("nearest", "nearest")
-  
-  camera = cameraController:extend()
-  camera:new()
-  
-  canJump = true --Bool to jump
+
   
   --PHYSICS FUNCTIONS
   love.physics.setMeter(64) --the height of a meter our worlds will be 64px
@@ -56,10 +52,12 @@ function love.load()
   
   p = player:extend()
   p:new()
+  
+  camera = cameraController:extend()
+  camera:new()
 end
 
 function love.update(dt)
-  print("hola")
   world:update(dt) --this puts the world into motion
   
   cameraController:update(dt)
