@@ -9,6 +9,8 @@ function player:new(x, y)
   self.speed = 1000
   self.maxSpeed = 100
   self.jumpForce = -150
+  self.torsoOffsetY = 1
+  self.shootingUp = false
   
   --Initialize sprites sheets and animation lists
   self.sprite = love.graphics.newImage("sprites/Tarma Idle.png")
@@ -19,17 +21,20 @@ function player:new(x, y)
   self.currentTorsoAnimation = 1
   self.torsoSpriteSheet = love.graphics.newImage('sprites/Torso_Sandra_Spritesheet.png')
   g = anim8.newGrid(54, 32, self.torsoSpriteSheet:getWidth(), self.torsoSpriteSheet:getHeight())
-  self.torsoAnimations = {anim8.newAnimation(g('1-12',1), 0.07),--RUNNING (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
+  g72 = anim8.newGrid(54, 72, self.torsoSpriteSheet:getWidth(), self.torsoSpriteSheet:getHeight(), 0, 160)
+  self.torsoAnimations = {anim8.newAnimation(g('1-12',1), 0.04),--RUNNING (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
                           anim8.newAnimation(g('1-10',2), 0.03),--SHOOTING (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
                           anim8.newAnimation(g('1-6',3), 0.15),--IDLE (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
-                          anim8.newAnimation(g('1-6',4), 0.1) --JUMPING (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
+                          anim8.newAnimation(g('1-6',4), 0.1), --JUMPING (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
+                          anim8.newAnimation(g('5-10',5), 0.15), --LOOKING UP (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
+                          anim8.newAnimation(g72('1-10',1), 0.03), --SHOOTING UP (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
     } --3r Valor: Velocitat de la animació
     
   self.currentLegsAnimation = 1
   self.legsSpriteSheet = love.graphics.newImage('sprites/Legs_Sandra_Spritesheet.png')
   g32 = anim8.newGrid(32, 32, self.legsSpriteSheet:getWidth(), self.legsSpriteSheet:getHeight())
   self.legsAnimations = { anim8.newAnimation(g32('1-1',1), 0.15),--IDLE
-                          anim8.newAnimation(g32('2-13',3), 0.07),--RUNNING
+                          anim8.newAnimation(g32('2-13',3), 0.04),--RUNNING
                           anim8.newAnimation(g32('1-6',2), 0.1)--JUMPING
     }
   
@@ -50,6 +55,13 @@ function player:new(x, y)
 end
 
 function player:update(dt)
+  --Solució temporal al canviar el offset per disparar a dalt i abaix
+  if self.shootingUp then
+    self.torsoOffsetY = 41
+  elseif not self.shootingUp then
+    self.torsoOffsetY = 1
+  end
+  
     --here we are going to create some keyboard events
   if love.keyboard.isDown("right") then --press the right arrow key to push the ball to the right
     self.forward.x = 1
@@ -78,10 +90,16 @@ function player:update(dt)
   end
   
   --En proces: Que el miri cap a dalt
-  if love.keyboard.isDown("up") then --press the up arrow key to set the ball in the air
-    self.forward.y = -1
+  if love.keyboard.isDown("up") then
+    --self.forward.y = -1
+    if not self.shooting then
+      self.currentTorsoAnimation = 5
+    end
+  --elseif love.keyboard.isDown("up") and self.shooting then
+  --  self.forward.y = -1
+  --  self.currentTorsoAnimation = 6
   else
-    self.forward.y = 0
+    --self.forward.y = 0
   end
   
   --Vector que agafa la velocitat en X i Y del personatge
@@ -128,7 +146,17 @@ function player:update(dt)
   --Shooting
   if love.keyboard.isDown("z") then
     if canShoot then
-      self.currentTorsoAnimation = 2
+      if love.keyboard.isDown("up") then
+        self.forward.y = -1
+        self.shootingUp = true
+        self.currentTorsoAnimation = 6
+        self.torsoOffsetY = 41 --Solució temporal al canviar el offset per disparar a dalt i abaix
+      else
+        self.shootingUp = false
+        self.forward.y = 0
+        self.currentTorsoAnimation = 2
+        self.torsoOffsetY = 1  --Solució temporal al canviar el offset per disparar a dalt i abaix
+      end
       self.torsoAnimations[self.currentTorsoAnimation]:gotoFrame(1)
       self.torsoAnimations[self.currentTorsoAnimation]:resume()
       self.nextFire = 0
@@ -144,9 +172,9 @@ function player:update(dt)
     b:new(objects.player.body:getX(), objects.player.body:getY(), self.forward)
     table.insert(actorList, b)
     self.shot = true
-    print(self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter())
   elseif self.shooting and self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == self.torsoAnimations[self.currentTorsoAnimation]:getTotalFrameCounter() then
     self.shooting = false
+    self.shootingUp = false
   end
   
   --Temps de recarrega per tornar a disparar
@@ -170,7 +198,7 @@ function player:draw()
     love.graphics.setColor(1,1,1)
     --love.graphics.polygon("fill", objects.player.body:getWorldPoints(objects.player.shape:getPoints())) --DEBUG PHYSICS HITBOX
     self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.sprite:getWidth()/2 - 1, 3)
-    self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.sprite:getWidth()/2 - 2, self.sprite:getHeight()/2 + 1)
+    self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.sprite:getWidth()/2 - 2, self.sprite:getHeight()/2 + self.torsoOffsetY)
   end)
 end
 
