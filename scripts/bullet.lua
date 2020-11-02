@@ -1,6 +1,6 @@
 bullet = Object:extend()
 
-function bullet:new(x, y, forward)
+function bullet:new(x, y, forward, index)
   --Initialize the player position
   self.position = Vector.new(x, y)
   self.posX = x
@@ -11,6 +11,7 @@ function bullet:new(x, y, forward)
   self.spriteScale = 1
   self.weaponOffsetX = 30
   self.weaponOffsetY = 20
+  self.index = index
   if forward.y == 0 then
     self.forward = Vector.new(forward.x, 0)
     self.position.x = self.position.x + self.weaponOffsetX * self.forward.x
@@ -25,11 +26,16 @@ end
 
 function bullet:update(dt)
   self.position = self.position + self.forward * self.speed * dt
+  
+  if self.position.x < 0 or self.position.x > 2000 then --Si excede de los limites establecidos se borra de la lista que hace el update y el draw
+    table.remove(playerBulletList, 1)
+  end
 end
 
 function bullet:draw(cam)
   --love.graphics.rectangle("fill", self.position.x, self.position.y, 5 + 10 * math.abs(self.forward.x), 5 + 10 * math.abs(self.forward.y))
   --love.graphics.draw(self.image,xx,yy,rr,sx,sy,ox,oy,0,0)
+  print("bullet")
   love.graphics.setColor(1, 1, 1)
   if self.forward.y == 0 then
     love.graphics.draw(self.sprite, self.position.x, self.position.y, 0, 1, self.spriteScale,self.sprite:getWidth()/2, self.sprite:getHeight()/2)

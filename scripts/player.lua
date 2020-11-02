@@ -55,6 +55,8 @@ function player:new(x, y)
 end
 
 function player:update(dt)
+  VelocityX, VelocityY = objects.player.body:getLinearVelocity()
+  
   --Solució temporal al canviar el offset per disparar a dalt i abaix
   if self.shootingUp then
     self.torsoOffsetY = 41
@@ -66,7 +68,7 @@ function player:update(dt)
   if love.keyboard.isDown("right") then --press the right arrow key to push the ball to the right
     self.forward.x = 1
     self.currentLegsAnimation = 2
-    if objects.player.body:getLinearVelocity() < self.maxSpeed then
+    if VelocityX < self.maxSpeed then
       objects.player.body:applyLinearImpulse(self.speed * dt, 0)
     end
     if not self.shooting then
@@ -75,7 +77,7 @@ function player:update(dt)
   elseif love.keyboard.isDown("left") then --press the left arrow key to push the ball to the left
     self.forward.x = -1
     self.currentLegsAnimation = 2
-    if objects.player.body:getLinearVelocity() > -self.maxSpeed then
+    if VelocityX > -self.maxSpeed then
       objects.player.body:applyLinearImpulse(-self.speed * dt, 0)
     end
     if not self.shooting then
@@ -168,9 +170,9 @@ function player:update(dt)
   
   --Coordinar el spawn de la bala amb el moment de la animacio que li toca
   if self.shooting and not self.shot and self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == 3 then
-    b = bullet:extend()
-    b:new(objects.player.body:getX(), objects.player.body:getY(), self.forward)
-    table.insert(actorList, b)
+    b = bullet
+    b:new(objects.player.body:getX(), objects.player.body:getY(), self.forward, #actorList + 1)
+    table.insert(playerBulletList, b)
     self.shot = true
   elseif self.shooting and self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == self.torsoAnimations[self.currentTorsoAnimation]:getTotalFrameCounter() then
     self.shooting = false
