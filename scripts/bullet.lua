@@ -35,7 +35,7 @@ end
 function bullet:draw(cam)
   --love.graphics.rectangle("fill", self.position.x, self.position.y, 5 + 10 * math.abs(self.forward.x), 5 + 10 * math.abs(self.forward.y))
   --love.graphics.draw(self.image,xx,yy,rr,sx,sy,ox,oy,0,0)
-  print("bullet")
+  --print("bullet")
   love.graphics.setColor(1, 1, 1)
   if self.forward.y == 0 then
     love.graphics.draw(self.sprite, self.position.x, self.position.y, 0, 1, self.spriteScale,self.sprite:getWidth()/2, self.sprite:getHeight()/2)

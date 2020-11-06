@@ -69,7 +69,8 @@ function player:update(dt)
     self.forward.x = 1
     self.currentLegsAnimation = 2
     if VelocityX < self.maxSpeed then
-      objects.player.body:applyLinearImpulse(self.speed * dt, 0)
+      objects.player.body:applyLinearImpulse(self.speed/50, 0)
+      --objects.player.body:applyLinearImpulse(self.speed * dt, 0)
     end
     if not self.shooting then
       self.currentTorsoAnimation = 1

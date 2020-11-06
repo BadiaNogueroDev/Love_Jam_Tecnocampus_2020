@@ -3,29 +3,77 @@ menu = Object:extend()
 mouse = {} --Guarda las cordenadas del mouse
 
 function menu:new(x, y, forward)
+  --INTRO
   video = love.graphics.newVideo("videos/TCM Slug Menu Intro.ogv")--Guardar video en una variable
   video:play() --Reproducir video
+  --BACKGROUND DEL MENÚ
   background = love.graphics.newImage("sprites/Menu_Background.png") --Guardar imagen en una variable
   
+  selectionBackground = love.graphics.newImage("sprites/Character_Selection.png")
+  
+  --BOTONES DEL MENÚ
   startButton = love.graphics.newImage("sprites/Start_Button.png")
-  self.startList = {startButton, w/2, 7 * h/10, 4, function() startGame() end} --Lista con imagen, posX, posY, scale y función del bóton
+  self.startList = {startButton, w/2, 7 * h/10, 4, function() self.selection = true end} --Lista con imagen, posX, posY, scale y función del bóton
   
   exitButton = love.graphics.newImage("sprites/Exit_Button.png")
   self.exitList = {exitButton, w/2, 8.5 * h/10, 3, function() os.exit() end}
+  
+  --BOTONES DEL CHARACTER SELECTION
+  selectionButtons = {}
+  
+  character1 = love.graphics.newImage("sprites/Marco_Character_Selection.png")
+  self.character1List = {character1, 210, 440, 1, function() startGame("Marco") self.selection = false end}
+  table.insert(selectionButtons, self.character1List)
+  
+  character2 = love.graphics.newImage("sprites/Henry_Character_Selection.png")
+  self.character2List = {character2, 500, 440, 1, function() startGame("Henry") self.selection = false end}
+  table.insert(selectionButtons, self.character2List)
+  
+  character3 = love.graphics.newImage("sprites/Sandra_Character_Selection.png")
+  self.character3List = {character3, 782, 440, 1, function() startGame("Sandra") self.selection = false end}
+  table.insert(selectionButtons, self.character3List)
+  
+  character4 = love.graphics.newImage("sprites/Charles_Character_Selection.png")
+  self.character4List = {character4, 1069, 440, 1, function() startGame("Charles") self.selection = false end}
+  table.insert(selectionButtons, self.character4List)
+  
+  --BOOL PARA ACTIVAR CHRACTER SELECTION
+  self.selection = false
+  
+  --
+  self.mouseUp = false --Bool para solo captar el mouse down en el primer update de pulsar
 end
 
 function menu:update(dt)
-  if not inGame then
-    mouse.x, mouse.y = love.mouse.getPosition()  -- This gets the x and y coordinates of the mouse and 
+  mouse.x, mouse.y = love.mouse.getPosition()  -- This gets the x and y coordinates of the mouse and 
+  
+  if not ingame and self.selection then
+    if self.mouseUp then
+      for _,v in ipairs(selectionButtons) do
+        self:useButton(selectionButtons[_])
+      end
+    end
+  elseif not inGame then
     if not video:isPlaying() then
       self:useButton(self.startList)
       self:useButton(self.exitList)
     end
   end
+  
+  if love.mouse.isDown(1) then
+    self.mouseUp = false
+  else
+    self.mouseUp = true
+  end
 end
 
 function menu:draw()
-  if not inGame then
+  if not ingame and self.selection then
+    for _,v in ipairs(selectionButtons) do
+      love.graphics.draw(v[1], v[2], v[3], 0, v[4], v[4], v[1]:getWidth()/2, v[1]:getHeight()/2)
+    end
+    love.graphics.draw(selectionBackground) --Dibujar background
+  elseif not inGame then
       love.graphics.draw(video, 0, 0) --Dibujar videdo
     if not video:isPlaying() then
       love.graphics.draw(background) --Dibujar background
@@ -52,6 +100,10 @@ function menu:useButton(list) --Función que llama al función collision para mo
   if menu:collision(list[1], list[2], list[3]) and love.mouse.isDown(1) then
     list[5]()
   end
+end
+
+function menu:characterSelection()
+  
 end
 
 function Max(a, b)

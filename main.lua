@@ -61,13 +61,13 @@ function love.draw()
   end
 end
 
-function startGame()
+function startGame(character)
   --ELEMENTS IN-GAME
   map = mainMap
   map:new()
   
   p = player
-  p:new()
+  p:new(character)
   
   camera = cameraController
   camera:new()

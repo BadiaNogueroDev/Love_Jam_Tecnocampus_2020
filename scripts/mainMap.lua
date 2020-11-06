@@ -19,6 +19,8 @@ function mainMap:new()
   
   --initial graphics setup
   love.graphics.setBackgroundColor(0.41, 0.53, 0.97) --set the background color to a nice blue
+  
+  
 end
 
 function mainMap:update(dt)
