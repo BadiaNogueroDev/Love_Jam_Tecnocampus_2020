@@ -2,7 +2,7 @@ player = Object:extend()
 
 local bullet = bullet or require "scripts/bullet"
 
-function player:new(x, y)
+function player:new(x, y, character)
   --Initialize the propierties position
   self.posX = x
   self.posY = y
@@ -13,13 +13,14 @@ function player:new(x, y)
   self.shootingUp = false
   
   --Initialize sprites sheets and animation lists
-  self.sprite = love.graphics.newImage("sprites/Tarma Idle.png")
+  self.characterWidth = 29
+  self.characterHeight = 38
   self.spriteScale = 1
   self.forward = Vector.new(fx or 1,fy or 0)
   self.airborn = true --El personatge esta al aire
   
   self.currentTorsoAnimation = 1
-  self.torsoSpriteSheet = love.graphics.newImage('sprites/Torso_Sandra_Spritesheet.png')
+  self.torsoSpriteSheet = love.graphics.newImage('sprites/Torso_'.. character ..'_Spritesheet.png')
   g = anim8.newGrid(54, 32, self.torsoSpriteSheet:getWidth(), self.torsoSpriteSheet:getHeight())
   g72 = anim8.newGrid(54, 72, self.torsoSpriteSheet:getWidth(), self.torsoSpriteSheet:getHeight(), 0, 160)
   self.torsoAnimations = {anim8.newAnimation(g('1-12',1), 0.04),--RUNNING (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
@@ -31,7 +32,7 @@ function player:new(x, y)
     } --3r Valor: Velocitat de la animació
     
   self.currentLegsAnimation = 1
-  self.legsSpriteSheet = love.graphics.newImage('sprites/Legs_Sandra_Spritesheet.png')
+  self.legsSpriteSheet = love.graphics.newImage('sprites/Legs_'.. character ..'_Spritesheet.png')
   g32 = anim8.newGrid(32, 32, self.legsSpriteSheet:getWidth(), self.legsSpriteSheet:getHeight())
   self.legsAnimations = { anim8.newAnimation(g32('1-1',1), 0.15),--IDLE
                           anim8.newAnimation(g32('2-13',3), 0.04),--RUNNING
@@ -40,12 +41,22 @@ function player:new(x, y)
   
   --Player in the physics system
   objects.player = {}
-  objects.player.body = love.physics.newBody(world, 850, 600, "dynamic") --place the body somewhere in the world and make it dynamic, so it can move around
-  objects.player.shape = love.physics.newRectangleShape(0, 0, self.sprite:getWidth(), self.sprite:getHeight()) --the ball's shape has a radius of 20
+  objects.player.body = love.physics.newBody(world, self.posX, self.posY, "dynamic") --place the body somewhere in the world and make it dynamic, so it can move around
+  objects.player.shape = love.physics.newRectangleShape(0, 0, self.characterWidth, self.characterHeight) --the ball's shape has a radius of 20
   objects.player.fixture = love.physics.newFixture(objects.player.body, objects.player.shape, 1) -- Attach fixture to body and give it a density of 1.
   objects.player.body:setLinearDamping(2)
   objects.player.body:setGravityScale(2)
   objects.player.body:setFixedRotation(true)
+  
+  --Player in the hitbox system
+
+  self.targetHitbox = {}
+  self.targetHitbox.body = love.physics.newBody(hitboxes, self.posX, self.posY, "dynamic") --place the body somewhere in the world and make it dynamic, so it can move around
+  self.targetHitbox.shape = love.physics.newRectangleShape(0, 0, self.characterWidth + 2, self.characterHeight + 2) --the ball's shape has a radius of 20
+  self.targetHitbox.fixture = love.physics.newFixture(self.targetHitbox.body, self.targetHitbox.shape, 1) -- Attach fixture to body and give it a density of 1.
+  self.targetHitbox.fixture:setSensor(true)
+	self.targetHitbox.fixture:setUserData("player")
+  table.insert(objects, self.targetHitbox)
   
   --Player shooting
   self.shooting = false --El personatge esta disparant
@@ -69,7 +80,7 @@ function player:update(dt)
     self.forward.x = 1
     self.currentLegsAnimation = 2
     if VelocityX < self.maxSpeed then
-      objects.player.body:applyLinearImpulse(self.speed/50, 0)
+      objects.player.body:applyLinearImpulse(self.speed/200, 0)
       --objects.player.body:applyLinearImpulse(self.speed * dt, 0)
     end
     if not self.shooting then
@@ -79,7 +90,8 @@ function player:update(dt)
     self.forward.x = -1
     self.currentLegsAnimation = 2
     if VelocityX > -self.maxSpeed then
-      objects.player.body:applyLinearImpulse(-self.speed * dt, 0)
+      objects.player.body:applyLinearImpulse(-self.speed/200, 0)
+      --objects.player.body:applyLinearImpulse(-self.speed * dt, 0)
     end
     if not self.shooting then
       self.currentTorsoAnimation = 1
@@ -171,9 +183,11 @@ function player:update(dt)
   
   --Coordinar el spawn de la bala amb el moment de la animacio que li toca
   if self.shooting and not self.shot and self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == 3 then
-    b = bullet
-    b:new(objects.player.body:getX(), objects.player.body:getY(), self.forward, #actorList + 1)
+    b = bullet:extend()
+    b:new(objects.player.body:getX(), objects.player.body:getY(), self.forward)
+    --table.insert(playerBulletList, b)
     table.insert(playerBulletList, b)
+
     self.shot = true
   elseif self.shooting and self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == self.torsoAnimations[self.currentTorsoAnimation]:getTotalFrameCounter() then
     self.shooting = false
@@ -194,14 +208,17 @@ function player:update(dt)
   for i=1,#self.torsoAnimations do
     self.torsoAnimations[i]:update(dt)
   end
+  
+  self.targetHitbox.body:setPosition(objects.player.body:getPosition()) --Posar la hitbox fixe al objecte
 end
 
 function player:draw()
   cam:draw(function(l, t, w, h)
     love.graphics.setColor(1,1,1)
+    love.graphics.polygon("line", self.targetHitbox.body:getWorldPoints(self.targetHitbox.shape:getPoints())) --DEBUG HITBOX
     --love.graphics.polygon("fill", objects.player.body:getWorldPoints(objects.player.shape:getPoints())) --DEBUG PHYSICS HITBOX
-    self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.sprite:getWidth()/2 - 1, 3)
-    self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.sprite:getWidth()/2 - 2, self.sprite:getHeight()/2 + self.torsoOffsetY)
+    self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 - 1, 3)
+    self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 - 2, self.characterHeight/2 + self.torsoOffsetY)
   end)
 end
 

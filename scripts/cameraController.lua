@@ -34,10 +34,6 @@ function cameraController:draw()
   love.graphics.polygon("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints())) -- draw a "filled in" polygon using the ground's coordinates
   love.graphics.polygon("fill", objects.platform.body:getWorldPoints(objects.platform.shape:getPoints())) -- draw a "filled in" polygon using the ground's coordinates
   
-  for _,v in ipairs(actorList) do
-    v:draw()
-  end
-  
   for _,v in ipairs(playerBulletList) do
     v:draw()
   end

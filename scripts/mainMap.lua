@@ -3,7 +3,6 @@ mainMap = Object:extend()
 function mainMap:new()
   --PHYSICS FUNCTIONS
 
-  
   objects = {} -- table to hold all our physical objects
  
   --let's create the ground
