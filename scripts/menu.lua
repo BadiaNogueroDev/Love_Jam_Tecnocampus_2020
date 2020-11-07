@@ -94,9 +94,9 @@ function menu:draw()
   end
 end
 
-function menu:collision(image, posX, posY) --Función que detecta la colision de los botones y devuelve true
-  self.DeltaX = mouse.x - Max(posX - (image:getWidth()/2), Min(mouse.x, posX + (image:getWidth()/2)))
-  self.DeltaY = mouse.y - Max(posY - (image:getWidth()/2), Min(mouse.y, posY + (image:getWidth()/2)))
+function menu:collision(image, posX, posY, scale) --Función que detecta la colision de los botones y devuelve true
+  self.DeltaX = mouse.x - Max(posX - (image:getWidth()/2 * scale), Min(mouse.x, posX + (image:getWidth()/2 * scale)))
+  self.DeltaY = mouse.y - Max(posY - (image:getHeight()/2 * scale), Min(mouse.y, posY + (image:getHeight()/2 * scale)))
 
   if self.DeltaX == 0 and self.DeltaY == 0 then
     return true
@@ -106,7 +106,7 @@ function menu:collision(image, posX, posY) --Función que detecta la colision de
 end
 
 function menu:useButton(list) --Función que llama al función collision para modificar texto y si se da clic se efectua la función de la lista
-  if menu:collision(list[1], list[2], list[3]) and love.mouse.isDown(1) then
+  if menu:collision(list[1], list[2], list[3], list[4]) and love.mouse.isDown(1) then
     list[5]()
   end
 end
