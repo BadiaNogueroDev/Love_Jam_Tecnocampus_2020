@@ -33,11 +33,11 @@ function love.load()
   
   love.window.setMode(w, h)
 
-  --m = menu
-  --m:new()
+  m = menu
+  m:new()
   
-  --inGame = false
-  startGame("Henry")
+  inGame = false
+  --startGame("Henry")
 end
 
 function love.update(dt)
