@@ -2,7 +2,7 @@ local gamera = require "lib/gamera"
 
 cameraController = Object:extend()
 
-cam = gamera.new(0,0,2000,2000)
+cam = gamera.new(0,0,15360,600)
 
 function cameraController:new()
 --CAMERA FUNCTIONS
@@ -31,8 +31,10 @@ end
 function cameraController:draw()
   cam:draw(function(l, t, w, h)
     -- draw camera stuff here
-  love.graphics.polygon("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints())) -- draw a "filled in" polygon using the ground's coordinates
-  love.graphics.polygon("fill", objects.platform.body:getWorldPoints(objects.platform.shape:getPoints())) -- draw a "filled in" polygon using the ground's coordinates
+  
+  for _,v in ipairs(mapElements) do
+    love.graphics.polygon("fill", v.body:getWorldPoints(v.shape:getPoints()))
+  end
   
   for _,v in ipairs(playerBulletList) do
     v:draw()

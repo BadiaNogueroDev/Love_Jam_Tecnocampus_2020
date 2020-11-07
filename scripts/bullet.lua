@@ -22,7 +22,7 @@ function bullet:new(x, y, forward)
   if forward.y == 0 then
     self.forward = Vector.new(forward.x, 0)
     self.position.x = self.position.x + self.weaponOffsetX * self.forward.x
-    self.position.y = self.position.y - 5
+    self.position.y = self.position.y - 7
   else
     self.forward = Vector.new(0, forward.y)
     self.position. y = self.position.y + self.weaponOffsetX * self.forward.y
@@ -35,7 +35,6 @@ function bullet:new(x, y, forward)
   table.insert(objects, bulletHitbox)
   self.bulletHitbox.fixture:setSensor(true)
 	self.bulletHitbox.fixture:setUserData(self)
-  --self.bulletHitbox.fixture:setUserData("bullet")
   --print("X: "..self.forward.x)
   --print("Y: "..self.forward.y)
 end
@@ -44,10 +43,8 @@ function bullet:update(dt)
   self.position = self.position + self.forward * self.speed * dt
   
   self.bulletHitbox.body:setPosition(self.position.x, self.position.y)
-  
-  if self.position.x < 0 or self.position.x > 2000 then --Si excede de los limites establecidos se borra de la lista que hace el update y el draw
-    --table.remove(playerBulletList, 1)
-    --table.remove(playerBulletList, 1)
+  --Si excede de los limites establecidos se borra de la lista que hace el update y el draw
+  if self.position.x < objects.player.body:getX() - 500 or self.position.x > objects.player.body:getX() + 500 or self.position.y < 0 or self.position.y > 600 then
     self:destroyBullet()
     print("Border hit")
   end

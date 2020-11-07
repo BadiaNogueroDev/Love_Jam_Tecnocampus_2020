@@ -8,13 +8,13 @@ function player:new(x, y, character)
   self.posY = y
   self.speed = 1000
   self.maxSpeed = 100
-  self.jumpForce = -150
+  self.jumpForce = -120
   self.torsoOffsetY = 1
   self.shootingUp = false
   
   --Initialize sprites sheets and animation lists
-  self.characterWidth = 29
-  self.characterHeight = 38
+  self.characterWidth = 25
+  self.characterHeight = 36
   self.spriteScale = 1
   self.forward = Vector.new(fx or 1,fy or 0)
   self.airborn = true --El personatge esta al aire

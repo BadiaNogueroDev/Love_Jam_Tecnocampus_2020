@@ -20,6 +20,8 @@ actorList = {}
 
 playerBulletList = {}
 
+objects = {}
+
 function love.load()
   love.physics.setMeter(64) --the height of a meter our worlds will be 64px
   world = love.physics.newWorld(0, 9.81*64, true) --create a world for the bodies to exist in with horizontal gravity of 0 and vertical gravity of 9.81
@@ -33,11 +35,11 @@ function love.load()
   
   love.window.setMode(w, h)
 
-  m = menu
-  m:new()
+  --m = menu
+  --m:new()
   
-  inGame = false
-  --startGame("Henry")
+  --inGame = false
+  startGame("Henry")
 end
 
 function love.update(dt)
@@ -78,18 +80,18 @@ function startGame(character)
   map:new()
   
   p = player
-  p:new(850, 600, character)
+  p:new(200, 350, character)
   
   t = target:extend()
-  t:new(600, 600)
+  t:new(600, 200)
   table.insert(actorList, t)
   
   t = target:extend()
-  t:new(500, 600)
+  t:new(500, 200)
   table.insert(actorList, t)
   
   t = target:extend()
-  t:new(700, 600)
+  t:new(700, 200)
   table.insert(actorList, t)
   
   camera = cameraController
