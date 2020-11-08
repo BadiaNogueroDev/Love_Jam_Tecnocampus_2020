@@ -2,7 +2,7 @@ enemy = Object:extend()
 
 local bullet = bullet or require "scripts/bullet"
 
-function enemy:new(x, y, attackRange, isMele)
+function enemy:new(x, y, attackRange, isMelee)
   --Initialize the propierties position
   self.posX = x
   self.posY = y
@@ -10,24 +10,31 @@ function enemy:new(x, y, attackRange, isMele)
   self.maxSpeed = 100
   self.detectionRange = 500
   self.attackRange = attackRange
-  self.isMele = isMele
+  self.isMelee = isMelee
   
   --Initialize sprites sheets and animation lists
-  self.sprite = love.graphics.newImage("sprites/Tarma Idle.png")
+  self.characterWidth = 25
+  self.characterHeight = 36
   self.spriteScale = 1
   self.forward = Vector.new(fx or 1,fy or 0)
   
   
-  self.currentAnimation = 1
-  self.enemySpriteSheet = love.graphics.newImage('sprites/Torso_Sandra_Spritesheet.png')
-  g = anim8.newGrid(54, 32, self.enemySpriteSheet:getWidth(), self.enemySpriteSheet:getHeight())
-  g72 = anim8.newGrid(54, 72, self.enemySpriteSheet:getWidth(), self.enemySpriteSheet:getHeight(), 0, 160)
-  self.enemyAnimations = {anim8.newAnimation(g('1-12',1), 0.04),--RUNNING (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
-                          anim8.newAnimation(g('1-10',2), 0.03),--SHOOTING (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
-                          anim8.newAnimation(g('1-6',3), 0.15),--IDLE (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
-                          anim8.newAnimation(g('1-14',4), 0.15),--MORIR (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
-  } --3r Valor: Velocitat de la animació
-  
+  if self.isMelee then
+    self.currentMeleeAnimation = 1
+    self.enemyMeleeSpriteSheet = love.graphics.newImage('sprites/Melee_Zombie.png')
+    gZ1 = anim8.newGrid(54, 32, self.enemySpriteSheet:getWidth(), self.enemySpriteSheet:getHeight()) --NUMEROS PROVISIONALS
+    self.enemyMeleeAnimations = {anim8.newAnimation(g('1-12',1), 0.15),--RUNNING (1r Valor: Rang de frames. 2n Valor: Fila del sheet. 3r Valor: Velocitat de la animació)
+                                anim8.newAnimation(g('1-10',2), 0.15)} --MORIR
+  else
+    self.currentRangedAnimation = 1
+    self.enemyRangedSpriteSheet = love.graphics.newImage('sprites/Ranged_Zombie.png')
+    gZ2 = anim8.newGrid(54, 32, self.enemySpriteSheet:getWidth(), self.enemySpriteSheet:getHeight()) --NUMEROS PROVISIONALS
+    self.enemyRangedAnimations = {anim8.newAnimation(g('1-12',1), 0.15),--RUNNING 1
+                                  anim8.newAnimation(g('1-10',2), 0.15),--RUNNING 2
+                                  anim8.newAnimation(g('1-21',3), 0.15),--SHOOTING
+                                  anim8.newAnimation(g('1-14',4), 0.15)}--MORIR
+  end
+
   --Player in the physics system
   objects.enemy = {}
   objects.enemy.body = love.physics.newBody(world, 850, 600, "dynamic") --place the body somewhere in the world and make it dynamic, so it can move around
@@ -45,58 +52,45 @@ function enemy:new(x, y, attackRange, isMele)
 end
 
 function enemy:update(dt, player)
+  
   VelocityX, VelocityY = objects.player.body:getLinearVelocity()
+  self.playerDistance = self.posX - player.posX
   
-  self.playerDistance = self.x - player.x
-  
-  --TODO: Right movement
-  --here we are going to create some keyboard events
-  if self.playerDistance < self.detectionRange then
+  --DETECCIÓ I MOVIMENT
+  if self.playerDistance <= self.detectionRange then
     
-    if player.body:getX() < enem.body:getX()
-    
-    self.forward.x = 1
-    self.currentAnimation = 2
-    
-    if VelocityX < self.maxSpeed then
-      objects.player.body:applyLinearImpulse(self.speed * dt, 0)
-    end
-    
-    
-  --TODO: Left movement
-  elseif love.keyboard.isDown("left") then
-    self.forward.x = -1
-    self.currentAnimation = 2
-    
-    if VelocityX > -self.maxSpeed then
-      objects.player.body:applyLinearImpulse(-self.speed * dt, 0)
+    if player.body:getX() < enemy.body:getX()
+      self.forward.x = 1
+      self.currentAnimation = 2
+      
+      if VelocityX < self.maxSpeed then
+      objects.enemy.body:applyLinearImpulse(self.speed/200, 0)
+      end
+      
+    elseif player.body:getX() < enemy.body:getX() then
+      self.forward.x = -1
+      self.currentAnimation = 2
+      
+      if VelocityX < -self.maxSpeed then
+      objects.enemy.body:applyLinearImpulse(self.speed/200, 0)
+      end
     end
   end
   
   --Vector que agafa la velocitat en X i Y del personatge
   self.velocity = Vector.new(objects.player.body:getLinearVelocity())
   
-  
-  --Shooting
-  if love.keyboard.isDown("z") then
+  --SHOOTING
+  if self.playerDistance <= self.attackRange and not self.isMelee then
     if canShoot then
-      if love.keyboard.isDown("up") then
-        self.forward.y = -1
-        self.shootingUp = true
-        self.currentTorsoAnimation = 6
-        self.torsoOffsetY = 41 --Solució temporal al canviar el offset per disparar a dalt i abaix
-      else
-        self.shootingUp = false
         self.forward.y = 0
-        self.currentTorsoAnimation = 2
-        self.torsoOffsetY = 1  --Solució temporal al canviar el offset per disparar a dalt i abaix
-      end
-      self.torsoAnimations[self.currentTorsoAnimation]:gotoFrame(1)
-      self.torsoAnimations[self.currentTorsoAnimation]:resume()
-      self.nextFire = 0
-      canShoot = false
-      self.shot = false
-      self.shooting = true
+        self.currentRangedAnimation = 2
+        self.enemyRangedAnimations[self.currentRangedAnimation]:gotoFrame(1)
+        self.enemyRangedAnimations[self.currentRangedAnimation]:resume()
+        self.nextFire = 0
+        canShoot = false
+        self.shot = false
+        self.shooting = true
     end
   end
   

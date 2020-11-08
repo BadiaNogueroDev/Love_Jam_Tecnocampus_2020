@@ -29,15 +29,15 @@ function player:new(x, y, character)
                           anim8.newAnimation(g('1-6',4), 0.1), --JUMPING (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
                           anim8.newAnimation(g('5-10',5), 0.15), --LOOKING UP (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
                           anim8.newAnimation(g72('1-10',1), 0.03), --SHOOTING UP (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
-    } --3r Valor: Velocitat de la animació
-    
+  } --3r Valor: Velocitat de la animació
+  
   self.currentLegsAnimation = 1
   self.legsSpriteSheet = love.graphics.newImage('sprites/Legs_'.. character ..'_Spritesheet.png')
   g32 = anim8.newGrid(32, 32, self.legsSpriteSheet:getWidth(), self.legsSpriteSheet:getHeight())
   self.legsAnimations = { anim8.newAnimation(g32('1-1',1), 0.15),--IDLE
                           anim8.newAnimation(g32('2-13',3), 0.04),--RUNNING
                           anim8.newAnimation(g32('1-6',2), 0.1)--JUMPING
-    }
+  }
   
   --Player in the physics system
   objects.player = {}
