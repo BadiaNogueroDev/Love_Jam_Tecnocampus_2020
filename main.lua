@@ -50,7 +50,7 @@ function love.update(dt)
     cameraController:update(dt)
     map:update(dt)
     p:update(dt)
-    t:update(dt)
+    --t:update(dt)
     for _,v in ipairs(actorList) do
       v:update(dt)
     end

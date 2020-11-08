@@ -23,16 +23,16 @@ function enemy:new(x, y, attackRange, isMelee)
     self.currentMeleeAnimation = 1
     self.enemyMeleeSpriteSheet = love.graphics.newImage('sprites/Melee_Zombie.png')
     gZ1 = anim8.newGrid(54, 32, self.enemySpriteSheet:getWidth(), self.enemySpriteSheet:getHeight()) --NUMEROS PROVISIONALS
-    self.enemyMeleeAnimations = {anim8.newAnimation(g('1-12',1), 0.15),--RUNNING (1r Valor: Rang de frames. 2n Valor: Fila del sheet. 3r Valor: Velocitat de la animació)
-                                anim8.newAnimation(g('1-10',2), 0.15)} --MORIR
+    self.enemyMeleeAnimations = {anim8.newAnimation(self('1-12',1), 0.15),--RUNNING (1r Valor: Rang de frames. 2n Valor: Fila del sheet. 3r Valor: Velocitat de la animació)
+                                anim8.newAnimation(self('1-10',2), 0.15)} --MORIR
   else
     self.currentRangedAnimation = 1
     self.enemyRangedSpriteSheet = love.graphics.newImage('sprites/Ranged_Zombie.png')
     gZ2 = anim8.newGrid(54, 32, self.enemySpriteSheet:getWidth(), self.enemySpriteSheet:getHeight()) --NUMEROS PROVISIONALS
-    self.enemyRangedAnimations = {anim8.newAnimation(g('1-12',1), 0.15),--RUNNING 1
-                                  anim8.newAnimation(g('1-10',2), 0.15),--RUNNING 2
-                                  anim8.newAnimation(g('1-21',3), 0.15),--SHOOTING
-                                  anim8.newAnimation(g('1-14',4), 0.15)}--MORIR
+    self.enemyRangedAnimations = {anim8.newAnimation(gZ2('1-12',1), 0.15),--RUNNING 1
+                                  anim8.newAnimation(gZ2('1-10',2), 0.15),--RUNNING 2
+                                  anim8.newAnimation(gZ2('1-21',3), 0.15),--SHOOTING
+                                  anim8.newAnimation(gZ2('1-14',4), 0.15)}--MORIR
   end
 
   --Player in the physics system
@@ -59,7 +59,7 @@ function enemy:update(dt, player)
   --DETECCIÓ I MOVIMENT
   if self.playerDistance <= self.detectionRange then
     
-    if player.body:getX() < enemy.body:getX()
+    if player.body:getX() < enemy.body:getX() then
       self.forward.x = 1
       self.currentAnimation = 2
       
