@@ -39,7 +39,7 @@ function love.load()
   --m:new()
   
   --inGame = false
-  startGame("Henry")
+  startGame("Charles")
 end
 
 function love.update(dt)
@@ -82,17 +82,17 @@ function startGame(character)
   p = player
   p:new(200, 350, character)
   
-  t = target:extend()
-  t:new(600, 200)
-  table.insert(actorList, t)
-  
-  t = target:extend()
-  t:new(500, 200)
-  table.insert(actorList, t)
-  
-  t = target:extend()
-  t:new(700, 200)
-  table.insert(actorList, t)
+  --t = target:extend()
+  --t:new(600, 200)
+  --table.insert(actorList, t)
+
+  --t = target:extend()
+  --t:new(500, 200)
+  --table.insert(actorList, t)
+
+  --t = target:extend()
+  --t:new(700, 200)
+  --table.insert(actorList, t)
   
   camera = cameraController
   camera:new()
