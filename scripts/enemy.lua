@@ -95,12 +95,12 @@ function enemy:update(dt, player)
   end
   
   --Coordinar el spawn de la bala amb el moment de la animacio que li toca
-  if self.shooting and not self.shot and self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == 3 then
+  if self.shooting and not self.shot and self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == 3 then
     b = bullet
     b:new(objects.player.body:getX(), objects.player.body:getY(), self.forward, #actorList + 1)
     table.insert(playerBulletList, b)
     self.shot = true
-  elseif self.shooting and self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == self.torsoAnimations[self.currentTorsoAnimation]:getTotalFrameCounter() then
+  elseif self.shooting and self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == self.enemyRangedAnimations[self.currentRangedAnimation]:getTotalFrameCounter() then
     self.shooting = false
     self.shootingUp = false
   end
