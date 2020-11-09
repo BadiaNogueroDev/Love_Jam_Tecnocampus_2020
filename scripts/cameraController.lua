@@ -32,13 +32,14 @@ function cameraController:draw()
   cam:draw(function(l, t, w, h)
     -- draw camera stuff here
   
+  for _,v in ipairs(playerBulletList) do
+    v:draw()
+  end
+  
   for _,v in ipairs(mapElements) do
     love.graphics.polygon("fill", v.body:getWorldPoints(v.shape:getPoints()))
   end
   
-  for _,v in ipairs(playerBulletList) do
-    v:draw()
-  end
   end)
 end
 
