@@ -35,11 +35,11 @@ function love.load()
   
   love.window.setMode(w, h)
 
-  --m = menu
-  --m:new()
+  m = menu
+  m:new()
   
-  --inGame = false
-  startGame("Sandra")
+  inGame = false
+  --startGame("Sandra")
 end
 
 function love.update(dt)
@@ -97,7 +97,7 @@ function startGame(character)
   camera = cameraController
   camera:new()
   
-  inGame = true
+  --inGame = true
 end
 
 function mainMenu()
