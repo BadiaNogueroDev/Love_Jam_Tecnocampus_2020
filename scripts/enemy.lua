@@ -2,33 +2,35 @@ enemy = Object:extend()
 
 local bullet = bullet or require "scripts/bullet"
 
-function enemy:new(x, y, attackRange, isMelee)
+function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   --Initialize the propierties position
   self.posX = x
   self.posY = y
   self.speed = 1000
-  self.maxSpeed = 100
-  self.detectionRange = 500
+  self.maxSpeed = maxSpeed
+  self.detectionRange = detectionRange
   self.attackRange = attackRange
   self.isMelee = isMelee
+  self.lives = lives
   
   --Initialize sprites sheets and animation lists
   self.characterWidth = 25
-  self.characterHeight = 36
+  self.characterHeight = 35
   self.spriteScale = 1
-  self.forward = Vector.new(fx or 1,fy or 0)
+  self.torsoOffsetY = 20
+  self.forward = Vector.new(fx or -1,fy or 0)
   
   
   if self.isMelee then
     self.currentMeleeAnimation = 1
     self.enemyMeleeSpriteSheet = love.graphics.newImage('sprites/Melee_Zombie.png')
-    gZ1 = anim8.newGrid(34, 41, self.enemyMeleeSpriteSheet:getWidth(), self.enemyMeleeSpriteSheet:getHeight()) --NUMEROS PROVISIONALS
+    gZ1 = anim8.newGrid(34, 43, self.enemyMeleeSpriteSheet:getWidth(), self.enemyMeleeSpriteSheet:getHeight()) --NUMEROS PROVISIONALS
     self.enemyMeleeAnimations = {anim8.newAnimation(gZ1('1-12',1), 0.15),--RUNNING (1r Valor: Rang de frames. 2n Valor: Fila del sheet. 3r Valor: Velocitat de la animació)
                                 anim8.newAnimation(gZ1('1-10',2), 0.15)} --MORIR
   else
     self.currentRangedAnimation = 1
     self.enemyRangedSpriteSheet = love.graphics.newImage('sprites/Ranged_Zombie.png')
-    gZ2 = anim8.newGrid(54, 32, self.enemyRangedSpriteSheet:getWidth(), self.enemyRangedSpriteSheet:getHeight()) --NUMEROS PROVISIONALS
+    gZ2 = anim8.newGrid(34, 43, self.enemyRangedSpriteSheet:getWidth(), self.enemyRangedSpriteSheet:getHeight()) --NUMEROS PROVISIONALS
     self.enemyRangedAnimations = {anim8.newAnimation(gZ2('1-12',1), 0.15),--RUNNING 1
                                   anim8.newAnimation(gZ2('1-10',2), 0.15),--RUNNING 2
                                   anim8.newAnimation(gZ2('1-21',3), 0.15),--SHOOTING
@@ -55,36 +57,38 @@ end
 
 function enemy:update(dt)
   
-  VelocityX, VelocityY = self.enemy.body:getLinearVelocity()
-  self.playerDistance = self.posX - p.posX
+  self.VelocityX, self.VelocityY = self.enemy.body:getLinearVelocity()
+  self.playerDistance = self.enemy.body:getX() - objects.player.body:getX()
   
   --DETECCIÓ I MOVIMENT
-  if self.playerDistance <= self.detectionRange then
+  if self.playerDistance <= self.detectionRange and self.playerDistance >= -self.detectionRange then
     
-    if objects.player.body:getX() < self.enemy.body:getX() then
+    if objects.player.body:getX() > self.enemy.body:getX() then
       self.forward.x = 1
       
       if self.isMelee then
-        self.currentMeleeAnimation = 2
+        self.currentMeleeAnimation = 1
       else
-        self.currentRangedAnimation = 2
+        self.currentRangedAnimation = math.random(1,2)
       end
       
-      if VelocityX < self.maxSpeed then
-      self.enemy.body:applyLinearImpulse(self.speed/200, 0)
+      if self.VelocityX < self.maxSpeed then
+          self.enemy.body:applyLinearImpulse(self.speed/200, 0)
       end
-      
-    elseif objects.player.body:getX() < self.enemy.body:getX() then
+        
+    end
+    
+    if objects.player.body:getX() < self.enemy.body:getX() then
       self.forward.x = -1
-      
+
       if self.isMelee then
-        self.currentMeleeAnimation = 2
+        self.currentMeleeAnimation = 1
       else
-        self.currentRangedAnimation = 2
+        self.currentRangedAnimation = math.random(1,2)
       end
       
-      if VelocityX < -self.maxSpeed then
-      self.enemy.body:applyLinearImpulse(self.speed/200, 0)
+      if self.VelocityX > -self.maxSpeed then
+          self.enemy.body:applyLinearImpulse(-self.speed/200, 0)
       end
     end
   end
@@ -145,9 +149,9 @@ function enemy:draw()
     love.graphics.polygon("fill", self.enemy.body:getWorldPoints(self.enemy.shape:getPoints())) --DEBUG PHYSICS HITBOX
     
     if self.isMelee then
-      self.enemyMeleeAnimations[self.currentMeleeAnimation]:draw(self.enemyMeleeSpriteSheet, self.enemy.body:getX(), self.enemy.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 5, 3)
+      self.enemyMeleeAnimations[self.currentMeleeAnimation]:draw(self.enemyMeleeSpriteSheet, self.enemy.body:getX(), self.enemy.body:getY(), 0 ,-self.forward.x,1, self.characterWidth/2 + 5, 3 + self.torsoOffsetY)
     else
-      self.enemyRangedAnimations[self.currentRangedAnimation]:draw(self.enemyRangedSpriteSheet, self.enemy.body:getX(), self.enemy.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2)
+      self.enemyRangedAnimations[self.currentRangedAnimation]:draw(self.enemyRangedSpriteSheet, self.enemy.body:getX(), self.enemy.body:getY(), 0 ,-self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2 + self.torsoOffsetY)
     end
     
   end)

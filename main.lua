@@ -86,9 +86,13 @@ function startGame(character)
   p = player
   p:new(200, 350, character)
   
-  gE = groundEnemy
-  gE:new(300, 350, 10, true) --Melee enemy de prova
-  table.insert(actorList, gE)
+  --gE = groundEnemy:extend()
+  --gE:new(400, 350, true, 40, 200, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  --table.insert(actorList, gE)
+  
+  --gE = groundEnemy:extend()
+  --gE:new(400, 350, false, 20, 200, 100, 2) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  --table.insert(actorList, gE)
   
   --t = target:extend()
   --t:new(600, 200)
