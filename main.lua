@@ -37,11 +37,11 @@ function love.load()
   
   love.window.setMode(w, h)
 
-  m = menu
-  m:new()
+  --m = menu
+  --m:new()
   
-  inGame = false
-  --startGame("Sandra")
+  --inGame = false
+  startGame("Sandra")
 end
 
 function love.update(dt)
@@ -86,9 +86,9 @@ function startGame(character)
   p = player
   p:new(200, 350, character)
   
-  --gE = groundEnemy
-  --gE:new(300, 350, 10, true) --Melee enemy de prova
-  --table.insert(actorList, gE)
+  gE = groundEnemy
+  gE:new(300, 350, 10, true) --Melee enemy de prova
+  table.insert(actorList, gE)
   
   --t = target:extend()
   --t:new(600, 200)
@@ -105,7 +105,7 @@ function startGame(character)
   camera = cameraController
   camera:new()
   
-  --inGame = true
+  inGame = true
 end
 
 function mainMenu()

@@ -36,13 +36,14 @@ function enemy:new(x, y, attackRange, isMelee)
   end
 
   --Player in the physics system
-  objects.enemy = {}
-  objects.enemy.body = love.physics.newBody(world, self.posX, self.posY, "dynamic") --place the body somewhere in the world and make it dynamic, so it can move around
-  objects.enemy.shape = love.physics.newRectangleShape(0, 0, self.characterWidth, self.characterHeight) --the ball's shape has a radius of 20
-  objects.enemy.fixture = love.physics.newFixture(objects.enemy.body, objects.enemy.shape, 1) -- Attach fixture to body and give it a density of 1.
-  objects.enemy.body:setLinearDamping(2)
-  objects.enemy.body:setGravityScale(2)
-  objects.enemy.body:setFixedRotation(true)
+  self.enemy = {}
+  self.enemy.body = love.physics.newBody(world, self.posX, self.posY, "dynamic") --place the body somewhere in the world and make it dynamic, so it can move around
+  self.enemy.shape = love.physics.newRectangleShape(0, 0, self.characterWidth, self.characterHeight) --the ball's shape has a radius of 20
+  self.enemy.fixture = love.physics.newFixture(self.enemy.body, self.enemy.shape, 1) -- Attach fixture to body and give it a density of 1.
+  self.enemy.body:setLinearDamping(2)
+  self.enemy.body:setGravityScale(2)
+  self.enemy.body:setFixedRotation(true)
+  table.insert(objects, self.enemy)
   
   --Player shooting
   self.canShoot = true --El personatge pot disparar
@@ -52,15 +53,15 @@ function enemy:new(x, y, attackRange, isMelee)
   self.nextFire = 0 --Timer, se li sumara dt fins arribar a fireRate
 end
 
-function enemy:update(dt, player)
+function enemy:update(dt)
   
-  VelocityX, VelocityY = objects.player.body:getLinearVelocity()
-  self.playerDistance = self.posX - player.posX
+  VelocityX, VelocityY = self.enemy.body:getLinearVelocity()
+  self.playerDistance = self.posX - p.posX
   
   --DETECCIÓ I MOVIMENT
   if self.playerDistance <= self.detectionRange then
     
-    if player.body:getX() < enemy.body:getX() then
+    if objects.player.body:getX() < self.enemy.body:getX() then
       self.forward.x = 1
       
       if self.isMelee then
@@ -70,10 +71,10 @@ function enemy:update(dt, player)
       end
       
       if VelocityX < self.maxSpeed then
-      objects.enemy.body:applyLinearImpulse(self.speed/200, 0)
+      self.enemy.body:applyLinearImpulse(self.speed/200, 0)
       end
       
-    elseif player.body:getX() < enemy.body:getX() then
+    elseif objects.player.body:getX() < self.enemy.body:getX() then
       self.forward.x = -1
       
       if self.isMelee then
@@ -83,13 +84,13 @@ function enemy:update(dt, player)
       end
       
       if VelocityX < -self.maxSpeed then
-      objects.enemy.body:applyLinearImpulse(self.speed/200, 0)
+      self.enemy.body:applyLinearImpulse(self.speed/200, 0)
       end
     end
   end
   
   --Vector que agafa la velocitat en X i Y del personatge
-  self.velocity = Vector.new(objects.player.body:getLinearVelocity())
+  self.velocity = Vector.new(self.enemy.body:getLinearVelocity())
   
   --SHOOTING
   if not self.isMelee then
@@ -109,7 +110,7 @@ function enemy:update(dt, player)
     --Coordinar el spawn de la bala amb el moment de la animacio que li toca
     if self.shooting and not self.shot and self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == 3 then
       b = bullet
-      b:new(objects.player.body:getX(), objects.player.body:getY(), self.forward, #actorList + 1)
+      b:new(self.enemy.body:getX(), self.enemy.body:getY(), self.forward, #actorList + 1)
       table.insert(playerBulletList, b)
       self.shot = true
     elseif self.shooting and self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == self.enemyRangedAnimations[self.currentRangedAnimation]:getTotalFrameCounter() then
@@ -125,21 +126,28 @@ function enemy:update(dt, player)
   end
 
   --Fa que funcioni el update del anim8
-  for i=1,#self.enemyAnimations do
-    self.enemyAnimations[i]:update(dt)
+  if self.isMelee then
+    for i=1,#self.enemyMeleeAnimations do
+    self.enemyMeleeAnimations[i]:update(dt)
+    end
+  else
+    for i=1,#self.enemyRangedAnimations do
+    self.enemyRangedAnimations[i]:update(dt)
+    end
   end
+
 end
 
 function enemy:draw()
   cam:draw(
     function(l, t, w, h)
     love.graphics.setColor(1,1,1)
-    love.graphics.polygon("fill", objects.player.body:getWorldPoints(objects.player.shape:getPoints())) --DEBUG PHYSICS HITBOX
+    love.graphics.polygon("fill", self.enemy.body:getWorldPoints(self.enemy.shape:getPoints())) --DEBUG PHYSICS HITBOX
     
     if self.isMelee then
-      self.enemyMeleeAnimations[self.currentMeleeAnimation]:draw(self.enemyMeleeSpriteSheet, objects.enemy.body:getX(), objects.enemy.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 5, 3)
+      self.enemyMeleeAnimations[self.currentMeleeAnimation]:draw(self.enemyMeleeSpriteSheet, self.enemy.body:getX(), self.enemy.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 5, 3)
     else
-      self.enemyRangedAnimations[self.currentRangedAnimation]:draw(self.enemyRangedSpriteSheet, objects.enemy.body:getX(), objects.enemy.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2)
+      self.enemyRangedAnimations[self.currentRangedAnimation]:draw(self.enemyRangedSpriteSheet, self.enemy.body:getX(), self.enemy.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2)
     end
     
   end)
