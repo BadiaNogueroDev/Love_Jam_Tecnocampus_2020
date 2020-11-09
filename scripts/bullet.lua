@@ -1,7 +1,5 @@
 bullet = Object:extend()
 
-bulletCounter = 1
-
 function bullet:new(x, y, forward)
   --Initialize the player position
   self.position = Vector.new(x, y)
@@ -13,9 +11,6 @@ function bullet:new(x, y, forward)
   self.spriteScale = 1
   self.weaponOffsetX = 30
   self.weaponOffsetY = 20
-  
-  self.index = bulletCounter
-  bulletCounter = bulletCounter + 1
   
   self.type = "attack"
   
@@ -29,12 +24,13 @@ function bullet:new(x, y, forward)
   end
   
   self.bulletHitbox = {}
-  self.bulletHitbox.body = love.physics.newBody(hitboxes, self.position.x, self.position.y, "kinematic") --place the body somewhere in the world and make it dynamic, so it can move around
+  self.bulletHitbox.body = love.physics.newBody(hitboxes, self.position.x, self.position.y, "dynamic") --place the body somewhere in the world and make it dynamic, so it can move around
   self.bulletHitbox.shape = love.physics.newRectangleShape(0, 0, 10, 10) --the ball's shape has a radius of 20
   self.bulletHitbox.fixture = love.physics.newFixture(self.bulletHitbox.body, self.bulletHitbox.shape, 1) -- Attach fixture to body and give it a density of 1.
-  table.insert(objects, bulletHitbox)
   self.bulletHitbox.fixture:setSensor(true)
 	self.bulletHitbox.fixture:setUserData(self)
+  table.insert(objects, self.bulletHitbox)
+
   --print("X: "..self.forward.x)
   --print("Y: "..self.forward.y)
 end
@@ -53,7 +49,6 @@ function bullet:draw(cam)
   --love.graphics.rectangle("fill", self.position.x, self.position.y, 5 + 10 * math.abs(self.forward.x), 5 + 10 * math.abs(self.forward.y))
   --love.graphics.draw(self.image,xx,yy,rr,sx,sy,ox,oy,0,0)
   --print("bullet")
-  love.graphics.setColor(1, 1, 1)
   
   love.graphics.setColor(1,1,1)
   --love.graphics.polygon("line", self.bulletHitbox.body:getWorldPoints(self.bulletHitbox.shape:getPoints())) --DEBUG PHYSICS HITBOX
@@ -69,6 +64,7 @@ function bullet:destroyBullet()
   for _,v in ipairs(playerBulletList) do
     if v == self then
       table.remove(playerBulletList, _)
+      self.bulletHitbox.body:destroy()
       --print("removed")
     end
   end
