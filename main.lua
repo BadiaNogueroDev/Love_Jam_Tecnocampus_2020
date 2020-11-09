@@ -39,7 +39,7 @@ function love.load()
   --m:new()
   
   --inGame = false
-  startGame("Charles")
+  startGame("Sandra")
 end
 
 function love.update(dt)

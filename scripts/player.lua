@@ -11,6 +11,7 @@ function player:new(x, y, character)
   self.jumpForce = -120
   self.torsoOffsetY = 1
   self.shootingUp = false
+  self.lookingDown = false
   
   --Initialize sprites sheets and animation lists
   self.characterWidth = 25
@@ -29,6 +30,8 @@ function player:new(x, y, character)
                           anim8.newAnimation(g('1-6',4), 0.1), --JUMPING (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
                           anim8.newAnimation(g('5-10',5), 0.15), --LOOKING UP (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
                           anim8.newAnimation(g72('1-10',1), 0.03), --SHOOTING UP (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
+                          anim8.newAnimation(g72('7-7',2), 0.03), --LOOKING DOWN (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
+                          anim8.newAnimation(g72('1-7',2), 0.04), --SHOOTING DOWN (1r Valor: Rang de frames. 2n Valor: Fila del sheet)
   } --3r Valor: Velocitat de la animació
   
   self.currentLegsAnimation = 1
@@ -71,7 +74,9 @@ function player:update(dt)
   --Solució temporal al canviar el offset per disparar a dalt i abaix
   if self.shootingUp then
     self.torsoOffsetY = 41
-  elseif not self.shootingUp then
+  elseif self.lookingDown then
+    self.torsoOffsetY = -5
+  else
     self.torsoOffsetY = 1
   end
   
@@ -106,15 +111,17 @@ function player:update(dt)
   
   --En proces: Que el miri cap a dalt
   if love.keyboard.isDown("up") then
-    --self.forward.y = -1
     if not self.shooting then
       self.currentTorsoAnimation = 5
     end
-  --elseif love.keyboard.isDown("up") and self.shooting then
-  --  self.forward.y = -1
-  --  self.currentTorsoAnimation = 6
-  else
-    --self.forward.y = 0
+  elseif love.keyboard.isDown("down") and self.airborn then
+    if not self.shooting then
+      self.currentTorsoAnimation = 7
+      self.lookingDown = true
+      self.torsoOffsetY = -5
+    end
+  elseif not self.shooting then
+    self.lookingDown = false
   end
   
   --Vector que agafa la velocitat en X i Y del personatge
@@ -145,7 +152,7 @@ function player:update(dt)
     self.airborn = true
     self.currentLegsAnimation = 3
     
-    if not self.shooting then
+    if not self.shooting and not self.lookingDown then
       self.currentTorsoAnimation = 4
     end
     
@@ -166,8 +173,16 @@ function player:update(dt)
         self.shootingUp = true
         self.currentTorsoAnimation = 6
         self.torsoOffsetY = 41 --Solució temporal al canviar el offset per disparar a dalt i abaix
+        self.lookingDown = false
+      elseif love.keyboard.isDown("down") and self.airborn then
+        self.shootingUp = false
+        self.lookingDown = true
+        self.forward.y = 1
+        self.currentTorsoAnimation = 8
+        self.torsoOffsetY = -5
       else
         self.shootingUp = false
+        self.lookingDown = false
         self.forward.y = 0
         self.currentTorsoAnimation = 2
         self.torsoOffsetY = 1  --Solució temporal al canviar el offset per disparar a dalt i abaix
@@ -192,6 +207,7 @@ function player:update(dt)
   elseif self.shooting and self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == self.torsoAnimations[self.currentTorsoAnimation]:getTotalFrameCounter() then
     self.shooting = false
     self.shootingUp = false
+    self.lookingDown = false
   end
   
   --Temps de recarrega per tornar a disparar
@@ -217,8 +233,8 @@ function player:draw()
     love.graphics.setColor(1,1,1)
     love.graphics.polygon("line", self.targetHitbox.body:getWorldPoints(self.targetHitbox.shape:getPoints())) --DEBUG HITBOX
     --love.graphics.polygon("fill", objects.player.body:getWorldPoints(objects.player.shape:getPoints())) --DEBUG PHYSICS HITBOX
-    self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 - 1, 3)
-    self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 - 2, self.characterHeight/2 + self.torsoOffsetY)
+    self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 5, 3)
+    self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2 + self.torsoOffsetY)
   end)
 end
 

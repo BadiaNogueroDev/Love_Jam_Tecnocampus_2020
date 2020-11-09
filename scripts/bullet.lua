@@ -44,9 +44,8 @@ function bullet:update(dt)
   
   self.bulletHitbox.body:setPosition(self.position.x, self.position.y)
   --Si excede de los limites establecidos se borra de la lista que hace el update y el draw
-  if self.position.x < objects.player.body:getX() - 500 or self.position.x > objects.player.body:getX() + 500 or self.position.y < 0 or self.position.y > 600 then
+  if self.position.x < objects.player.body:getX() - 300 or self.position.x > objects.player.body:getX() + 300 or self.position.y < 0 or self.position.y > 600 then
     self:destroyBullet()
-    print("Border hit")
   end
 end
 
