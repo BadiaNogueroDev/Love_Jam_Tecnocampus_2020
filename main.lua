@@ -35,11 +35,11 @@ function love.load()
   
   love.window.setMode(w, h)
 
-  --m = menu
-  --m:new()
+  m = menu
+  m:new()
   
-  --inGame = false
-  startGame("Henry")
+  inGame = false
+  --startGame("Sandra")
 end
 
 function love.update(dt)
@@ -50,7 +50,7 @@ function love.update(dt)
     cameraController:update(dt)
     map:update(dt)
     p:update(dt)
-    t:update(dt)
+    --t:update(dt)
     for _,v in ipairs(actorList) do
       v:update(dt)
     end
@@ -82,22 +82,22 @@ function startGame(character)
   p = player
   p:new(200, 350, character)
   
-  t = target:extend()
-  t:new(600, 200)
-  table.insert(actorList, t)
-  
-  t = target:extend()
-  t:new(500, 200)
-  table.insert(actorList, t)
-  
-  t = target:extend()
-  t:new(700, 200)
-  table.insert(actorList, t)
+  --t = target:extend()
+  --t:new(600, 200)
+  --table.insert(actorList, t)
+
+  --t = target:extend()
+  --t:new(500, 200)
+  --table.insert(actorList, t)
+
+  --t = target:extend()
+  --t:new(700, 200)
+  --table.insert(actorList, t)
   
   camera = cameraController
   camera:new()
   
-  inGame = true
+  --inGame = true
 end
 
 function mainMenu()

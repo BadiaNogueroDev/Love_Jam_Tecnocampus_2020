@@ -8,6 +8,9 @@ function menu:new(x, y, forward)
   video:play() --Reproducir video
   
   videoSelection = love.graphics.newVideo("videos/TCM Slug Character Selection.ogv")
+  
+  videoLoading = love.graphics.newVideo("videos/TCM Loading Screen.ogv")
+  
   --BACKGROUND DEL MENÚ
   background = love.graphics.newImage("sprites/Menu_Background.png") --Guardar imagen en una variable
   
@@ -15,6 +18,8 @@ function menu:new(x, y, forward)
   
   selectionMusic = love.audio.newSource("sound/Character Select.mp3", "stream")
   selectionMusic:setVolume(0.8)
+  
+
   
   --BOTONES DEL MENÚ
   startButton = love.graphics.newImage("sprites/Start_Button.png")
@@ -27,24 +32,25 @@ function menu:new(x, y, forward)
   selectionButtons = {}
   
   character1 = love.graphics.newImage("sprites/Marco_Character_Selection.png")
-  self.character1List = {character1, 210, 440, 1, function() startGame("Marco") selectionMusic:stop() self.selection = false end}
+  self.character1List = {character1, 210, 440, 1, function() startGame("Marco") selectionMusic:stop() self.selection = false self.loading = true videoLoading:play() end}
   table.insert(selectionButtons, self.character1List)
   
   character2 = love.graphics.newImage("sprites/Henry_Character_Selection.png")
-  self.character2List = {character2, 500, 440, 1, function() startGame("Henry") selectionMusic:stop() self.selection = false end}
+  self.character2List = {character2, 500, 440, 1, function() startGame("Henry") selectionMusic:stop() self.selection = false self.loading = true videoLoading:play() end}
   table.insert(selectionButtons, self.character2List)
   
   character3 = love.graphics.newImage("sprites/Sandra_Character_Selection.png")
-  self.character3List = {character3, 782, 440, 1, function() startGame("Sandra") selectionMusic:stop() self.selection = false end}
+  self.character3List = {character3, 782, 440, 1, function() startGame("Sandra") selectionMusic:stop() self.selection = false self.loading = true videoLoading:play() end}
   table.insert(selectionButtons, self.character3List)
   
   character4 = love.graphics.newImage("sprites/Charles_Character_Selection.png")
-  self.character4List = {character4, 1069, 440, 1, function() startGame("Charles") selectionMusic:stop() self.selection = false end}
+  self.character4List = {character4, 1069, 440, 1, function() startGame("Charles") selectionMusic:stop() self.selection = false self.loading = true videoLoading:play() end}
   table.insert(selectionButtons, self.character4List)
   
   --BOOL PARA ACTIVAR CHRACTER SELECTION
   self.selection = false
   
+  self.loading = false
   --
   self.mouseUp = false --Bool para solo captar el mouse down en el primer update de pulsar
 end
@@ -52,14 +58,16 @@ end
 function menu:update(dt)
   mouse.x, mouse.y = love.mouse.getPosition()  -- This gets the x and y coordinates of the mouse and 
   
-  if not ingame and self.selection then
-    
+  if not inGame and self.selection then
     if self.mouseUp then
       for _,v in ipairs(selectionButtons) do
         self:useButton(selectionButtons[_])
       end
     end
-  elseif not inGame then
+  elseif self.loading and not videoLoading:isPlaying() then
+      self.loading = false
+      inGame = true
+  elseif not inGame and not self.loading then
     if not video:isPlaying() then
       self:useButton(self.startList)
       self:useButton(self.exitList)
@@ -82,6 +90,8 @@ function menu:draw()
       end
       love.graphics.draw(selectionBackground) --Dibujar background
     end
+  elseif self.loading then
+    love.graphics.draw(videoLoading, 0, 0)
   elseif not inGame then
       love.graphics.draw(video, 0, 0) --Dibujar videdo
     if not video:isPlaying() then

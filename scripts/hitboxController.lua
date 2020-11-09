@@ -8,10 +8,7 @@ function beginCallback(fixture1, fixture2, contact)
     print("Enemy hit")
   end
   
-  if fixture1:getUserData() == "wall" or fixture2:getUserData() == "wall" then
-    b:destroyBullet()
-    print("Enemy hit")
-  end
+  
   
   if fixture1:getUserData() == "enemy" and fixture2:getUserData() == "player" or fixture2:getUserData() == "enemy" and fixture1:getUserData() == "player" then
     print("Take Damage")
