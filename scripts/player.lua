@@ -242,7 +242,6 @@ function player:changeTorsoAnimation(number)
   if not self.shooting then
     self.currentTorsoAnimation = torso
   end
-    
 end
 
 function player:changeLegsAnimation(number)

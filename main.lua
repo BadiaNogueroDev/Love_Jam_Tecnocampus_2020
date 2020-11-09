@@ -8,6 +8,8 @@ local cameraController = cameraController or require "scripts/cameraController"
 
 local player = player or require "scripts/player"
 
+local groundEnemy = enemy or require "scripts/enemy"
+
 local menu = menu or require "scripts/menu"
 
 local mainMap = mainMap or require "scripts/mainMap"
@@ -50,6 +52,7 @@ function love.update(dt)
     cameraController:update(dt)
     map:update(dt)
     p:update(dt)
+    --gE:update(dt, p)
     --t:update(dt)
     for _,v in ipairs(actorList) do
       v:update(dt)
@@ -66,6 +69,7 @@ function love.draw()
   if inGame then
     cameraController:draw()
     p:draw(cam)
+    --gE:draw()
     for _,v in ipairs(actorList) do
       v:draw()
     end
@@ -81,6 +85,10 @@ function startGame(character)
   
   p = player
   p:new(200, 350, character)
+  
+  --gE = groundEnemy
+  --gE:new(300, 350, 10, true) --Melee enemy de prova
+  --table.insert(actorList, gE)
   
   --t = target:extend()
   --t:new(600, 200)
