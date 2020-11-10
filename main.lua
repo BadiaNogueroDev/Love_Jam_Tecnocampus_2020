@@ -37,11 +37,11 @@ function love.load()
   
   love.window.setMode(w, h)
 
-  m = menu
-  m:new()
+  --m = menu
+  --m:new()
   
-  inGame = false
-  --startGame("Sandra") --Descomentar para entrar al juego sin menú principal
+  --inGame = false
+  startGame("Sandra") --Descomentar para entrar al juego sin menú principal
 end
 
 function love.update(dt)
@@ -92,7 +92,7 @@ function startGame(character)
   camera = cameraController
   camera:new()
   
-  --inGame = true --Descomentar para entrar al juego sin menú principal
+  inGame = true --Descomentar para entrar al juego sin menú principal
 end
 
 function mainMenu()

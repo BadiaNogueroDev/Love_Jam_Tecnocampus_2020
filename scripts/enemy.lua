@@ -31,10 +31,11 @@ function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
                                  anim8.newAnimation(gZ1('1-14',2), 0.07)} --MORIR
   else
     self.currentRangedAnimation = 1
+    self.randomWalkAnimation = math.random(1,2)
     self.enemyRangedSpriteSheet = love.graphics.newImage('sprites/Ranged_Zombie.png')
-    gZ2 = anim8.newGrid(34, 43, self.enemyRangedSpriteSheet:getWidth(), self.enemyRangedSpriteSheet:getHeight()) --NUMEROS PROVISIONALS
-    self.enemyRangedAnimations = {anim8.newAnimation(gZ2('1-12',1), 0.15),--RUNNING 1
-                                  anim8.newAnimation(gZ2('1-10',2), 0.15),--RUNNING 2
+    gZ2 = anim8.newGrid(37, 45, self.enemyRangedSpriteSheet:getWidth(), self.enemyRangedSpriteSheet:getHeight()) --NUMEROS PROVISIONALS
+    self.enemyRangedAnimations = {anim8.newAnimation(gZ2('1-12',1), 0.10),--RUNNING 1
+                                  anim8.newAnimation(gZ2('1-12',2), 0.10),--RUNNING 2
                                   anim8.newAnimation(gZ2('1-21',3), 0.15),--SHOOTING
                                   anim8.newAnimation(gZ2('1-14',4), 0.15)}--MORIR
   end
@@ -108,33 +109,40 @@ function enemy:update(dt)
   
   --DETECCIÓ I MOVIMENT
   if self.playerDistance <= self.detectionRange and self.playerDistance >= -self.detectionRange and self.alive then
-    self.enemyHitbox.body:setPosition(self.enemy.body:getPosition()) --Posar la hitbox fixe al objecte
-    if objects.player.body:getX() > self.enemy.body:getX() then
-      self.forward.x = 1
+    print ("detected, distance: " .. self.playerDistance)
+    print (self.attackRange)
+    if self.playerDistance >= self.attackRange and self.playerDistance <= -self.attackRange then
+      self.enemyHitbox.body:setPosition(self.enemy.body:getPosition()) --Posar la hitbox fixe al objecte
       
-      if self.isMelee then
-        self.currentMeleeAnimation = 1
-      else
-        self.currentRangedAnimation = math.random(1,2)
-      end
+      print ("walk")
       
-      if self.VelocityX < self.maxSpeed then
-          self.enemy.body:applyLinearImpulse(self.speed/200, 0)
-      end
+      if objects.player.body:getX() > self.enemy.body:getX() then
+        self.forward.x = 1
         
-    end
-    
-    if objects.player.body:getX() < self.enemy.body:getX() then
-      self.forward.x = -1
-
-      if self.isMelee then
-        self.currentMeleeAnimation = 1
-      else
-        self.currentRangedAnimation = math.random(1,2)
+        if self.isMelee then
+          self.currentMeleeAnimation = 1
+        else
+          self.currentRangedAnimation = self.randomWalkAnimation
+        end
+        
+        if self.VelocityX < self.maxSpeed then
+            self.enemy.body:applyLinearImpulse(self.speed/200, 0)
+        end
       end
-      
-      if self.VelocityX > -self.maxSpeed then
-          self.enemy.body:applyLinearImpulse(-self.speed/200, 0)
+    
+    
+      if objects.player.body:getX() < self.enemy.body:getX() then
+        self.forward.x = -1
+        
+        if self.isMelee then
+          self.currentMeleeAnimation = 1
+        else
+          self.currentRangedAnimation = self.randomWalkAnimation
+        end
+        
+        if self.VelocityX > -self.maxSpeed then
+            self.enemy.body:applyLinearImpulse(-self.speed/200, 0)
+        end
       end
     end
   end
