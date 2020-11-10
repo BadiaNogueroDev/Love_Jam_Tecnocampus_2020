@@ -8,8 +8,6 @@ local cameraController = cameraController or require "scripts/cameraController"
 
 local player = player or require "scripts/player"
 
-local groundEnemy = enemy or require "scripts/enemy"
-
 local menu = menu or require "scripts/menu"
 
 local mainMap = mainMap or require "scripts/mainMap"
@@ -17,6 +15,8 @@ local mainMap = mainMap or require "scripts/mainMap"
 local hitboxController = hitboxController or require "scripts/hitboxController"
 
 local t = target or require "scripts/target"
+
+local enemyPlacement = enemyPlacement or require "scripts/enemyPlacement"
 
 actorList = {}
 
@@ -37,11 +37,11 @@ function love.load()
   
   love.window.setMode(w, h)
 
-  --m = menu
-  --m:new()
+  m = menu
+  m:new()
   
-  --inGame = false
-  startGame("Sandra")
+  inGame = false
+  --startGame("Sandra") --Descomentar para entrar al juego sin menú principal
 end
 
 function love.update(dt)
@@ -86,30 +86,13 @@ function startGame(character)
   p = player
   p:new(200, 350, character)
   
-  --gE = groundEnemy:extend()
-  --gE:new(400, 350, true, 40, 200, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
-  --table.insert(actorList, gE)
-  
-  --gE = groundEnemy:extend()
-  --gE:new(400, 350, false, 20, 200, 100, 2) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
-  --table.insert(actorList, gE)
-  
-  --t = target:extend()
-  --t:new(600, 200)
-  --table.insert(actorList, t)
-
-  --t = target:extend()
-  --t:new(500, 200)
-  --table.insert(actorList, t)
-
-  --t = target:extend()
-  --t:new(700, 200)
-  --table.insert(actorList, t)
+  placement = enemyPlacement
+  placement:new()
   
   camera = cameraController
   camera:new()
   
-  inGame = true
+  --inGame = true --Descomentar para entrar al juego sin menú principal
 end
 
 function mainMenu()

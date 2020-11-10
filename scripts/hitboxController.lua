@@ -6,7 +6,8 @@ function beginCallback(fixture1, fixture2, contact)
   for _,v in ipairs(actorList) do
     if fixture1:getUserData() == b and fixture2:getUserData() == v or fixture2:getUserData() == b and fixture1:getUserData() == v then
       b:destroyBullet()
-      v.alive = false
+      --v.alive = false
+      v.health = v.health - 1
       print("Enemy hit")
     end
   end

@@ -12,6 +12,7 @@ function player:new(x, y, character)
   self.torsoOffsetY = 1
   self.shootingUp = false
   self.lookingDown = false
+  self.zUp = true --Variable per evitar disparar mantenint premut la lletra z
   
   --Initialize sprites sheets and animation lists
   self.characterWidth = 25
@@ -64,7 +65,7 @@ function player:new(x, y, character)
   --Player shooting
   self.shooting = false --El personatge esta disparant
   self.shot = false --El personatge ja ha disparat la bala
-  self.fireRate = 0.2
+  self.fireRate = 0.15
   self.nextFire = 0 --Timer, se li sumara dt fins arribar a fireRate
 end
 
@@ -167,7 +168,7 @@ function player:update(dt)
   
   --Shooting
   if love.keyboard.isDown("z") then
-    if canShoot then
+    if canShoot and self.zUp then
       if love.keyboard.isDown("up") then
         self.forward.y = -1
         self.shootingUp = true
@@ -194,6 +195,9 @@ function player:update(dt)
       self.shot = false
       self.shooting = true
     end
+    self.zUp = false
+  else
+    self.zUp = true
   end
   
   --Coordinar el spawn de la bala amb el moment de la animacio que li toca
@@ -231,7 +235,7 @@ end
 function player:draw()
   cam:draw(function(l, t, w, h)
     love.graphics.setColor(1,1,1)
-    love.graphics.polygon("line", self.targetHitbox.body:getWorldPoints(self.targetHitbox.shape:getPoints())) --DEBUG HITBOX
+    --love.graphics.polygon("line", self.targetHitbox.body:getWorldPoints(self.targetHitbox.shape:getPoints())) --DEBUG HITBOX
     --love.graphics.polygon("fill", objects.player.body:getWorldPoints(objects.player.shape:getPoints())) --DEBUG PHYSICS HITBOX
     self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 5, 3)
     self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2 + self.torsoOffsetY)

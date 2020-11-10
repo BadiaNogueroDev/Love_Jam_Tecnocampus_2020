@@ -10,7 +10,9 @@ function flyingEnemy:new(x, y)
   self.maxSpeed = 100
   self.detectionRange = 200
   self.attackRange = 20
-  self.alive = true
+  self.alive = true  --Si està viu
+  self.dying = false --Si està en l'animació de morir-se
+  self.health = 10
   
   --Initialize sprites sheets and animation lists
   self.characterWidth = 45
@@ -49,12 +51,22 @@ function flyingEnemy:new(x, y)
 end
 
 function flyingEnemy:update(dt, player)
+  if self.health <= 0 then
+    self.currentAnimation = 2
+    if self.animations[self.currentAnimation]:getCurrentFrameCounter() == self.animations[self.currentAnimation]:getTotalFrameCounter() then
+      self.animations[self.currentAnimation]:pauseAtEnd()
+      self:die()
+    end
+    self.alive = false
+  end
   
-  VelocityX, VelocityY = objects.player.body:getLinearVelocity()
+  if self.alive then
+    VelocityX, VelocityY = objects.player.body:getLinearVelocity()
   
-  self.playerDistanceX = self.enemy.body:getX() - objects.player.body:getX()
-  self.playerDistanceY = self.enemy.body:getY() - objects.player.body:getY()
-  
+    self.playerDistanceX = self.enemy.body:getX() - objects.player.body:getX()
+    self.playerDistanceY = self.enemy.body:getY() - objects.player.body:getY()
+  end
+
   --DETECCIÓ I MOVIMENT
   if self.playerDistanceX >= -self.detectionRange and self.playerDistanceX <= self.detectionRange and self.alive then
     self.enemy.body:setY(self.enemy.body:getY() - (self.playerDistanceY + 120) * self.speed * dt)
@@ -73,13 +85,6 @@ function flyingEnemy:update(dt, player)
       end
     end
   end
-  if not self.alive then
-    self.currentAnimation = 2
-    if self.animations[self.currentAnimation]:getCurrentFrameCounter() == self.animations[self.currentAnimation]:getTotalFrameCounter() then
-      self.animations[self.currentAnimation]:pauseAtEnd()
-      self:die()
-    end
-  end
   
   --Temps de recarrega per tornar a disparar
   self.nextFire = self.nextFire + dt
@@ -96,7 +101,7 @@ end
 function flyingEnemy:draw()
   cam:draw(function(l, t, w, h)
     love.graphics.setColor(1,1,1)
-    love.graphics.polygon("line", self.enemyHitbox.body:getWorldPoints(self.enemyHitbox.shape:getPoints())) --DEBUG HITBOX
+    --love.graphics.polygon("line", self.enemyHitbox.body:getWorldPoints(self.enemyHitbox.shape:getPoints())) --DEBUG HITBOX
     self.animations[self.currentAnimation]:draw(self.spriteSheet, self.enemy.body:getX(), self.enemy.body:getY(), 0, 1, 1, 57/2, 40/2)
 
   end)
@@ -105,9 +110,9 @@ end
 function flyingEnemy:die()
   for _,v in ipairs(actorList) do
     if v == self then
-      --table.remove(actorList, _)
-      --self.enemy.body:destroy()
-      --self.enemyHitbox.body:destroy()
+      table.remove(actorList, _)
+      self.enemy.body:destroy()
+      self.enemyHitbox.body:destroy()
       --print("removed")
     end
   end
