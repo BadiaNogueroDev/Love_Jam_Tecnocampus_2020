@@ -11,7 +11,13 @@ function mainMap:new()
   self.ground.shape = love.physics.newRectangleShape(15360, 80) --make a rectangle with a width of 15360 and a height of 80
   self.ground.fixture = love.physics.newFixture(self.ground.body, self.ground.shape) --attach shape to body
   table.insert(mapElements, self.ground)
- 
+  
+  self.ground = {}
+  self.ground.body = love.physics.newBody(hitboxes, 15360/2, 560)
+  self.ground.shape = love.physics.newRectangleShape(15360, 80) --make a rectangle with a width of 15360 and a height of 80
+  self.ground.fixture = love.physics.newFixture(self.ground.body, self.ground.shape) --attach shape to body
+  table.insert(mapElements, self.ground)
+  
   self.platform = {}
   self.platform.body = love.physics.newBody(world, 780, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
@@ -620,14 +626,6 @@ function mainMap:new()
   
   --initial graphics setup
   love.graphics.setBackgroundColor(0.41, 0.53, 0.97) --set the background color to a nice blue
-end
-
-function mainMap:update(dt)
-  
-end
-
-function mainMap:draw()
-  
 end
 
 return mainMap

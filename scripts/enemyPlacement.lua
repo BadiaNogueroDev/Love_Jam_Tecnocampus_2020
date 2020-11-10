@@ -4,17 +4,34 @@ local flyingEnemy = flyingEnemy or require "scripts/flyingEnemy"
 
 local groundEnemy = enemy or require "scripts/enemy"
 
+local pickUp = pickUp or require "scripts/pickUp"
+
 function enemyPlacement:new()
   --UFOs
+  ufo = flyingEnemy:extend()
+  ufo:new(1420, 300)
+  table.insert(actorList, ufo)
+  
   ufo = flyingEnemy:extend()
   ufo:new(1350, 300)
   table.insert(actorList, ufo)
   
+  ufo = flyingEnemy:extend()
+  ufo:new(1280, 300)
+  table.insert(actorList, ufo)
+  
+  pUp = pickUp:extend()
+  pickUp:new(300, 300)
+  table.insert(actorList, pUp)
+  
+  --gE = groundEnemy:extend()
+  --gE:new(460, 350, false, 20, 250, 100, 2) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  --table.insert(actorList, gE)
+  
   
   gE = groundEnemy:extend()
-  gE:new(460, 350, false, 20, 250, 100, 2) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  gE:new(500, 350, true, 40, 250, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
-  
   --[[
   --ZOMBIES MELEE
   gE = groundEnemy:extend()
@@ -54,6 +71,7 @@ function enemyPlacement:new()
   --gE = groundEnemy:extend()
   --gE:new(400, 350, false, 20, 200, 100, 2) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   --table.insert(actorList, gE)
+  
 end
 
 return enemyPlacement

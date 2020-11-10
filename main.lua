@@ -22,6 +22,8 @@ actorList = {}
 
 playerBulletList = {}
 
+enemyBulletList = {}
+
 objects = {}
 
 function love.load()
@@ -36,12 +38,14 @@ function love.load()
   love.graphics.setDefaultFilter("nearest", "nearest") --Es el "point no filter" de Unity: hace que el pixel art no se le aplique filtro
   
   love.window.setMode(w, h)
+  
+  math.randomseed(os.time())
 
   --m = menu
   --m:new()
   
   --inGame = false
-  startGame("Sandra") --Descomentar para entrar al juego sin menú principal
+  startGame("Marco") --Descomentar para entrar al juego sin menú principal
 end
 
 function love.update(dt)
@@ -58,6 +62,9 @@ function love.update(dt)
       v:update(dt)
     end
     for _,v in ipairs(playerBulletList) do
+      v:update(dt)
+    end
+    for _,v in ipairs(enemyBulletList) do
       v:update(dt)
     end
   else

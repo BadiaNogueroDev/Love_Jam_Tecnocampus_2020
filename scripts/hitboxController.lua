@@ -1,26 +1,29 @@
 function beginCallback(fixture1, fixture2, contact)
-	if fixture1:getUserData() == "enemy" and fixture2:getUserData() == b or fixture2:getUserData() == "enemy" and fixture1:getUserData() == b then
-    --print("Shot")
-	end
-  
-  for _,v in ipairs(actorList) do
-    if fixture1:getUserData() == b and fixture2:getUserData() == v or fixture2:getUserData() == b and fixture1:getUserData() == v then
-      b:destroyBullet()
-      --v.alive = false
-      v.health = v.health - 1
-      print("Enemy hit")
-    end
-  end
-  
-  if (fixture1:getUserData() == enemyBullet and fixture2:getUserData() == "player") or (fixture2:getUserData() == enemyBullet and fixture1:getUserData() == "player") then
-    enemyBullet:destroyBullet()
-    --enemyBullet:printPosition()
-    print("Player hit")
-  end
   
   if fixture1:getUserData() == "enemy" and fixture2:getUserData() == "player" or fixture2:getUserData() == "enemy" and fixture1:getUserData() == "player" then
     print("Take Damage")
+  elseif fixture1:getUserData() == "pickUp" and fixture2:getUserData() == "player" or fixture2:getUserData() == "pickUp" and fixture1:getUserData() == "player" then
+    pUp:destroy()
+  else
+    for _,k in ipairs(actorList) do
+      if fixture1:getUserData() == k or fixture2:getUserData() == k then
+        for _,v in ipairs(playerBulletList) do
+          if fixture1:getUserData() == v or fixture2:getUserData() == v then
+            v:destroyBullet()
+            --v.alive = false
+            k.health = k.health - 1
+          end
+        end
+      end
+    end
+    
+    for _,v in ipairs(enemyBulletList) do
+      if (fixture1:getUserData() == v and fixture2:getUserData() == "player") or (fixture2:getUserData() == v and fixture1:getUserData() == "player") then
+        v:destroyBullet()
+      end
+    end
 	end
+  
 end
 
 function endCallback(fixture1, fixture2, contact)

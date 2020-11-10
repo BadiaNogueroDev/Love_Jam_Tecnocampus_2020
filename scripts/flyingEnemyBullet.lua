@@ -48,9 +48,9 @@ function flyingEnemyBullet:draw(cam)
 end
 
 function flyingEnemyBullet:destroyBullet()
-  for _,v in ipairs(playerBulletList) do
+  for _,v in ipairs(enemyBulletList) do
     if v == self then
-      table.remove(playerBulletList, _)
+      table.remove(enemyBulletList, _)
       --print("removed")
       self.bulletHitbox.body:destroy()
     end

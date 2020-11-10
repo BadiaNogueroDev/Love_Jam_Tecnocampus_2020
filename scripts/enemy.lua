@@ -105,17 +105,16 @@ function enemy:update(dt)
     
     self.posX = self.enemy.body:getX()
     self.posY = self.enemy.body:getY()
+    
+    self.enemyHitbox.body:setPosition(self.enemy.body:getPosition()) --Posar la hitbox fixe al objecte
   end
   
   --DETECCIÓ I MOVIMENT
   if self.playerDistance <= self.detectionRange and self.playerDistance >= -self.detectionRange and self.alive then
-    print ("detected, distance: " .. self.playerDistance)
-    print (self.attackRange)
-    if self.playerDistance >= self.attackRange and self.playerDistance <= -self.attackRange then
-      self.enemyHitbox.body:setPosition(self.enemy.body:getPosition()) --Posar la hitbox fixe al objecte
-      
-      print ("walk")
-      
+    --print ("detected, distance: " .. self.playerDistance)
+    --print (self.attackRange)
+    
+    if self.playerDistance > self.attackRange or self.playerDistance < -self.attackRange then
       if objects.player.body:getX() > self.enemy.body:getX() then
         self.forward.x = 1
         
@@ -169,11 +168,10 @@ function enemy:update(dt)
     if self.shooting and not self.shot and self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == 3 then
       b = bullet
       b:new(self.enemy.body:getX(), self.enemy.body:getY(), self.forward, #actorList + 1)
-      table.insert(playerBulletList, b)
+      table.insert(enemyBulletList, b)
       self.shot = true
     elseif self.shooting and self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == self.enemyRangedAnimations[self.currentRangedAnimation]:getTotalFrameCounter() then
       self.shooting = false
-      self.shootingUp = false
     end
     
     --Temps de recarrega per tornar a disparar
@@ -200,7 +198,8 @@ function enemy:draw()
   cam:draw(
     function(l, t, w, h)
     love.graphics.setColor(1,1,1)
-    --love.graphics.polygon("fill", self.enemy.body:getWorldPoints(self.enemy.shape:getPoints())) --DEBUG PHYSICS HITBOX
+    
+    --love.graphics.polygon("line", self.enemyHitbox.body:getWorldPoints(self.enemyHitbox.shape:getPoints())) --DEBUG PHYSICS HITBOX
     
     if self.isMelee then
       self.enemyMeleeAnimations[self.currentMeleeAnimation]:draw(self.enemyMeleeSpriteSheet, self.posX, self.posY, 0 ,-self.forward.x,1, self.characterWidth/2 + 5, 3 + self.torsoOffsetY)

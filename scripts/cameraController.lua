@@ -40,6 +40,9 @@ function cameraController:draw()
     love.graphics.polygon("fill", v.body:getWorldPoints(v.shape:getPoints()))
   end
   
+  for _,v in ipairs(enemyBulletList) do
+    v:draw()
+  end
   end)
 end
 

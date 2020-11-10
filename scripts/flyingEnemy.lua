@@ -12,7 +12,7 @@ function flyingEnemy:new(x, y)
   self.attackRange = 20
   self.alive = true  --Si està viu
   self.dying = false --Si està en l'animació de morir-se
-  self.health = 10
+  self.health = 16
   
   --Initialize sprites sheets and animation lists
   self.characterWidth = 45
@@ -60,9 +60,7 @@ function flyingEnemy:update(dt, player)
     self.alive = false
   end
   
-  if self.alive then
-    VelocityX, VelocityY = objects.player.body:getLinearVelocity()
-  
+  if self.alive then  
     self.playerDistanceX = self.enemy.body:getX() - objects.player.body:getX()
     self.playerDistanceY = self.enemy.body:getY() - objects.player.body:getY()
   end
@@ -75,13 +73,12 @@ function flyingEnemy:update(dt, player)
     self.enemyHitbox.body:setPosition(self.enemy.body:getPosition()) --Posar la hitbox fixe al objecte
     if self.playerDistanceX <= self.attackRange and self.playerDistanceX >= -self.attackRange then
       if self.canShoot then
-        print("shooting")
-          self.forward.y = 0
-          self.nextFire = 0
-          self.canShoot = false
-          enemyBullet = flyingEnemyBullet:extend()
-          enemyBullet:new(self.enemy.body:getX(), self.enemy.body:getY())
-          table.insert(playerBulletList, enemyBullet)
+        self.forward.y = 0
+        self.nextFire = 0
+        self.canShoot = false
+        enemyBullet = flyingEnemyBullet:extend()
+        enemyBullet:new(self.enemy.body:getX(), self.enemy.body:getY())
+        table.insert(enemyBulletList, enemyBullet)
       end
     end
   end
