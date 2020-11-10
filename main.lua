@@ -54,10 +54,7 @@ function love.update(dt)
   
   if inGame then
     cameraController:update(dt)
-    map:update(dt)
     p:update(dt)
-    --gE:update(dt, p)
-    --t:update(dt)
     for _,v in ipairs(actorList) do
       v:update(dt)
     end
@@ -76,7 +73,6 @@ function love.draw()
   if inGame then
     cameraController:draw()
     p:draw(cam)
-    --gE:draw()
     for _,v in ipairs(actorList) do
       v:draw()
     end

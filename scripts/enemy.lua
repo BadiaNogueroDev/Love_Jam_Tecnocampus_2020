@@ -31,13 +31,12 @@ function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
                                  anim8.newAnimation(gZ1('1-14',2), 0.07)} --MORIR
   else
     self.currentRangedAnimation = 1
-    self.randomWalkAnimation = math.random(1,2)
     self.enemyRangedSpriteSheet = love.graphics.newImage('sprites/Ranged_Zombie.png')
     gZ2 = anim8.newGrid(37, 45, self.enemyRangedSpriteSheet:getWidth(), self.enemyRangedSpriteSheet:getHeight()) --NUMEROS PROVISIONALS
-    self.enemyRangedAnimations = {anim8.newAnimation(gZ2('1-12',1), 0.10),--RUNNING 1
+    self.enemyRangedAnimations = {anim8.newAnimation(gZ2('1-12',1), 0.10),--IDLE
                                   anim8.newAnimation(gZ2('1-12',2), 0.10),--RUNNING 2
-                                  anim8.newAnimation(gZ2('1-21',3), 0.15),--SHOOTING
-                                  anim8.newAnimation(gZ2('1-14',4), 0.15)}--MORIR
+                                  anim8.newAnimation(gZ2('1-21',3), 0.10),--SHOOTING
+                                  anim8.newAnimation(gZ2('1-14',4), 0.07)}--MORIR
   end
 
   --Player in the physics system
@@ -63,7 +62,7 @@ function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
   self.canShoot = true --El personatge pot disparar
   self.shooting = false --El personatge esta disparant
   self.shot = false --El personatge ja ha disparat la bala
-  self.fireRate = 0.2
+  self.fireRate = 2
   self.nextFire = 0 --Timer, se li sumara dt fins arribar a fireRate
 end
 
@@ -92,7 +91,7 @@ function enemy:update(dt)
         self.enemy.body:destroy()
         self.enemyHitbox.body:destroy()
       end
-      if self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == self.enemyRangedAnimations[self.currentAnimation]:getTotalFrameCounter() then
+      if self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == self.enemyRangedAnimations[self.currentRangedAnimation]:getTotalFrameCounter() then
         self.enemyRangedAnimations[self.currentRangedAnimation]:pauseAtEnd()
         self:die()
       end
@@ -111,9 +110,6 @@ function enemy:update(dt)
   
   --DETECCIÓ I MOVIMENT
   if self.playerDistance <= self.detectionRange and self.playerDistance >= -self.detectionRange and self.alive then
-    --print ("detected, distance: " .. self.playerDistance)
-    --print (self.attackRange)
-    
     if self.playerDistance > self.attackRange or self.playerDistance < -self.attackRange then
       if objects.player.body:getX() > self.enemy.body:getX() then
         self.forward.x = 1
@@ -121,7 +117,7 @@ function enemy:update(dt)
         if self.isMelee then
           self.currentMeleeAnimation = 1
         else
-          self.currentRangedAnimation = self.randomWalkAnimation
+          self.currentRangedAnimation = 2
         end
         
         if self.VelocityX < self.maxSpeed then
@@ -136,7 +132,7 @@ function enemy:update(dt)
         if self.isMelee then
           self.currentMeleeAnimation = 1
         else
-          self.currentRangedAnimation = self.randomWalkAnimation
+          self.currentRangedAnimation = 2
         end
         
         if self.VelocityX > -self.maxSpeed then
@@ -146,15 +142,12 @@ function enemy:update(dt)
     end
   end
   
-  --Vector que agafa la velocitat en X i Y del personatge
-  --self.velocity = Vector.new(self.enemy.body:getLinearVelocity())
-  
   --SHOOTING
-  if not self.isMelee then
-    if self.playerDistance <= self.attackRange then
+  if not self.isMelee and self.alive then
+    if self.playerDistance < self.attackRange and self.playerDistance > -self.attackRange then
       if self.canShoot then
           self.forward.y = 0
-          self.currentRangedAnimation = 2
+          self.currentRangedAnimation = 3
           self.enemyRangedAnimations[self.currentRangedAnimation]:gotoFrame(1)
           self.enemyRangedAnimations[self.currentRangedAnimation]:resume()
           self.nextFire = 0
@@ -165,9 +158,9 @@ function enemy:update(dt)
     end
     
     --Coordinar el spawn de la bala amb el moment de la animacio que li toca
-    if self.shooting and not self.shot and self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == 3 then
-      b = bullet
-      b:new(self.enemy.body:getX(), self.enemy.body:getY(), self.forward, #actorList + 1)
+    if self.shooting and not self.shot and self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == 14 then
+      b = bullet:extend()
+      b:new(self.enemy.body:getX(), self.enemy.body:getY(), self.forward, "Normal")
       table.insert(enemyBulletList, b)
       self.shot = true
     elseif self.shooting and self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == self.enemyRangedAnimations[self.currentRangedAnimation]:getTotalFrameCounter() then
@@ -204,7 +197,7 @@ function enemy:draw()
     if self.isMelee then
       self.enemyMeleeAnimations[self.currentMeleeAnimation]:draw(self.enemyMeleeSpriteSheet, self.posX, self.posY, 0 ,-self.forward.x,1, self.characterWidth/2 + 5, 3 + self.torsoOffsetY)
     else
-      self.enemyRangedAnimations[self.currentRangedAnimation]:draw(self.enemyRangedSpriteSheet, self.posX, self.posY, 0 ,-self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2 + self.torsoOffsetY)
+      self.enemyRangedAnimations[self.currentRangedAnimation]:draw(self.enemyRangedSpriteSheet, self.posX, self.posY, 0 ,-self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2 + 5)
     end
     
   end)

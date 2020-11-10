@@ -24,15 +24,11 @@ function enemyPlacement:new()
   pickUp:new(300, 300)
   table.insert(actorList, pUp)
   
-  --gE = groundEnemy:extend()
-  --gE:new(460, 350, false, 20, 250, 100, 2) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
-  --table.insert(actorList, gE)
-  
-  
   gE = groundEnemy:extend()
-  gE:new(500, 350, true, 40, 250, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  gE:new(460, 350, false, 20, 250, 100, 2) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
-  --[[
+  
+  --[[  
   --ZOMBIES MELEE
   gE = groundEnemy:extend()
   gE:new(500, 350, true, 40, 250, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
