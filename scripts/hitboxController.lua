@@ -1,27 +1,40 @@
 function beginCallback(fixture1, fixture2, contact)
   
-  if fixture1:getUserData() == "pickUp" and fixture2:getUserData() == "player" or fixture2:getUserData() == "pickUp" and fixture1:getUserData() == "player" then
-    pUp:destroy()
-  else
-    for _,k in ipairs(actorList) do
-      if fixture1:getUserData() == k or fixture2:getUserData() == k then
-        for _,v in ipairs(playerBulletList) do
-          if fixture1:getUserData() == v or fixture2:getUserData() == v then
-            v:destroyBullet()
-            --v.alive = false
-            k:takeDamage()
-          end
+  --if fixture1:getUserData() == "pickUp" and fixture2:getUserData() == "player" or fixture2:getUserData() == "pickUp" and fixture1:getUserData() == "player" then
+  --  pUp:destroy()
+  --else
+
+  for _,v in ipairs(pickUpsList) do
+    if (fixture1:getUserData() == v and fixture2:getUserData() == "player") or (fixture2:getUserData() == v and fixture1:getUserData() == "player") then
+      v:destroy()
+    end
+  end
+  
+  for _,k in ipairs(actorList) do
+    if fixture1:getUserData() == k or fixture2:getUserData() == k then
+      for _,v in ipairs(playerBulletList) do
+        if fixture1:getUserData() == v or fixture2:getUserData() == v then
+          v:destroyBullet()
+          --v.alive = false
+          k:takeDamage()
         end
       end
     end
-    
-    for _,v in ipairs(enemyBulletList) do
-      if (fixture1:getUserData() == v and fixture2:getUserData() == "player") or (fixture2:getUserData() == v and fixture1:getUserData() == "player") then
-        v:destroyBullet()
-        p:takeDamage()
-      end
+  end
+  
+  for _,v in ipairs(enemyBulletList) do
+    if (fixture1:getUserData() == v and fixture2:getUserData() == "player") or (fixture2:getUserData() == v and fixture1:getUserData() == "player") then
+      v:destroyBullet()
+      p:takeDamage()
     end
-	end
+  end
+  
+  for _,v in ipairs(actorList) do
+    if (fixture1:getUserData() == v and fixture2:getUserData() == "player") or (fixture2:getUserData() == v and fixture1:getUserData() == "player") then
+      p:takeDamage()
+    end
+  end
+	--end
   
 end
 

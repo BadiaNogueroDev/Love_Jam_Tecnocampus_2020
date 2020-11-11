@@ -94,7 +94,7 @@ function player:new(x, y, character)
   
   self.HMG = false --HEAVY MACHINE GUN ACITVA
   
-  self.ammo = 50
+  self.ammo = 0
 end
 
 function player:update(dt)
@@ -318,8 +318,10 @@ function player:update(dt)
       self.torsoAnimations[self.currentTorsoAnimation]:gotoFrame(1)
       self.torsoAnimations[self.currentTorsoAnimation]:resume()
       self.dying = true
+      objects.player.body:setLinearVelocity(0, 0)
       objects.player.body:applyLinearImpulse(-60 * self.forward.x, -80)
       self.respawnTimeLeft = 0
+      self.invencible = true
     end
     if self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == self.torsoAnimations[self.currentTorsoAnimation]:getTotalFrameCounter() then
       self.torsoAnimations[self.currentTorsoAnimation]:pauseAtEnd()

@@ -28,6 +28,8 @@ playerBulletList = {}
 
 enemyBulletList = {}
 
+pickUpsList = {}
+
 objects = {}
 
 function love.load()
@@ -66,6 +68,9 @@ function love.update(dt)
     for _,v in ipairs(actorList) do
       v:update(dt)
     end
+    for _,v in ipairs(pickUpsList) do
+      v:update(dt)
+    end
     for _,v in ipairs(playerBulletList) do
       v:update(dt)
     end
@@ -83,6 +88,9 @@ function love.draw()
     p:draw(cam)
     hud:draw()
     for _,v in ipairs(actorList) do
+      v:draw()
+    end
+    for _,v in ipairs(pickUpsList) do
       v:draw()
     end
     gFinal:draw()

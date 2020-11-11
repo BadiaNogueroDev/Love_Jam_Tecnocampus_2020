@@ -1,6 +1,6 @@
 enemy = Object:extend()
 
-local bullet = bullet or require "scripts/bullet"
+local flyingEnemyBullet = flyingEnemyBullet or require "scripts/flyingEnemyBullet"
 
 function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
   --Initialize the propierties position
@@ -55,7 +55,7 @@ function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
   --Enemy hitbox in the physics system
   self.enemyHitbox = {}
   self.enemyHitbox.body = love.physics.newBody(hitboxes, self.posX, self.posY, "static") --place the body somewhere in the world and make it dynamic, so it can move around
-  self.enemyHitbox.shape = love.physics.newRectangleShape(0, 0, self.characterWidth - 1, self.characterHeight - 1) --the ball's shape has a radius of 20
+  self.enemyHitbox.shape = love.physics.newRectangleShape(0, 0, self.characterWidth + 1, self.characterHeight + 1) --the ball's shape has a radius of 20
   self.enemyHitbox.fixture = love.physics.newFixture(self.enemyHitbox.body, self.enemyHitbox.shape, 1) -- Attach fixture to body and give it a density of 1.
   self.enemyHitbox.fixture:setSensor(true)
 	self.enemyHitbox.fixture:setUserData(self)
@@ -105,6 +105,12 @@ function enemy:update(dt)
     self.VelocityX, self.VelocityY = self.enemy.body:getLinearVelocity()
     self.playerDistance = self.enemy.body:getX() - objects.player.body:getX()
     
+    if self.playerDistance > 0 then
+      self.forward.x = -1
+    else
+      self.forward.x = 1
+    end
+    
     self.posX = self.enemy.body:getX()
     self.posY = self.enemy.body:getY()
     
@@ -112,10 +118,10 @@ function enemy:update(dt)
   end
   
   --DETECCIÓ I MOVIMENT
-  if self.playerDistance <= self.detectionRange and self.playerDistance >= -self.detectionRange and self.alive then
+  if self.playerDistance <= self.detectionRange and self.playerDistance >= -self.detectionRange and self.alive and not p.invencible and self.canShoot then
     if self.playerDistance > self.attackRange or self.playerDistance < -self.attackRange then
       if objects.player.body:getX() > self.enemy.body:getX() then
-        self.forward.x = 1
+        --self.forward.x = 1
         
         if self.isMelee then
           self.currentMeleeAnimation = 1
@@ -130,7 +136,7 @@ function enemy:update(dt)
     
     
       if objects.player.body:getX() < self.enemy.body:getX() then
-        self.forward.x = -1
+        --self.forward.x = -1
         
         if self.isMelee then
           self.currentMeleeAnimation = 1
@@ -143,10 +149,16 @@ function enemy:update(dt)
         end
       end
     end
+  elseif p.invencible and self.alive then
+    if self.isMelee then
+      self.currentMeleeAnimation = 1
+    else
+      self.currentRangedAnimation = 1
+    end
   end
-  
+
   --SHOOTING
-  if not self.isMelee and self.alive then
+  if not self.isMelee and self.alive and not p.invencible then
     if self.playerDistance < self.attackRange and self.playerDistance > -self.attackRange then
       if self.canShoot then
           self.forward.y = 0
@@ -162,9 +174,9 @@ function enemy:update(dt)
     
     --Coordinar el spawn de la bala amb el moment de la animacio que li toca
     if self.shooting and not self.shot and self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == 14 then
-      b = bullet:extend()
-      b:new(self.enemy.body:getX(), self.enemy.body:getY(), self.forward, "Normal")
-      table.insert(enemyBulletList, b)
+      enemyBullet = flyingEnemyBullet:extend()
+      enemyBullet:new(self.enemy.body:getX(), self.enemy.body:getY() - 8, self.forward, 1)
+      table.insert(enemyBulletList, enemyBullet)
       self.shot = true
     elseif self.shooting and self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == self.enemyRangedAnimations[self.currentRangedAnimation]:getTotalFrameCounter() then
       self.shooting = false

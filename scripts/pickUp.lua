@@ -16,10 +16,10 @@ function pickUp:new(x, y)
   --Enemy hitbox in the physics system
   self.targetHitbox = {}
   self.targetHitbox.body = love.physics.newBody(hitboxes, self.posX, self.posY, "dynamic") --place the body somewhere in the world and make it dynamic, so it can move around
-  self.targetHitbox.shape = love.physics.newRectangleShape(0, 0, self.sprite:getWidth(), self.sprite:getHeight()) --the ball's shape has a radius of 20
+  self.targetHitbox.shape = love.physics.newRectangleShape(0, 0, self.sprite:getWidth() + 2, self.sprite:getHeight() + 2) --the ball's shape has a radius of 20
   self.targetHitbox.fixture = love.physics.newFixture(self.targetHitbox.body, self.targetHitbox.shape, 1) -- Attach fixture to body and give it a density of 1.
   self.targetHitbox.fixture:setSensor(true)
-	self.targetHitbox.fixture:setUserData("pickUp")
+	self.targetHitbox.fixture:setUserData(self)
   table.insert(objects, self.targetHitbox)
 
 end
@@ -39,12 +39,12 @@ function pickUp:draw()
 end
 
 function pickUp:destroy()
-  p.ammo = 50
+  p.ammo = p.ammo + 50
   p.HMG = true
   
-  for _,v in ipairs(actorList) do
+  for _,v in ipairs(pickUpsList) do
     if v == self then
-      table.remove(actorList, _)
+      table.remove(pickUpsList, _)
       self.targetHitbox.body:destroy()
       self.enemy.body:destroy()
     end

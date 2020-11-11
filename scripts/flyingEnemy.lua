@@ -21,7 +21,7 @@ function flyingEnemy:new(x, y)
   self.characterWidth = 45
   self.characterHeight = 32
   self.spriteScale = 1
-  self.forward = Vector.new(fx or 1,fy or 0)
+  self.forward = Vector.new(0, 1)
   
   self.currentAnimation = 1
   self.spriteSheet = love.graphics.newImage('sprites/UFO_Sprite_Sheet.png')
@@ -76,7 +76,7 @@ function flyingEnemy:update(dt, player)
   end
 
   --DETECCIÓ I MOVIMENT
-  if self.playerDistanceX >= -self.detectionRange and self.playerDistanceX <= self.detectionRange and self.alive then
+  if self.playerDistanceX >= -self.detectionRange and self.playerDistanceX <= self.detectionRange and self.alive and not p.invencible then
     self.posX, self.posY = self.enemy.body:getPosition()
     self.enemy.body:setY(self.enemy.body:getY() - (self.playerDistanceY + 120) * self.speed * dt)
     self.enemy.body:setX(self.enemy.body:getX() - self.playerDistanceX * self.speed * dt)
@@ -84,11 +84,10 @@ function flyingEnemy:update(dt, player)
     self.enemyHitbox.body:setPosition(self.enemy.body:getPosition()) --Posar la hitbox fixe al objecte
     if self.playerDistanceX <= self.attackRange and self.playerDistanceX >= -self.attackRange then
       if self.canShoot then
-        self.forward.y = 0
         self.nextFire = 0
         self.canShoot = false
         enemyBullet = flyingEnemyBullet:extend()
-        enemyBullet:new(self.enemy.body:getX(), self.enemy.body:getY())
+        enemyBullet:new(self.enemy.body:getX(), self.enemy.body:getY(),self.forward ,2)
         table.insert(enemyBulletList, enemyBullet)
       end
     end
