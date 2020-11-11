@@ -1,4 +1,4 @@
-hud = Object:extend()
+local hud = Object:extend()
 
 function hud:new(x, y, name)
   self.x = x

@@ -20,6 +20,8 @@ local enemyPlacement = enemyPlacement or require "scripts/enemyPlacement"
 
 local hud = hud or require "scripts/hud"
 
+local gameFinal = gameFinal or require "scripts/gameFinal"
+
 actorList = {}
 
 playerBulletList = {}
@@ -60,6 +62,7 @@ function love.update(dt)
   if inGame then
     cameraController:update(dt)
     p:update(dt)
+    gFinal:update(dt)
     for _,v in ipairs(actorList) do
       v:update(dt)
     end
@@ -82,6 +85,7 @@ function love.draw()
     for _,v in ipairs(actorList) do
       v:draw()
     end
+    gFinal:draw()
   else
     m:draw()
   end
@@ -98,12 +102,15 @@ function startGame(character)
   hud = hud
   hud:new(10, 10, character)
   
+  gFinal = gameFinal
+  gFinal:new()
+  
   placement = enemyPlacement
   placement:new()
   
   camera = cameraController
   camera:new()
-  
+
   inGame = true --Descomentar para entrar al juego sin menú principal
 end
 
