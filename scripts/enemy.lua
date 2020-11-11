@@ -14,6 +14,9 @@ function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
   self.health = health
   self.alive = true
   self.dying = false --Si està en l'animació de morir-se
+  self.damaged = false --Red frames després de rebre damage
+  self.damagedTime = 0.03
+  self.damagedTimeLeft = 0
   
   --Initialize sprites sheets and animation lists
   self.characterWidth = 25
@@ -21,7 +24,7 @@ function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
   self.spriteScale = 1
   self.torsoOffsetY = 20
   self.forward = Vector.new(fx or -1,fy or 0)
-  
+
   
   if self.isMelee then
     self.currentMeleeAnimation = 1
@@ -173,7 +176,14 @@ function enemy:update(dt)
       self.canShoot = true
     end
   end
-
+    
+    if self.damaged then
+      if self.damagedTimeLeft >= self.damagedTime then
+        self.damaged = false
+      end
+      self.damagedTimeLeft = self.damagedTimeLeft + dt
+    end
+    
   --Fa que funcioni el update del anim8
   if self.isMelee then
     for i=1,#self.enemyMeleeAnimations do
@@ -190,16 +200,20 @@ end
 function enemy:draw()
   cam:draw(
     function(l, t, w, h)
-    love.graphics.setColor(1,1,1)
-    
     --love.graphics.polygon("line", self.enemyHitbox.body:getWorldPoints(self.enemyHitbox.shape:getPoints())) --DEBUG PHYSICS HITBOX
+    
+    if self.damaged then
+      love.graphics.setColor(1,0,0)
+    else
+      love.graphics.setColor(1,1,1)
+    end
     
     if self.isMelee then
       self.enemyMeleeAnimations[self.currentMeleeAnimation]:draw(self.enemyMeleeSpriteSheet, self.posX, self.posY, 0 ,-self.forward.x,1, self.characterWidth/2 + 5, 3 + self.torsoOffsetY)
     else
       self.enemyRangedAnimations[self.currentRangedAnimation]:draw(self.enemyRangedSpriteSheet, self.posX, self.posY, 0 ,-self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2 + 5)
     end
-    
+    love.graphics.setColor(1,1,1)
   end)
 end
 
@@ -211,6 +225,12 @@ function enemy:die()
       --self.enemyHitbox.body:destroy()
     end
   end
+end
+
+function enemy:takeDamage()
+  self.health = self.health - 1
+  self.damaged = true
+  self.damagedTimeLeft = 0
 end
 
 return enemy

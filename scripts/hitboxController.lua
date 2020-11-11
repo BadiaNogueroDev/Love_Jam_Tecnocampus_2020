@@ -1,8 +1,6 @@
 function beginCallback(fixture1, fixture2, contact)
   
-  if fixture1:getUserData() == "enemy" and fixture2:getUserData() == "player" or fixture2:getUserData() == "enemy" and fixture1:getUserData() == "player" then
-    print("Take Damage")
-  elseif fixture1:getUserData() == "pickUp" and fixture2:getUserData() == "player" or fixture2:getUserData() == "pickUp" and fixture1:getUserData() == "player" then
+  if fixture1:getUserData() == "pickUp" and fixture2:getUserData() == "player" or fixture2:getUserData() == "pickUp" and fixture1:getUserData() == "player" then
     pUp:destroy()
   else
     for _,k in ipairs(actorList) do
@@ -11,7 +9,7 @@ function beginCallback(fixture1, fixture2, contact)
           if fixture1:getUserData() == v or fixture2:getUserData() == v then
             v:destroyBullet()
             --v.alive = false
-            k.health = k.health - 1
+            k:takeDamage()
           end
         end
       end
@@ -20,6 +18,7 @@ function beginCallback(fixture1, fixture2, contact)
     for _,v in ipairs(enemyBulletList) do
       if (fixture1:getUserData() == v and fixture2:getUserData() == "player") or (fixture2:getUserData() == v and fixture1:getUserData() == "player") then
         v:destroyBullet()
+        p:takeDamage()
       end
     end
 	end
