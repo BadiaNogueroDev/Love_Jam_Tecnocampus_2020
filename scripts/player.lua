@@ -342,6 +342,7 @@ function player:update(dt)
   if self.invencible then
     if self.invencibleTimeLeft >= self.invencibleTime then
       self.invencible = false
+      self.invencibleTimeLeft = 0
     end
     self.invencibleTimeLeft = self.invencibleTimeLeft + dt
   end
