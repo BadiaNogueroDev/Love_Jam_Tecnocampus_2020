@@ -313,6 +313,7 @@ function player:update(dt)
     end
   else
     if not self.dying then
+      self.torsoOffsetY = 1
       self.currentTorsoAnimation = 17
       self.torsoAnimations[self.currentTorsoAnimation]:gotoFrame(1)
       self.torsoAnimations[self.currentTorsoAnimation]:resume()
@@ -341,6 +342,7 @@ function player:update(dt)
   if self.invencible then
     if self.invencibleTimeLeft >= self.invencibleTime then
       self.invencible = false
+      self.invencibleTimeLeft = 0
     end
     self.invencibleTimeLeft = self.invencibleTimeLeft + dt
   end
@@ -362,10 +364,11 @@ function player:draw()
     love.graphics.setColor(1,1,1)
     --love.graphics.polygon("line", self.targetHitbox.body:getWorldPoints(self.targetHitbox.shape:getPoints())) --DEBUG HITBOX
     --love.graphics.polygon("fill", objects.player.body:getWorldPoints(objects.player.shape:getPoints())) --DEBUG PHYSICS HITBOX
+    
     if self.alive then
       self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 5, 3)
       self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2 + self.torsoOffsetY)
-    else
+    elseif self.respawnTimeLeft < 1 or self.respawnTimeLeft % 0.4 > 0.3 then
       self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2 + self.torsoOffsetY)
     end
   end)
@@ -397,6 +400,7 @@ function player:respawn()
   self.dying = false
   self.invencible = true
   self.invencibleTimeLeft = 0
+  self.respawnTimeLeft = 0
   self.currentTorsoAnimation = 1
   self.currentLegsAnimation = 1
 end

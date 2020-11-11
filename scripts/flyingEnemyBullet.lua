@@ -1,6 +1,6 @@
 flyingEnemyBullet = Object:extend()
 
-function flyingEnemyBullet:new(x, y)
+function flyingEnemyBullet:new(x, y, name)
   --Initialize the player position
   self.position = Vector.new(x, y)
   self.posX = x
