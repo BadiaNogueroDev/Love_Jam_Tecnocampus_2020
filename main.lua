@@ -18,6 +18,8 @@ local t = target or require "scripts/target"
 
 local enemyPlacement = enemyPlacement or require "scripts/enemyPlacement"
 
+local hud = hud or require "scripts/hud"
+
 actorList = {}
 
 playerBulletList = {}
@@ -32,6 +34,9 @@ function love.load()
   
   hitboxes = love.physics.newWorld(0, 9.81*64, true) --create a world for the bodies to exist in with horizontal gravity of 0 and vertical gravity of 9.81
   hitboxes:setCallbacks(beginCallback, endCallback)
+  
+  font = love.graphics.newFont("fonts/Kemco Pixel Bold.ttf", 45)
+  love.graphics.setFont(font)
   
   w, h = love.graphics.getDimensions() -- Get the screen width and height
   
@@ -73,6 +78,7 @@ function love.draw()
   if inGame then
     cameraController:draw()
     p:draw(cam)
+    hud:draw()
     for _,v in ipairs(actorList) do
       v:draw()
     end
@@ -88,6 +94,9 @@ function startGame(character)
   
   p = player
   p:new(200, 350, character)
+  
+  hud = hud
+  hud:new(10, 10, character)
   
   placement = enemyPlacement
   placement:new()
