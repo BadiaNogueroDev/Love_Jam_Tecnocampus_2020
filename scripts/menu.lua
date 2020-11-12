@@ -68,6 +68,7 @@ function menu:update(dt)
       sound.inGameMusic:play()
       self.loading = false
       inGame = true
+      videoLoading:pause()
   elseif not inGame and not self.loading then
     if not video:isPlaying() then
       self:useButton(self.startList)

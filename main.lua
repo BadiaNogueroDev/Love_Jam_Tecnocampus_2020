@@ -34,6 +34,8 @@ pickUpsList = {}
 
 objects = {}
 
+finalVideo = love.graphics.newVideo("videos/TCM Slug Final.ogv")--Guardar video en una variable
+
 function love.load()
   love.physics.setMeter(64) --the height of a meter our worlds will be 64px
   world = love.physics.newWorld(0, 9.81*64, true) --create a world for the bodies to exist in with horizontal gravity of 0 and vertical gravity of 9.81
@@ -107,13 +109,15 @@ function startGame(character)
   map = mainMap
   map:new()
   
+  print("StartGame")
+  
   p = player
   p:new(200, 350, character)
   
   hud = hud
   hud:new(10, 10, character)
   
-  gFinal = gameFinal()
+  gFinal = gameFinal
   gFinal:new()
   
   placement = enemyPlacement
@@ -128,8 +132,6 @@ function startGame(character)
   video = nil
   
   videoSelection = nil
-  
-  --videoLoading = nil
   
   --inGame = true --Descomentar para entrar al juego sin menú principal
 end

@@ -26,7 +26,7 @@ sfxEnemies = {"sound/UFO/Bala_UFO.wav",               --1
               "sound/Zombie/Zombie_Hurt4.wav",}       --14
               
 
-sfxMusic = "sound/Music/Zoom_Down.wav"
+sfxMusic = "sound/Music/Zoom_Down.ogg"
 
 sfxAnnouncer = {"sound/Heavy_Machine_Gun.wav"}
 
