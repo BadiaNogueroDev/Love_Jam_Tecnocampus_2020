@@ -19,7 +19,7 @@ function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
   self.damagedTimeLeft = 0
   
   --Initialize sprites sheets and animation lists
-  self.characterWidth = 25
+  self.characterWidth = 20
   self.characterHeight = 35
   self.spriteScale = 1
   self.torsoOffsetY = 20

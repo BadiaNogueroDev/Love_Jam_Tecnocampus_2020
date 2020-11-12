@@ -20,10 +20,9 @@ function flyingEnemyBullet:new(x, y, forward, animation)
   }
   
   self.bulletHitbox = {}
-  self.bulletHitbox.body = love.physics.newBody(hitboxes, self.position.x, self.position.y, "dynamic") --place the body somewhere in the world and make it dynamic, so it can move around
+  self.bulletHitbox.body = love.physics.newBody(hitboxes, self.position.x, self.position.y, "dynamic")
   self.bulletHitbox.shape = love.physics.newRectangleShape(0, 0, 10, 10)
-  self.bulletHitbox.fixture = love.physics.newFixture(self.bulletHitbox.body, self.bulletHitbox.shape, 0) -- Attach fixture to body and give it a density of 1.
-  self.bulletHitbox.body:setGravityScale(0)
+  self.bulletHitbox.fixture = love.physics.newFixture(self.bulletHitbox.body, self.bulletHitbox.shape, 1)
   self.bulletHitbox.fixture:setSensor(true)
 	self.bulletHitbox.fixture:setUserData(self)
   table.insert(objects, self.bulletHitbox)

@@ -67,6 +67,7 @@ function love.update(dt)
     cameraController:update(dt)
     p:update(dt)
     gFinal:update(dt)
+    placement:update(dt)
     for _,v in ipairs(actorList) do
       v:update(dt)
     end

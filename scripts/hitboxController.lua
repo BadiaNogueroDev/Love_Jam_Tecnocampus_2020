@@ -10,20 +10,26 @@ function beginCallback(fixture1, fixture2, contact)
     end
   end
   
-  for _,k in ipairs(actorList) do
-    if fixture1:getUserData() == k or fixture2:getUserData() == k then
-      for _,v in ipairs(playerBulletList) do
-        if fixture1:getUserData() == v or fixture2:getUserData() == v then
-          v:destroyBullet()
-          --v.alive = false
-          k:takeDamage()
+  for _,v in ipairs(playerBulletList) do
+    if fixture1:getUserData() == v or fixture2:getUserData() == v then
+      if fixture1:getUserData() == "wall" or fixture2:getUserData() == "wall" then
+        v:destroyBullet()
+      else
+        for _,k in ipairs(actorList) do
+          if fixture1:getUserData() == k or fixture2:getUserData() == k then
+            v:destroyBullet()
+            --v.alive = false
+            k:takeDamage()
+          end
         end
       end
     end
   end
   
   for _,v in ipairs(enemyBulletList) do
-    if (fixture1:getUserData() == v and fixture2:getUserData() == "player") or (fixture2:getUserData() == v and fixture1:getUserData() == "player") then
+    if (fixture1:getUserData() == v and fixture2:getUserData() == "wall") or (fixture2:getUserData() == v and fixture1:getUserData() == "wall") then
+      v:destroyBullet()
+    elseif (fixture1:getUserData() == v and fixture2:getUserData() == "player") or (fixture2:getUserData() == v and fixture1:getUserData() == "player") then
       v:destroyBullet()
       p:takeDamage()
     end
