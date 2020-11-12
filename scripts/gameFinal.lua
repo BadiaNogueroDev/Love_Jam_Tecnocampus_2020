@@ -10,6 +10,7 @@ function gameFinal:new()
   self.finalVideo = love.graphics.newVideo("videos/TCM Slug Final.ogv")--Guardar video en una variable
   
   self.gameFinished = false
+  self.canPlayVideo = true
 end
 
 function gameFinal:update(dt)  
@@ -18,8 +19,14 @@ function gameFinal:update(dt)
     self.timer = self.timer + dt
     self.alpha = self.alpha + self.timer/255
     if self.alpha >= 1 then
-      --Video de mision complete + tornar al menu principal
-      self.finalVideo:play() --Reproducir video
+      if self.canPlayVideo then
+        sound.inGameMusic:stop()
+        self.finalVideo:play() --Reproducir video
+        self.canPlayVideo = false --Per que nomes es reprodueixi una vegada
+      end
+      if not self.finalVideo:isPlaying() then
+        mainMenu()
+      end
     end
   end
 end
@@ -29,8 +36,8 @@ function gameFinal:draw()
 	love.graphics.draw(self.image)
   love.graphics.setColor(1,1,1,1)
   
-  if self.alpha >= 1 and self.finalVideo:isPlaying() then
-    love.graphics.draw(self.finalVideo, 0, 0) 
+  if self.finalVideo:isPlaying() then
+    love.graphics.draw(self.finalVideo, 0, 0)
   end
 end
 
