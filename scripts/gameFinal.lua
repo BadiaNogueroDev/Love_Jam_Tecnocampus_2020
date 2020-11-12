@@ -13,7 +13,7 @@ function gameFinal:new()
 end
 
 function gameFinal:update(dt)  
-  if objects.player.body:getX() < 150 then
+  if objects.player.body:getX() < 150 or self.gameFinished then
     self.gameFinished = true
     self.timer = self.timer + dt
     self.alpha = self.alpha + self.timer/255
