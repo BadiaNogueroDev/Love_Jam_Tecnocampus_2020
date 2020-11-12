@@ -22,6 +22,8 @@ local hud = hud or require "scripts/hud"
 
 local gameFinal = gameFinal or require "scripts/gameFinal"
 
+local sfx = sfx or require "scripts/sfx"
+
 actorList = {}
 
 playerBulletList = {}
@@ -86,13 +88,13 @@ function love.draw()
   if inGame then
     cameraController:draw()
     p:draw(cam)
-    hud:draw()
     for _,v in ipairs(actorList) do
       v:draw()
     end
     for _,v in ipairs(pickUpsList) do
       v:draw()
     end
+    hud:draw()
     gFinal:draw()
   else
     m:draw()
@@ -118,7 +120,10 @@ function startGame(character)
   
   camera = cameraController
   camera:new()
-
+  
+  sound = sfx
+  sound:new()
+  
   inGame = true --Descomentar para entrar al juego sin menú principal
 end
 

@@ -23,11 +23,11 @@ function enemyPlacement:new()
   table.insert(pickUpsList, pUp)
   
   gE = groundEnemy:extend()
-  gE:new(460, 350, false, 20, 250, 150, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  gE:new(560, 350, false, 20, 250, 150, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
   
   gE = groundEnemy:extend()
-  gE:new(500, 350, true, 40, 250, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  gE:new(600, 350, true, 40, 250, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
   
   --[[  

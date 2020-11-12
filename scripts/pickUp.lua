@@ -39,16 +39,21 @@ function pickUp:draw()
 end
 
 function pickUp:destroy()
-  p.ammo = p.ammo + 50
-  p.HMG = true
-  
   for _,v in ipairs(pickUpsList) do
     if v == self then
+      if not p.HMG then
+        sound:announcerHMG()
+      else
+        sound.playerRecarga:play()
+      end
       table.remove(pickUpsList, _)
       self.targetHitbox.body:destroy()
       self.enemy.body:destroy()
     end
   end
+  
+  p.ammo = p.ammo + 50
+  p.HMG = true
 end
 
 return pickUp

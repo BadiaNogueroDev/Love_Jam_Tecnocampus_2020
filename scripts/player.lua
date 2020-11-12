@@ -93,8 +93,20 @@ function player:new(x, y, character)
   self.nextFire = 0 --Timer, se li sumara dt fins arribar a fireRate
   
   self.HMG = false --HEAVY MACHINE GUN ACITVA
-  
   self.ammo = 0
+  
+  if not self.character == "Sandra" then
+    self.playerDeath = love.audio.newSource(sfxPlayer[6], 'stream')
+  else
+    self.playerDeath = love.audio.newSource(sfxPlayer[5], 'stream')
+  end
+  self.playerDeath:setVolume(0.15)
+  
+  self.playerWalking1 = love.audio.newSource(sfxPlayer[8], 'stream')
+  self.playerWalking1:setVolume(0.4)
+  
+  self.playerWalking2 = love.audio.newSource(sfxPlayer[8], 'stream')
+  self.playerWalking2:setVolume(0.4)
 end
 
 function player:update(dt)
@@ -110,7 +122,7 @@ function player:update(dt)
       self.torsoOffsetY = 41
     elseif self.shootingUp and self.HMG then
       self.torsoOffsetY = 48
-    elseif self.lookingUp and not self.airborn then
+    elseif self.lookingUp and not self.airborn and self.HMG then
       self.torsoOffsetY = 10
     elseif self.lookingDown then
       self.torsoOffsetY = -5
@@ -261,12 +273,18 @@ function player:update(dt)
           elseif self.HMG then
             self.currentTorsoAnimation = 10
           end
+          
           self.shootingUp = false
           self.lookingUp = false
           self.lookingDown = false
           self.forward.y = 0
           --self.currentTorsoAnimation = 2
           self.torsoOffsetY = 1  --Solució temporal al canviar el offset per disparar a dalt i abaix
+        end
+        if self.HMG then
+          sound:shoot(2)
+        else
+          sound:shoot(1)
         end
         self.torsoAnimations[self.currentTorsoAnimation]:gotoFrame(1)
         self.torsoAnimations[self.currentTorsoAnimation]:resume()
@@ -287,7 +305,6 @@ function player:update(dt)
         b:new(objects.player.body:getX(), objects.player.body:getY(), self.forward, "Normal")
         --table.insert(playerBulletList, b)
         table.insert(playerBulletList, b)
-    
         self.shot = true
       elseif self.shooting and self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == self.torsoAnimations[self.currentTorsoAnimation]:getTotalFrameCounter() then
         self.shooting = false
@@ -311,8 +328,17 @@ function player:update(dt)
         self.lookingDown = false
       end
     end
+    
+    if self.currentLegsAnimation == 2 then
+      if self.legsAnimations[self.currentLegsAnimation]:getCurrentFrameCounter() == 4 then
+        self.playerWalking1:play()
+      elseif self.legsAnimations[self.currentLegsAnimation]:getCurrentFrameCounter() == 11 then
+        self.playerWalking2:play()
+      end
+    end
   else
     if not self.dying then
+      self.playerDeath:play()
       self.torsoOffsetY = 1
       self.currentTorsoAnimation = 17
       self.torsoAnimations[self.currentTorsoAnimation]:gotoFrame(1)
@@ -367,10 +393,13 @@ function player:draw()
     --love.graphics.polygon("line", self.targetHitbox.body:getWorldPoints(self.targetHitbox.shape:getPoints())) --DEBUG HITBOX
     --love.graphics.polygon("fill", objects.player.body:getWorldPoints(objects.player.shape:getPoints())) --DEBUG PHYSICS HITBOX
     
-    if self.alive then
+    if self.alive and not self.invencible then
       self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 5, 3)
       self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2 + self.torsoOffsetY)
-    elseif self.respawnTimeLeft < 1 or self.respawnTimeLeft % 0.4 > 0.3 then
+    elseif self.invencibleTimeLeft < 0.5 or self.invencibleTimeLeft % 0.4 > 0.3 then
+      if self.alive then
+        self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 5, 3)
+      end
       self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2 + self.torsoOffsetY)
     end
   end)
@@ -400,9 +429,14 @@ function player:respawn()
   self.HMG = false
   self.alive = true
   self.dying = false
+  self.shootingUp = false
+  self.lookingDown = false
+  self.lookingUp = false
+  self.airborn = true
   self.invencible = true
   self.invencibleTimeLeft = 0
   self.respawnTimeLeft = 0
+  self.ammo = 0
   self.currentTorsoAnimation = 1
   self.currentLegsAnimation = 1
 end

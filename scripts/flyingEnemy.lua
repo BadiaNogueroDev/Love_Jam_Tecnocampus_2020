@@ -51,12 +51,21 @@ function flyingEnemy:new(x, y)
   self.fireRate = 1
   self.nextFire = 0 --Timer, se li sumara dt fins arribar a fireRate
   self.canShoot = true
+  
+  self.enemyUFOBala = love.audio.newSource(sfxEnemies[15], 'stream')
+  self.enemyUFOBala:setVolume(0.4)
+  self.enemyUFOHurt = love.audio.newSource(sfxEnemies[16], 'stream')
+  self.enemyUFOHurt:setVolume(0.3)
+  self.enemyUFODeath = love.audio.newSource(sfxEnemies[17], 'stream')
+  self.enemyUFODeath:setVolume(0.25)
+  
 end
 
 function flyingEnemy:update(dt, player)
   if self.health <= 0 then
     self.alive = false
     if not self.dying then
+      self.enemyUFODeath:play()
       self.currentAnimation = 2
       self.animations[self.currentAnimation]:gotoFrame(1)
       self.animations[self.currentAnimation]:resume()
@@ -86,6 +95,8 @@ function flyingEnemy:update(dt, player)
       if self.canShoot then
         self.nextFire = 0
         self.canShoot = false
+        self.enemyUFOBala:stop()
+        self.enemyUFOBala:play()
         enemyBullet = flyingEnemyBullet:extend()
         enemyBullet:new(self.enemy.body:getX(), self.enemy.body:getY(),self.forward ,2)
         table.insert(enemyBulletList, enemyBullet)
@@ -138,6 +149,8 @@ function flyingEnemy:die()
 end
 
 function flyingEnemy:takeDamage()
+  self.enemyUFOHurt:stop()
+  self.enemyUFOHurt:play()
   self.health = self.health - 1
   self.damaged = true
   self.damagedTimeLeft = 0

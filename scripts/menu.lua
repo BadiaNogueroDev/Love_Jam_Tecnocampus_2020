@@ -65,6 +65,7 @@ function menu:update(dt)
       end
     end
   elseif self.loading and not videoLoading:isPlaying() then
+      sound.inGameMusic:play()
       self.loading = false
       inGame = true
   elseif not inGame and not self.loading then

@@ -24,7 +24,7 @@ function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
   self.spriteScale = 1
   self.torsoOffsetY = 20
   self.forward = Vector.new(fx or -1,fy or 0)
-
+  
   
   if self.isMelee then
     self.currentMeleeAnimation = 1
@@ -67,6 +67,20 @@ function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
   self.shot = false --El personatge ja ha disparat la bala
   self.fireRate = 2
   self.nextFire = 0 --Timer, se li sumara dt fins arribar a fireRate
+  
+  --Audio
+  if not isMelee then
+    self.enemyZombieBala = love.audio.newSource(sfxEnemies[5], 'stream')
+    self.enemyZombieBala:setVolume(0.4)
+    
+  else
+    
+  end
+  self.enemyZombieHurt = love.audio.newSource(sfxEnemies[math.random(11,14)], 'stream')
+  self.enemyZombieHurt:setVolume(0.4)
+  
+  self.enemyZombieDeath = love.audio.newSource(sfxEnemies[math.random(6,9)], 'stream')
+  self.enemyZombieDeath:setVolume(0.4)
 end
 
 function enemy:update(dt)
@@ -74,6 +88,7 @@ function enemy:update(dt)
     self.alive = false
     if self.isMelee then
       if not self.dying then
+        self.enemyZombieDeath:play()
         self.currentMeleeAnimation = 2
         self.enemyMeleeAnimations[self.currentMeleeAnimation]:gotoFrame(1)
         self.enemyMeleeAnimations[self.currentMeleeAnimation]:resume()
@@ -87,6 +102,7 @@ function enemy:update(dt)
       end
     else
       if not self.dying then
+        self.enemyZombieDeath:play()
         self.currentRangedAnimation = 4
         self.enemyRangedAnimations[self.currentRangedAnimation]:gotoFrame(1)
         self.enemyRangedAnimations[self.currentRangedAnimation]:resume()
@@ -177,6 +193,7 @@ function enemy:update(dt)
       enemyBullet = flyingEnemyBullet:extend()
       enemyBullet:new(self.enemy.body:getX(), self.enemy.body:getY() - 8, self.forward, 1)
       table.insert(enemyBulletList, enemyBullet)
+      self.enemyZombieBala:play()
       self.shot = true
     elseif self.shooting and self.enemyRangedAnimations[self.currentRangedAnimation]:getCurrentFrameCounter() == self.enemyRangedAnimations[self.currentRangedAnimation]:getTotalFrameCounter() then
       self.shooting = false
@@ -240,6 +257,7 @@ function enemy:die()
 end
 
 function enemy:takeDamage()
+  self.enemyZombieHurt:play()
   self.health = self.health - 1
   self.damaged = true
   self.damagedTimeLeft = 0
