@@ -109,8 +109,6 @@ function startGame(character)
   map = mainMap
   map:new()
   
-  print("StartGame")
-  
   p = player
   p:new(200, 350, character)
   
