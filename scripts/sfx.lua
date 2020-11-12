@@ -10,10 +10,10 @@ sfxPlayer = { "sound/Players/Bala1.wav",              --1
               "sound/Players/Walking1.wav",           --8
               "sound/Players/Walking2.wav"}           --9
 
-sfxEnemies = {"sound/UFO/Bala_UFO.wav",               --1
-              "sound/UFO/Bala_UFO2.wav",              --2
-              "sound/UFO/Bala_UFO3.wav",              --3
-              "sound/UFO/UFO_Movement.wav",           --4
+sfxEnemies = {"sound/UFO/Bala_UFO.wav",,              --1
+              "sound/UFO/UFO_Spawn.wav",              --2
+              "sound/UFO/UFO_Hurt.wav",               --3
+              "sound/UFO/UFO_Death.wav" }             --4
               "sound/Zombie/Zombie_Bala.wav" ,        --5
               "sound/Zombie/Zombie_Death.wav",        --6
               "sound/Zombie/Zombie_Death2.wav",       --7
@@ -24,11 +24,9 @@ sfxEnemies = {"sound/UFO/Bala_UFO.wav",               --1
               "sound/Zombie/Zombie_Hurt2.wav",        --12
               "sound/Zombie/Zombie_Hurt3.wav" ,       --13
               "sound/Zombie/Zombie_Hurt4.wav",        --14
-              "sound/UFO/Bala_UFO4.wav",              --15
-              "sound/UFO/UFO_Hurt.wav",               --16
-              "sound/UFO/UFO_Death.wav" }             --17
+              
 
-sfxMusic = "sound/Music/Zoom_Down.wav"                --6
+sfxMusic = "sound/Music/Zoom_Down.wav"
 
 sfxAnnouncer = {"sound/Heavy_Machine_Gun.wav"}
 

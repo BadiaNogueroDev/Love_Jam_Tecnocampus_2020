@@ -2,14 +2,14 @@ flyingEnemy = Object:extend()
 
 local flyingEnemyBullet = enemyBullet or require "scripts/flyingEnemyBullet"
 
-function flyingEnemy:new(x, y)
+function flyingEnemy:new(x, y, maxSpeed, detectionRange, attackRange, health, canDrop)
   --Initialize the propierties position
   self.posX = x
   self.posY = y
   self.speed = 2
   self.maxSpeed = 100
   self.detectionRange = 200
-  self.attackRange = 20
+  self.attackRange = attackRange
   self.alive = true  --Si està viu
   self.dying = false --Si està en l'animació de morir-se
   self.health = 16

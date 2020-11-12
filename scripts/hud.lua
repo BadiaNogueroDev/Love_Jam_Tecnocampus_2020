@@ -22,9 +22,10 @@ end
 function hud:draw()
   love.graphics.draw(self.sprite, self.x, self.y)
 
+      love.graphics.setColor(1,1,1)
+
   if p.HMG then
     love.graphics.draw(self.heavy, self.x, self.y) --HEAVY MACHINE GUN
-    love.graphics.setColor(1,1,1)
     love.graphics.draw(self.numbers[1 + math.floor(p.ammo/ 100)], 120, 65, 0, 1, 1, 13, 13) --Centenes
     love.graphics.draw(self.numbers[1 + math.floor(p.ammo % 100 / 10)], 144, 65, 0, 1, 1, 13, 13) --Desenes
     love.graphics.draw(self.numbers[1 + math.floor(p.ammo % 10)], 168, 65, 0, 1, 1, 13, 13) --Unitats

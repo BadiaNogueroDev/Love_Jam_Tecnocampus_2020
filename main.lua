@@ -113,7 +113,7 @@ function startGame(character)
   hud = hud
   hud:new(10, 10, character)
   
-  gFinal = gameFinal
+  gFinal = gameFinal()
   gFinal:new()
   
   placement = enemyPlacement
@@ -125,10 +125,27 @@ function startGame(character)
   sound = sfx
   sound:new()
   
+  video = nil
+  
+  videoSelection = nil
+  
+  --videoLoading = nil
+  
   --inGame = true --Descomentar para entrar al juego sin menú principal
 end
 
 function mainMenu()
   inGame = false
+  
   m:new()
+  
+  actorList = {}
+
+  playerBulletList = {}
+  
+  enemyBulletList = {}
+  
+  pickUpsList = {}
+  
+  objects = {}
 end
