@@ -3,10 +3,11 @@ function beginCallback(fixture1, fixture2, contact)
   --if fixture1:getUserData() == "pickUp" and fixture2:getUserData() == "player" or fixture2:getUserData() == "pickUp" and fixture1:getUserData() == "player" then
   --  pUp:destroy()
   --else
-
-  for _,v in ipairs(pickUpsList) do
-    if (fixture1:getUserData() == v and fixture2:getUserData() == "player") or (fixture2:getUserData() == v and fixture1:getUserData() == "player") then
-      v:destroy()
+  if p.alive then
+    for _,v in ipairs(pickUpsList) do
+      if (fixture1:getUserData() == v and fixture2:getUserData() == "player") or (fixture2:getUserData() == v and fixture1:getUserData() == "player") then
+        v:destroy()
+      end
     end
   end
   

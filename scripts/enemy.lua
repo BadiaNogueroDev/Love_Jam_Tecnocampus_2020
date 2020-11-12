@@ -2,7 +2,7 @@ enemy = Object:extend()
 
 local flyingEnemyBullet = flyingEnemyBullet or require "scripts/flyingEnemyBullet"
 
-function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
+function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health, canDrop)
   --Initialize the propierties position
   self.posX = x
   self.posY = y
@@ -18,13 +18,16 @@ function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
   self.damagedTime = 0.03
   self.damagedTimeLeft = 0
   
+  if canDrop == nil then
+    self.canDrop = true
+  end
+
   --Initialize sprites sheets and animation lists
   self.characterWidth = 20
   self.characterHeight = 35
   self.spriteScale = 1
   self.torsoOffsetY = 20
   self.forward = Vector.new(fx or -1,fy or 0)
-  
   
   if self.isMelee then
     self.currentMeleeAnimation = 1
@@ -72,7 +75,6 @@ function enemy:new(x, y, isMelee, maxSpeed, detectionRange, attackRange, health)
   if not isMelee then
     self.enemyZombieBala = love.audio.newSource(sfxEnemies[5], 'stream')
     self.enemyZombieBala:setVolume(0.4)
-    
   else
     
   end
@@ -88,6 +90,7 @@ function enemy:update(dt)
     self.alive = false
     if self.isMelee then
       if not self.dying then
+        self:randomDrop()
         self.enemyZombieDeath:play()
         self.currentMeleeAnimation = 2
         self.enemyMeleeAnimations[self.currentMeleeAnimation]:gotoFrame(1)
@@ -250,9 +253,15 @@ function enemy:die()
   for _,v in ipairs(actorList) do
     if v == self then
       table.remove(actorList, _)
-      --self.enemy.body:destroy()
-      --self.enemyHitbox.body:destroy()
     end
+  end
+end
+
+function enemy:randomDrop()
+  if math.random(1, 100) <= 5 and self.canDrop then
+    pUp = pickUp:extend()
+    pUp:new(self.enemy.body:getX(), self.enemy.body:getY())
+    table.insert(pickUpsList, pUp)
   end
 end
 

@@ -32,7 +32,7 @@ function flyingEnemy:new(x, y)
 
   --Enemy in the physics system
   self.enemy = {}
-  self.enemy.body = love.physics.newBody(world, self.posX, self.posY, "dynamic") --place the body somewhere in the world and make it dynamic, so it can move around
+  self.enemy.body = love.physics.newBody(world, self.posX, self.posY, "kinematic") --place the body somewhere in the world and make it dynamic, so it can move around
   self.enemy.shape = love.physics.newRectangleShape(0, 0, self.characterWidth, self.characterHeight) --the ball's shape has a radius of 20
   self.enemy.fixture = love.physics.newFixture(self.enemy.body, self.enemy.shape, 1) -- Attach fixture to body and give it a density of 1.
   self.enemy.body:setGravityScale(0)

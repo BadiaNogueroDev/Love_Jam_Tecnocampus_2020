@@ -19,7 +19,7 @@ function player:new(x, y, character)
   self.dying = false
   self.respawnTime = 3
   self.respawnTimeLeft = 0
-  self.invencibleTime = 5
+  self.invencibleTime = 3
   self.invencibleTimeLeft = 0
   self.invencible = false
   
@@ -273,7 +273,6 @@ function player:update(dt)
           elseif self.HMG then
             self.currentTorsoAnimation = 10
           end
-          
           self.shootingUp = false
           self.lookingUp = false
           self.lookingDown = false
@@ -439,6 +438,7 @@ function player:respawn()
   self.ammo = 0
   self.currentTorsoAnimation = 1
   self.currentLegsAnimation = 1
+  self.torsoAnimations[self.currentTorsoAnimation]:resume()
 end
 
 return player
