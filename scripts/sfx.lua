@@ -10,10 +10,10 @@ sfxPlayer = { "sound/Players/Bala1.wav",              --1
               "sound/Players/Walking1.wav",           --8
               "sound/Players/Walking2.wav"}           --9
 
-sfxEnemies = {"sound/UFO/Bala_UFO.wav",,              --1
+sfxEnemies = {"sound/UFO/Bala_UFO.wav",               --1
               "sound/UFO/UFO_Spawn.wav",              --2
               "sound/UFO/UFO_Hurt.wav",               --3
-              "sound/UFO/UFO_Death.wav" }             --4
+              "sound/UFO/UFO_Death.wav",              --4
               "sound/Zombie/Zombie_Bala.wav" ,        --5
               "sound/Zombie/Zombie_Death.wav",        --6
               "sound/Zombie/Zombie_Death2.wav",       --7
@@ -23,7 +23,7 @@ sfxEnemies = {"sound/UFO/Bala_UFO.wav",,              --1
               "sound/Zombie/Zombie_Hurt.wav",         --11
               "sound/Zombie/Zombie_Hurt2.wav",        --12
               "sound/Zombie/Zombie_Hurt3.wav" ,       --13
-              "sound/Zombie/Zombie_Hurt4.wav",        --14
+              "sound/Zombie/Zombie_Hurt4.wav",}       --14
               
 
 sfxMusic = "sound/Music/Zoom_Down.wav"
@@ -48,25 +48,25 @@ function sfx:new()
   self.playerBala3:setVolume(0.4)
   --LA BALA DE LA HEAVY MACHINE GUN
   
-  self.playerRecarga = love.audio.newSource(sfxPlayer[4], 'stream')
-  self.playerRecarga:setVolume(0.2)
+  --self.playerRecarga = love.audio.newSource(sfxPlayer[4], 'stream')
+  --self.playerRecarga:setVolume(0.2)
   --self.playerRecarga.play()
   --Por si dejas de disparar (?)
   
   -----------------------------Movement-------------------------
-  self.playerMovement = love.audio.newSource(sfxPlayer[3], 'stream')
-  self.playerMovement:setVolume(0.2)
+  --self.playerMovement = love.audio.newSource(sfxPlayer[3], 'stream')
+  --self.playerMovement:setVolume(0.2)
   --self.playerMovement.play()
   --Movimiento de pjs (suena a botas, poner flojito)
   
   -----------------------------Death----------------------------
-  self.playerManDeath = love.audio.newSource(sfxPlayer[5], 'stream')
-  self.playerManDeath:setVolume(0.4)
+  --self.playerManDeath = love.audio.newSource(sfxPlayer[5], 'stream')
+  --self.playerManDeath:setVolume(0.4)
   --self.playerManDeath.play()
   --Death sound de los personajes chicos
   
-  self.playerWomanDeath = love.audio.newSource(sfxPlayer[6], 'stream')
-  self.playerWomanDeath:setVolume(0.4)
+  --self.playerWomanDeath = love.audio.newSource(sfxPlayer[6], 'stream')
+  --self.playerWomanDeath:setVolume(0.4)
   --self.playerWomanDeath.play()
   --Death sound de Sandra
   
@@ -89,8 +89,8 @@ function sfx:new()
   --self.enemyZombieBala.play()
   --LA BALA DE LOS Zombies
   
-  self.enemyZombieDeath = love.audio.newSource(sfxEnemies[math.random(6,9)], 'stream')
-  self.enemyZombieDeath:setVolume(0.4)
+  --self.enemyZombieDeath = love.audio.newSource(sfxEnemies[math.random(6,9)], 'stream')
+  --self.enemyZombieDeath:setVolume(0.4)
   --self.enemyZombieHurt.play()
   --Las diferentes muertes de los zombies
   
@@ -99,8 +99,8 @@ function sfx:new()
   --self.enemyZombieSpawn.play()
   --Sonido de spawn de los zombies
   
-  self.enemyZombieHurt = love.audio.newSource(sfxEnemies[math.random(11,14)], 'stream')
-  self.enemyZombieHurt:setVolume(0.4)
+  --self.enemyZombieHurt = love.audio.newSource(sfxEnemies[math.random(11,14)], 'stream')
+  --self.enemyZombieHurt:setVolume(0.4)
   --self.enemyZombieHurt.play()
   --Al hacer daño a un Zombie
   

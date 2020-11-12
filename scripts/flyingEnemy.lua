@@ -52,11 +52,11 @@ function flyingEnemy:new(x, y, maxSpeed, detectionRange, attackRange, health, ca
   self.nextFire = 0 --Timer, se li sumara dt fins arribar a fireRate
   self.canShoot = true
   
-  self.enemyUFOBala = love.audio.newSource(sfxEnemies[15], 'stream')
+  self.enemyUFOBala = love.audio.newSource(sfxEnemies[1], 'stream')
   self.enemyUFOBala:setVolume(0.4)
-  self.enemyUFOHurt = love.audio.newSource(sfxEnemies[16], 'stream')
+  self.enemyUFOHurt = love.audio.newSource(sfxEnemies[3], 'stream')
   self.enemyUFOHurt:setVolume(0.3)
-  self.enemyUFODeath = love.audio.newSource(sfxEnemies[17], 'stream')
+  self.enemyUFODeath = love.audio.newSource(sfxEnemies[4], 'stream')
   self.enemyUFODeath:setVolume(0.25)
   
 end
