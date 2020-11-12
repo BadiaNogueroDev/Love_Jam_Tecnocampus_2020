@@ -28,12 +28,7 @@ sfxEnemies = {"sound/UFO/Bala_UFO.wav",               --1
               "sound/UFO/UFO_Hurt.wav",               --16
               "sound/UFO/UFO_Death.wav" }             --17
 
-sfxMusic = {"sound/Music/Blue_Water_Fangs.wav",       --1
-            "sound/Music/Intrigue.wav",               --2
-            "sound/Music/Judgment.wav",               --3
-            "sound/Music/Speeder.wav",                --4
-            "sound/Music/Unused_Tune.wav",            --5
-            "sound/Music/Zoom_Down.wav"}              --6
+sfxMusic = "sound/Music/Zoom_Down.wav"                --6
 
 sfxAnnouncer = {"sound/Heavy_Machine_Gun.wav"}
 
@@ -118,7 +113,7 @@ function sfx:new()
   ----------------------------Music----------------------------
   --------------------------In Game Music----------------------
 
-  self.inGameMusic = love.audio.newSource(sfxMusic[6], 'stream')
+  self.inGameMusic = love.audio.newSource(sfxMusic, 'stream')
   self.inGameMusic:setVolume(0.4)
   self.inGameMusic:setLooping(true)
   --self.inGameMusic.play()

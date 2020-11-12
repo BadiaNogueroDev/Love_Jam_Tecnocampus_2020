@@ -19,8 +19,8 @@ function enemyPlacement:new()
   
   enemyPlacement:spawn2()
   
-  objects.player.body:setX(3700)
-  objects.player.body:setY(450)
+  objects.player.body:setX(13800)
+  --objects.player.body:setY(450)
 end
 
 function enemyPlacement:update(dt)
