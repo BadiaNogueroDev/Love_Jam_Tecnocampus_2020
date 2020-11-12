@@ -143,6 +143,7 @@ function player:update(dt)
       elseif not self.shooting and self.HMG then
         self.currentTorsoAnimation = 9
       end
+      self.torsoAnimations[self.currentTorsoAnimation]:resume()
     elseif love.keyboard.isDown("left") then --press the left arrow key to push the ball to the left
       self.forward.x = -1
       self.currentLegsAnimation = 2
@@ -155,6 +156,7 @@ function player:update(dt)
       elseif not self.shooting and self.HMG then
         self.currentTorsoAnimation = 9
       end
+      self.torsoAnimations[self.currentTorsoAnimation]:resume()
     else if not self.airborn then --Si el personatge no esta al aire i no s'esta movent
       if not self.shooting and not self.HMG then --Ni esta disparant
         self.currentTorsoAnimation = 3
@@ -438,7 +440,6 @@ function player:respawn()
   self.ammo = 0
   self.currentTorsoAnimation = 1
   self.currentLegsAnimation = 1
-  self.torsoAnimations[self.currentTorsoAnimation]:resume()
 end
 
 return player
