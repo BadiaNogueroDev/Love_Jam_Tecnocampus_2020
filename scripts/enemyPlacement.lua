@@ -561,7 +561,7 @@ function enemyPlacement:spawn19()
   end
   
   finalBoss = boss:extend()
-  finalBoss:new(15150, 400, 10) --BOSS (x, y, health)
+  finalBoss:new(15150, 400, 300) --BOSS (x, y, health)
   table.insert(actorList, finalBoss)
   
   self.spawn19Activated = true
