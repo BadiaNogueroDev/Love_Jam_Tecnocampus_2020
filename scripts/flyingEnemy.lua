@@ -155,7 +155,6 @@ end
 
 function flyingEnemy:randomDrop()
   local chance = math.random(1, 100)
-  print(chance <= 100)
   if chance <= 100 and self.canDrop then
     pUp = pickUp:extend()
     pUp:new(self.enemy.body:getX(), self.enemy.body:getY())
