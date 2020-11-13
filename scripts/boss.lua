@@ -145,7 +145,7 @@ function boss:update(dt)
     end
     if self.shooting and not self.shot and (self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() == 2 or self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() == 5 or self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() == 8) then
       enemyBullet = flyingEnemyBullet:extend()
-      enemyBullet:new(self.posX + 50* self.forward.x, self.posY + 40, self.forward, 1)
+      enemyBullet:new(self.posX + 50* self.forward.x, self.posY + 40, self.forward, 3)
       table.insert(enemyBulletList, enemyBullet)
       self.bossAttack:stop()
       self.bossAttack:play()
