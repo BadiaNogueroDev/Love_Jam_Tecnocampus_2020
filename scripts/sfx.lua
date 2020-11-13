@@ -48,8 +48,8 @@ function sfx:new()
   self.playerBala3:setVolume(0.4)
   --LA BALA DE LA HEAVY MACHINE GUN
   
-  --self.playerRecarga = love.audio.newSource(sfxPlayer[4], 'stream')
-  --self.playerRecarga:setVolume(0.2)
+  self.playerRecarga = love.audio.newSource(sfxPlayer[4], 'stream')
+  self.playerRecarga:setVolume(0.2)
   --self.playerRecarga.play()
   --Por si dejas de disparar (?)
   
@@ -73,19 +73,19 @@ function sfx:new()
    ----------------------------ENEMIES--------------------------
 
    -----------------------------UFO-----------------------------
-  self.enemyUFOBala = love.audio.newSource(sfxEnemies[3], 'stream')
-  self.enemyUFOBala:setVolume(0.4)
+  --self.enemyUFOBala = love.audio.newSource(sfxEnemies[3], 'stream')
+  --self.enemyUFOBala:setVolume(0.4)
   --self.enemyUFOBala.play()
   --LAs BALAs DE LOS UFOs
   
-  self.enemyUFOMovement = love.audio.newSource(sfxEnemies[4], 'stream')
-  self.enemyUFOMovement:setVolume(0.4)
+  --self.enemyUFOMovement = love.audio.newSource(sfxEnemies[4], 'stream')
+  --self.enemyUFOMovement:setVolume(0.4)
   --self.enemyUFOMovement.play()
   --El movimiento DE LOS UFOs
   
    ----------------------------Zombie---------------------------
-  self.enemyZombieBala = love.audio.newSource(sfxEnemies[5], 'stream')
-  self.enemyZombieBala:setVolume(0.4)
+  --self.enemyZombieBala = love.audio.newSource(sfxEnemies[5], 'stream')
+  --self.enemyZombieBala:setVolume(0.4)
   --self.enemyZombieBala.play()
   --LA BALA DE LOS Zombies
   
@@ -94,8 +94,8 @@ function sfx:new()
   --self.enemyZombieHurt.play()
   --Las diferentes muertes de los zombies
   
-  self.enemyZombieSpawn = love.audio.newSource(sfxEnemies[10], 'stream')
-  self.enemyZombieSpawn:setVolume(0.4)
+  --self.enemyZombieSpawn = love.audio.newSource(sfxEnemies[10], 'stream')
+  --self.enemyZombieSpawn:setVolume(0.4)
   --self.enemyZombieSpawn.play()
   --Sonido de spawn de los zombies
   

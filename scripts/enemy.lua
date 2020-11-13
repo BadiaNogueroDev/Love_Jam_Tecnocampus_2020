@@ -105,6 +105,7 @@ function enemy:update(dt)
       end
     else
       if not self.dying then
+        self:randomDrop()
         self.enemyZombieDeath:play()
         self.currentRangedAnimation = 4
         self.enemyRangedAnimations[self.currentRangedAnimation]:gotoFrame(1)
@@ -216,6 +217,11 @@ function enemy:update(dt)
       self.damagedTimeLeft = self.damagedTimeLeft + dt
     end
     
+  if self.playerDistance >= 1000 or self.playerDistance <= -1000 then
+    self:despawn()
+    print("despawn")
+  end
+    
   --Fa que funcioni el update del anim8
   if self.isMelee then
     for i=1,#self.enemyMeleeAnimations do
@@ -272,6 +278,16 @@ function enemy:takeDamage()
   self.health = self.health - 1
   self.damaged = true
   self.damagedTimeLeft = 0
+end
+
+function enemy:despawn()
+  self.enemy.body:destroy()
+  self.enemyHitbox.body:destroy()
+  for _,v in ipairs(actorList) do
+    if v == self then
+      table.remove(actorList, _)
+    end
+  end
 end
 
 return enemy

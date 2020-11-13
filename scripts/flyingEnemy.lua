@@ -2,20 +2,21 @@ flyingEnemy = Object:extend()
 
 local flyingEnemyBullet = enemyBullet or require "scripts/flyingEnemyBullet"
 
-function flyingEnemy:new(x, y, maxSpeed, detectionRange, attackRange, health, canDrop)
+function flyingEnemy:new(x, y, maxSpeed, detectionRange, attackRange, health)
   --Initialize the propierties position
   self.posX = x
   self.posY = y
   self.speed = 2
   self.maxSpeed = 100
   self.detectionRange = 200
-  self.attackRange = attackRange
+  self.attackRange = attackRange or 40
   self.alive = true  --Si està viu
   self.dying = false --Si està en l'animació de morir-se
   self.health = 16
   self.damaged = false --Red frames després de rebre damage
   self.damagedTime = 0.03
   self.damagedTimeLeft = 0
+  self.canDrop = true
   
   --Initialize sprites sheets and animation lists
   self.characterWidth = 45
@@ -58,6 +59,9 @@ function flyingEnemy:new(x, y, maxSpeed, detectionRange, attackRange, health, ca
   self.enemyUFOHurt:setVolume(0.3)
   self.enemyUFODeath = love.audio.newSource(sfxEnemies[4], 'stream')
   self.enemyUFODeath:setVolume(0.25)
+  self.enemyUFOSpawn = love.audio.newSource(sfxEnemies[2], 'stream')
+  self.enemyUFOSpawn:setVolume(0.3)
+  self.enemyUFOSpawn:play()
   
 end
 
@@ -65,6 +69,7 @@ function flyingEnemy:update(dt, player)
   if self.health <= 0 then
     self.alive = false
     if not self.dying then
+      self:randomDrop()
       self.enemyUFODeath:play()
       self.currentAnimation = 2
       self.animations[self.currentAnimation]:gotoFrame(1)
@@ -148,12 +153,28 @@ function flyingEnemy:die()
   end
 end
 
+function flyingEnemy:randomDrop()
+  local chance = math.random(1, 100)
+  print(chance <= 100)
+  if chance <= 100 and self.canDrop then
+    pUp = pickUp:extend()
+    pUp:new(self.enemy.body:getX(), self.enemy.body:getY())
+    table.insert(pickUpsList, pUp)
+  end
+end
+
 function flyingEnemy:takeDamage()
   self.enemyUFOHurt:stop()
   self.enemyUFOHurt:play()
   self.health = self.health - 1
   self.damaged = true
   self.damagedTimeLeft = 0
+end
+
+function flyingEnemy:despawn()
+  self.enemy.body:destroy()
+  self.enemyHitbox.body:destroy()
+  self.die()
 end
 
 return flyingEnemy

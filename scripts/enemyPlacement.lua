@@ -9,36 +9,46 @@ local pickUp = pickUp or require "scripts/pickUp"
 function enemyPlacement:new()
   enemySpawns = {}
   
+  self.spawn2Activated = false
   self.spawn3Activated = false
   self.spawn4Activated = false
   self.spawn5Activated = false
   self.spawn6Activated = false
   self.spawn7Activated = false
+  self.spawn8Activated = false
+  self.spawn9Activated = false
   
   enemyPlacement:spawn1()
   
-  enemyPlacement:spawn2()
-  
-  objects.player.body:setX(11070)
+  objects.player.body:setX(3500)
   objects.player.body:setY(450)
 end
 
 function enemyPlacement:update(dt)
   --print(objects.player.body:getX())
+  if not self.spawn2Activated and objects.player.body:getX() > 1060 then
+    self:spawn2()
+  end
   if not self.spawn3Activated and objects.player.body:getX() > 1860 then
     self:spawn3()
   end
   if not self.spawn4Activated and objects.player.body:getX() > 2660 then
     self:spawn4()
   end
-  if not self.spawn5Activated and objects.player.body:getX() > 3780 then
-    self:spawn5()
+  if not self.spawn5Activated and objects.player.body:getX() > 3740 then
+    self:spawn5() --UFO
   end
   if not self.spawn6Activated and objects.player.body:getX() > 4700 then
-    --self:spawn6()
+    self:spawn6()
   end
   if not self.spawn7Activated and objects.player.body:getX() > 5780 then
     self:spawn7()
+  end
+  if not self.spawn8Activated and objects.player.body:getX() > 7020 then
+    self:spawn8() --UFO
+  end
+  if not self.spawn9Activated and objects.player.body:getX() > 7820 then
+    self:spawn9()
   end
 end
 
@@ -51,8 +61,6 @@ function enemyPlacement:spawn1()
   gE = groundEnemy:extend()
   gE:new(980, 350, true, 30, 250, 10, 4, false) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
-  
-  self.spawn1Activated = true
 end
 
 function enemyPlacement:spawn2()
@@ -153,7 +161,7 @@ end
 function enemyPlacement:spawn5()
   --UFOs
   ufo = flyingEnemy:extend()
-  ufo:new(4040, 280)
+  ufo:new(4040, 240)
   table.insert(actorList, ufo)
   
   self.spawn5Activated = true
@@ -268,4 +276,58 @@ function enemyPlacement:spawn7()
   
   self.spawn7Activated = true
 end
+
+function enemyPlacement:spawn8()
+  --ZOMBIE MELEE
+  gE = groundEnemy:extend()
+  gE:new(6620, 280, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(6720, 410, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(7340, 500, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(7460, 500, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  --UFOs
+  ufo = flyingEnemy:extend()
+  ufo:new(6860, 220)
+  table.insert(actorList, ufo)
+
+  self.spawn8Activated = true
+end
+
+function enemyPlacement:spawn9()
+  --ZOMBIE MELEE
+  gE = groundEnemy:extend()
+  gE:new(8180, 500, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  --ZOMBIE RANGED
+  
+  gE = groundEnemy:extend()
+  gE:new(6500, 295, false, 20, 250, 400, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(8220, 490, false, 20, 250, 400, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(8260, 490, false, 20, 250, 400, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(8300, 380, false, 20, 400, 400, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  self.spawn9Activated = true
+end
+
 return enemyPlacement
