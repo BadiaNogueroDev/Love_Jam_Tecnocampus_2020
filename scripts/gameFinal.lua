@@ -14,9 +14,9 @@ function gameFinal:new()
 end
 
 function gameFinal:update(dt)
-if objects.player.body:getX() > 14700 or self.gameFinished then
+--if objects.player.body:getX() > 14700 or self.gameFinished then
+  if self.gameFinished then
     collectgarbage()
-    self.gameFinished = true
     self.timer = self.timer + dt
     self.alpha = self.alpha + self.timer/255
     if self.alpha >= 1 then
@@ -49,6 +49,7 @@ end
 function gameFinal:playMissionEnd()
   finalVideo:play() --Reproducir video
   sound.inGameMusic:stop()
+  sound.bossMusic:stop()
 end
 
 return gameFinal

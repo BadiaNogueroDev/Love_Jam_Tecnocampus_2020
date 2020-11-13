@@ -15,9 +15,10 @@ function flyingEnemyBullet:new(x, y, forward, animation)
   self.currentAnimation = animation
   self.spriteSheet = love.graphics.newImage('sprites/Enemy Bullets.png')
   gEnemy = anim8.newGrid(37, 34, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
-  self.animations = {anim8.newAnimation(gEnemy('1-5',1), 0.07), --1 POTA
-                     anim8.newAnimation(gEnemy('1-3',2), 0.15)  --2 LASER
-  }
+  self.animations = {anim8.newAnimation(gEnemy('1-5',1), 0.07),  --1 POTA
+                     anim8.newAnimation(gEnemy('1-3',2), 0.15),  --2 LASER
+                     anim8.newAnimation(gEnemy('4-4',2), 0.15)}  --3 BOSS BULLET
+  
   
   self.bulletHitbox = {}
   self.bulletHitbox.body = love.physics.newBody(hitboxes, self.position.x, self.position.y, "dynamic")
@@ -49,10 +50,14 @@ function flyingEnemyBullet:draw(cam)
   love.graphics.setColor(1,1,1)
   --love.graphics.polygon("line", self.bulletHitbox.body:getWorldPoints(self.bulletHitbox.shape:getPoints())) --DEBUG PHYSICS HITBOX
   
-  if self.forward.x == 0 then
-    self.animations[self.currentAnimation]:draw(self.spriteSheet, self.position.x, self.position.y, 0, 1, 1, 37/2, 34/2)
+  if self.currentAnimation == 3 then
+    
   else
-    self.animations[self.currentAnimation]:draw(self.spriteSheet, self.position.x, self.position.y, 0, -self.forward.x, 1, 37/2, 34/2)
+    if self.forward.x == 0 then
+      self.animations[self.currentAnimation]:draw(self.spriteSheet, self.position.x, self.position.y, 0, 1, 1, 37/2, 34/2)
+    else
+      self.animations[self.currentAnimation]:draw(self.spriteSheet, self.position.x, self.position.y, 0, -self.forward.x, 1, 37/2, 34/2)
+    end
   end
 end
 

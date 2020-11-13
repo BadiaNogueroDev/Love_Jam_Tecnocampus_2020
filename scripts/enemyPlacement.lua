@@ -6,6 +6,8 @@ local groundEnemy = enemy or require "scripts/enemy"
 
 local pickUp = pickUp or require "scripts/pickUp"
 
+local boss = require "scripts/boss"
+
 function enemyPlacement:new()
   enemySpawns = {}
   
@@ -30,53 +32,53 @@ function enemyPlacement:new()
   
   enemyPlacement:spawn1()
   
-  objects.player.body:setX(13740)
-  objects.player.body:setY(250)
+  --objects.player.body:setX(14750)
+  --objects.player.body:setY(250)
 end
 
 function enemyPlacement:update(dt)
   --print(objects.player.body:getX())
   if not self.spawn2Activated and objects.player.body:getX() > 1060 then
-    --self:spawn2()
+    self:spawn2()
   end
   if not self.spawn3Activated and objects.player.body:getX() > 1860 then
-    --self:spawn3()
+    self:spawn3()
   end
   if not self.spawn4Activated and objects.player.body:getX() > 2660 then
-    --self:spawn4()
+    self:spawn4()
   end
   if not self.spawn5Activated and objects.player.body:getX() > 3740 then
-    --self:spawn5() --UFO
+    self:spawn5() --UFO
   end
   if not self.spawn6Activated and objects.player.body:getX() > 4700 then
-    --self:spawn6()
+    self:spawn6()
   end
   if not self.spawn7Activated and objects.player.body:getX() > 5780 then
-    --self:spawn7()
+    self:spawn7()
   end
   if not self.spawn8Activated and objects.player.body:getX() > 7020 then
-    --self:spawn8() --UFO
+    self:spawn8() --UFO
   end
   if not self.spawn9Activated and objects.player.body:getX() > 7820 then
-    --self:spawn9()
+    self:spawn9()
   end
   if not self.spawn10Activated and objects.player.body:getX() > 8940 then
-    --self:spawn10()
+    self:spawn10()
   end
   if not self.spawn11Activated and objects.player.body:getX() > 9820 then
-    --self:spawn11()
+    self:spawn11()
   end
   if not self.spawn12Activated and objects.player.body:getX() > 10500 then
-    --self:spawn12() --UFO
+    self:spawn12() --UFO
   end
   if not self.spawn13Activated and objects.player.body:getX() > 10900 then
-    --self:spawn13() --UFO
+    self:spawn13() --UFO
   end
   if not self.spawn14Activated and objects.player.body:getX() > 11980 then
-    --self:spawn14()
+    self:spawn14()
   end
   if not self.spawn15Activated and objects.player.body:getX() > 12860 then
-    --self:spawn15()
+    self:spawn15()
   end
   if not self.spawn16Activated and objects.player.body:getX() > 13260 then
     self:spawn16()
@@ -85,9 +87,9 @@ function enemyPlacement:update(dt)
     self:spawn17()
   end
   if not self.spawn18Activated and objects.player.body:getX() > 14260 then
-    self:spawn18()
+    self:spawn18() --UFO
   end
-  if not self.spawn19Activated and objects.player.body:getX() > 14860 then
+  if not self.spawn19Activated and objects.player.body:getX() > 14750 then
     self:spawn19() --BOSS
   end
 end
@@ -557,6 +559,10 @@ function enemyPlacement:spawn19()
   for _,v in ipairs(actorList) do
     v:despawn()
   end
+  
+  finalBoss = boss:extend()
+  finalBoss:new(15150, 400, 10) --BOSS (x, y, health)
+  table.insert(actorList, finalBoss)
   
   self.spawn19Activated = true
 end

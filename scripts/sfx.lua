@@ -116,6 +116,9 @@ function sfx:new()
   self.inGameMusic:setLooping(true)
   --Musica del juego
 
+  self.bossMusic = love.audio.newSource("sound/Boss/Boss Theme.ogg", 'stream')
+  self.bossMusic:setVolume(0.4)
+  self.bossMusic:setLooping(true)
   end
 
 function sfx:shoot(bullet)

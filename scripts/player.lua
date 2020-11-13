@@ -95,7 +95,7 @@ function player:new(x, y, character)
   self.HMG = false --HEAVY MACHINE GUN ACITVA
   self.ammo = 0
   
-  if not self.character == "Sandra" then
+  if self.character == "Sandra" then
     self.playerDeath = love.audio.newSource(sfxPlayer[6], 'stream')
   else
     self.playerDeath = love.audio.newSource(sfxPlayer[5], 'stream')

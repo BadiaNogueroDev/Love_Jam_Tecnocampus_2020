@@ -16,7 +16,7 @@ function pickUp:new(x, y)
   --Enemy hitbox in the physics system
   self.targetHitbox = {}
   self.targetHitbox.body = love.physics.newBody(hitboxes, self.posX, self.posY, "dynamic") --place the body somewhere in the world and make it dynamic, so it can move around
-  self.targetHitbox.shape = love.physics.newRectangleShape(0, 0, self.sprite:getWidth() + 2, self.sprite:getHeight() + 2) --the ball's shape has a radius of 20
+  self.targetHitbox.shape = love.physics.newRectangleShape(0, 0, self.sprite:getWidth() + 4, self.sprite:getHeight() + 4) --the ball's shape has a radius of 20
   self.targetHitbox.fixture = love.physics.newFixture(self.targetHitbox.body, self.targetHitbox.shape, 1) -- Attach fixture to body and give it a density of 1.
   self.targetHitbox.fixture:setSensor(true)
 	self.targetHitbox.fixture:setUserData(self)
