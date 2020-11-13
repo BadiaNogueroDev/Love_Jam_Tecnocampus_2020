@@ -19,10 +19,6 @@ function gameFinal:new()
 end
 
 function gameFinal:update(dt)
-  if love.keyboard.isDown("q") then
-    self.gameFinished = true
-  end
-  
   if self.gameFinished then
     self.timer = self.timer + dt
     self.alpha = self.alpha + self.timer/255
