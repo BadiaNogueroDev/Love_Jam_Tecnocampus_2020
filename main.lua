@@ -132,7 +132,7 @@ function startGame(character)
   
   videoSelection = nil
   
-  inGame = true --Descomentar para entrar al juego sin menú principal
+  --inGame = true --Descomentar para entrar al juego sin menú principal
 end
 
 function mainMenu()
