@@ -56,9 +56,9 @@ function love.load()
 
   --m = menu
   --m:new()
-  
+  --
   --inGame = false
-  startGame("Marco") --Descomentar para entrar al juego sin menú principal
+  startGame("Henry") --Descomentar para entrar al juego sin menú principal
 end
 
 function love.update(dt)
@@ -126,6 +126,7 @@ function startGame(character)
   
   sound = sfx
   sound:new()
+  sound.inGameMusic:play()
   
   video = nil
   

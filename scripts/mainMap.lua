@@ -493,25 +493,25 @@ function mainMap:new()
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 12820, 402)
+  self.platform.body = love.physics.newBody(world, 12740, 402)
   self.platform.shape = love.physics.newRectangleShape(120, 4)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 12900, 500)
+  self.platform.body = love.physics.newBody(world, 12820, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 12980, 402)
+  self.platform.body = love.physics.newBody(world, 12940, 402)
   self.platform.shape = love.physics.newRectangleShape(120, 4)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 13060, 500)
+  self.platform.body = love.physics.newBody(world, 13020, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
@@ -529,49 +529,37 @@ function mainMap:new()
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 13300, 402)
+  self.platform.body = love.physics.newBody(world, 13340, 402)
   self.platform.shape = love.physics.newRectangleShape(120, 4)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 13380, 500)
+  self.platform.body = love.physics.newBody(world, 13420, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 13460, 402)
+  self.platform.body = love.physics.newBody(world, 13540, 402)
   self.platform.shape = love.physics.newRectangleShape(120, 4)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 13540, 500)
+  self.platform.body = love.physics.newBody(world, 13620, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 13620, 402)
+  self.platform.body = love.physics.newBody(world, 13740, 402)
   self.platform.shape = love.physics.newRectangleShape(120, 4)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 13700, 500)
-  self.platform.shape = love.physics.newRectangleShape(40, 40)
-  self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
-  table.insert(mapElements, self.platform)
-  
-  self.platform = {}
-  self.platform.body = love.physics.newBody(world, 13780, 402)
-  self.platform.shape = love.physics.newRectangleShape(120, 4)
-  self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
-  table.insert(mapElements, self.platform)
-  
-  self.platform = {}
-  self.platform.body = love.physics.newBody(world, 13860, 500)
+  self.platform.body = love.physics.newBody(world, 13820, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
@@ -589,19 +577,19 @@ function mainMap:new()
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 14100, 402)
+  self.platform.body = love.physics.newBody(world, 14140, 402)
   self.platform.shape = love.physics.newRectangleShape(120, 4)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 14180, 500)
+  self.platform.body = love.physics.newBody(world, 14220, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(world, 14260, 402)
+  self.platform.body = love.physics.newBody(world, 14340, 402)
   self.platform.shape = love.physics.newRectangleShape(120, 4)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   table.insert(mapElements, self.platform)
@@ -877,77 +865,42 @@ function mainMap:new()
   table.insert(mapElements, self.platform)
 
   self.platform = {}
-  self.platform.body = love.physics.newBody(hitboxes, 12540, 500)
-  self.platform.shape = love.physics.newRectangleShape(120, 40)
-  self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
-  self.platform.fixture:setUserData("wall")
-  table.insert(mapElements, self.platform)
-  
-  self.platform = {}
-  self.platform.body = love.physics.newBody(hitboxes, 12560, 460)
-  self.platform.shape = love.physics.newRectangleShape(80, 40)
-  self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
-  self.platform.fixture:setUserData("wall")
-  table.insert(mapElements, self.platform)
-  
-  self.platform = {}
-  self.platform.body = love.physics.newBody(hitboxes, 12580, 420)
+  self.platform.body = love.physics.newBody(hitboxes, 12820, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   self.platform.fixture:setUserData("wall")
   table.insert(mapElements, self.platform)
-  
+
   self.platform = {}
-  self.platform.body = love.physics.newBody(hitboxes, 12580, 420)
+  self.platform.body = love.physics.newBody(hitboxes, 13020, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   self.platform.fixture:setUserData("wall")
   table.insert(mapElements, self.platform)
-  
-  self.platform = {}
-  self.platform.body = love.physics.newBody(hitboxes, 12900, 500)
-  self.platform.shape = love.physics.newRectangleShape(40, 40)
-  self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
-  self.platform.fixture:setUserData("wall")
-  table.insert(mapElements, self.platform)
-  
-  self.platform = {}
-  self.platform.body = love.physics.newBody(hitboxes, 13060, 500)
-  self.platform.shape = love.physics.newRectangleShape(40, 40)
-  self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
-  self.platform.fixture:setUserData("wall")
-  table.insert(mapElements, self.platform)
-  
+
   self.platform = {}
   self.platform.body = love.physics.newBody(hitboxes, 13220, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   self.platform.fixture:setUserData("wall")
   table.insert(mapElements, self.platform)
-  
+
   self.platform = {}
-  self.platform.body = love.physics.newBody(hitboxes, 13380, 500)
+  self.platform.body = love.physics.newBody(hitboxes, 13420, 500)
+  self.platform.shape = love.physics.newRectangleShape(40, 40)
+  self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
+  self.platform.fixture:setUserData("wall")
+  table.insert(mapElements, self.platform)
+
+  self.platform = {}
+  self.platform.body = love.physics.newBody(hitboxes, 13620, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   self.platform.fixture:setUserData("wall")
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(hitboxes, 13540, 500)
-  self.platform.shape = love.physics.newRectangleShape(40, 40)
-  self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
-  self.platform.fixture:setUserData("wall")
-  table.insert(mapElements, self.platform)
-  
-  self.platform = {}
-  self.platform.body = love.physics.newBody(hitboxes, 13700, 500)
-  self.platform.shape = love.physics.newRectangleShape(40, 40)
-  self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
-  self.platform.fixture:setUserData("wall")
-  table.insert(mapElements, self.platform)
-  
-  self.platform = {}
-  self.platform.body = love.physics.newBody(hitboxes, 13860, 500)
+  self.platform.body = love.physics.newBody(hitboxes, 13820, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   self.platform.fixture:setUserData("wall")
@@ -961,7 +914,7 @@ function mainMap:new()
   table.insert(mapElements, self.platform)
   
   self.platform = {}
-  self.platform.body = love.physics.newBody(hitboxes, 14180, 500)
+  self.platform.body = love.physics.newBody(hitboxes, 14220, 500)
   self.platform.shape = love.physics.newRectangleShape(40, 40)
   self.platform.fixture = love.physics.newFixture(self.platform.body, self.platform.shape)
   self.platform.fixture:setUserData("wall")

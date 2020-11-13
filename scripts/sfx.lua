@@ -114,7 +114,6 @@ function sfx:new()
   self.inGameMusic = love.audio.newSource(sfxMusic, 'stream')
   self.inGameMusic:setVolume(0.4)
   self.inGameMusic:setLooping(true)
-  --self.inGameMusic.play()
   --Musica del juego
 
   end

@@ -23,50 +23,72 @@ function enemyPlacement:new()
   self.spawn13Activated = false
   self.spawn14Activated = false
   self.spawn15Activated = false
+  self.spawn16Activated = false
+  self.spawn17Activated = false
+  self.spawn18Activated = false
+  self.spawn19Activated = false
   
   enemyPlacement:spawn1()
   
-  objects.player.body:setX(9600)
-  objects.player.body:setY(450)
+  objects.player.body:setX(13740)
+  objects.player.body:setY(250)
 end
 
 function enemyPlacement:update(dt)
   --print(objects.player.body:getX())
   if not self.spawn2Activated and objects.player.body:getX() > 1060 then
-    self:spawn2()
+    --self:spawn2()
   end
   if not self.spawn3Activated and objects.player.body:getX() > 1860 then
-    self:spawn3()
+    --self:spawn3()
   end
   if not self.spawn4Activated and objects.player.body:getX() > 2660 then
-    self:spawn4()
+    --self:spawn4()
   end
   if not self.spawn5Activated and objects.player.body:getX() > 3740 then
-    self:spawn5() --UFO
+    --self:spawn5() --UFO
   end
   if not self.spawn6Activated and objects.player.body:getX() > 4700 then
-    self:spawn6()
+    --self:spawn6()
   end
   if not self.spawn7Activated and objects.player.body:getX() > 5780 then
-    self:spawn7()
+    --self:spawn7()
   end
   if not self.spawn8Activated and objects.player.body:getX() > 7020 then
-    self:spawn8() --UFO
+    --self:spawn8() --UFO
   end
   if not self.spawn9Activated and objects.player.body:getX() > 7820 then
-    self:spawn9()
+    --self:spawn9()
   end
   if not self.spawn10Activated and objects.player.body:getX() > 8940 then
-    self:spawn10()
+    --self:spawn10()
   end
   if not self.spawn11Activated and objects.player.body:getX() > 9820 then
-    self:spawn11()
+    --self:spawn11()
   end
   if not self.spawn12Activated and objects.player.body:getX() > 10500 then
-    self:spawn12()
+    --self:spawn12() --UFO
   end
   if not self.spawn13Activated and objects.player.body:getX() > 10900 then
-    self:spawn13()
+    --self:spawn13() --UFO
+  end
+  if not self.spawn14Activated and objects.player.body:getX() > 11980 then
+    --self:spawn14()
+  end
+  if not self.spawn15Activated and objects.player.body:getX() > 12860 then
+    --self:spawn15()
+  end
+  if not self.spawn16Activated and objects.player.body:getX() > 13260 then
+    self:spawn16()
+  end
+  if not self.spawn17Activated and objects.player.body:getX() > 13660 then
+    self:spawn17()
+  end
+  if not self.spawn18Activated and objects.player.body:getX() > 14260 then
+    self:spawn18()
+  end
+  if not self.spawn19Activated and objects.player.body:getX() > 14860 then
+    self:spawn19() --BOSS
   end
 end
 
@@ -397,7 +419,7 @@ function enemyPlacement:spawn11()
 end
 
 function enemyPlacement:spawn12()
-  --UFOs
+  --UFO
   ufo = flyingEnemy:extend()
   ufo:new(10360, 220)
   table.insert(actorList, ufo)
@@ -406,12 +428,137 @@ function enemyPlacement:spawn12()
 end
 
 function enemyPlacement:spawn13()
-  --UFOs
+  --UFO
   ufo = flyingEnemy:extend()
   ufo:new(10760, 220)
   table.insert(actorList, ufo)
   
   self.spawn13Activated = true
+end
+
+function enemyPlacement:spawn14()
+  --ZOMBIE MELEE
+  gE = groundEnemy:extend()
+  gE:new(11780, 260, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(12140, 300, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(12180, 300, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(12340, 380, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(12540, 420, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  --ZOMBIE RANGED
+  
+  gE = groundEnemy:extend()
+  gE:new(12220, 500, false, 20, 250, 400, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(12260, 460, false, 20, 250, 400, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(12380, 380, false, 20, 250, 400, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  self.spawn14Activated = true
+end
+
+function enemyPlacement:spawn15()
+  --ZOMBIE MELEE
+  gE = groundEnemy:extend()
+  gE:new(12700, 220, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(12740, 220, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(12940, 220, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(12980, 220, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  self.spawn15Activated = true
+end
+
+function enemyPlacement:spawn16()
+  --ZOMBIE MELEE
+  gE = groundEnemy:extend()
+  gE:new(13100, 220, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(13140, 220, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(13340, 220, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(13380, 220, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  self.spawn16Activated = true
+end
+
+function enemyPlacement:spawn17()
+  --ZOMBIE MELEE
+  gE = groundEnemy:extend()
+  gE:new(13580, 220, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(14100, 340, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(14140, 340, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  --ZOMBIE RANGED
+  
+  gE = groundEnemy:extend()
+  gE:new(13620, 220, false, 20, 250, 400, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(14020, 420, false, 20, 250, 400, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  self.spawn17Activated = true
+end
+
+function enemyPlacement:spawn18()
+  --UFOs
+  ufo = flyingEnemy:extend()
+  ufo:new(14420, 220)
+  table.insert(actorList, ufo)
+  
+  self.spawn18Activated = true
+end
+
+function enemyPlacement:spawn19()
+  for _,v in ipairs(actorList) do
+    v:despawn()
+  end
+  
+  self.spawn19Activated = true
 end
 
 return enemyPlacement

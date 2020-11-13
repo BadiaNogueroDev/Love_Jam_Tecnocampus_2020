@@ -14,7 +14,8 @@ function gameFinal:new()
 end
 
 function gameFinal:update(dt)
-if objects.player.body:getX() > 14700 then
+if objects.player.body:getX() > 14700 or self.gameFinished then
+    collectgarbage()
     self.gameFinished = true
     self.timer = self.timer + dt
     self.alpha = self.alpha + self.timer/255
@@ -29,7 +30,7 @@ if objects.player.body:getX() > 14700 then
     end
   end
   if love.keyboard.isDown("p") and self.canPlayVideo then
-    self:playMissionEnd()
+    self.gameFinished = true
   end
 end
 
