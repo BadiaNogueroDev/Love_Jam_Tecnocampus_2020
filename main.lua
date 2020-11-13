@@ -54,11 +54,11 @@ function love.load()
   
   math.randomseed(os.time())
 
-  --m = menu
-  --m:new()
-  --
-  --inGame = false
-  startGame("Henry") --Descomentar para entrar al juego sin menú principal
+  m = menu
+  m:new()
+  
+  inGame = false
+  --startGame("Henry") --Descomentar para entrar al juego sin menú principal
 end
 
 function love.update(dt)
