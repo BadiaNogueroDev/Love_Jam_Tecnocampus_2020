@@ -19,8 +19,6 @@ function menu:new(x, y, forward)
   selectionMusic = love.audio.newSource("sound/Character Select.mp3", "stream")
   selectionMusic:setVolume(0.8)
   
-
-  
   --BOTONES DEL MENÚ
   startButton = love.graphics.newImage("sprites/Start_Button.png")
   self.startList = {startButton, w/2, 7 * h/10, 4, function() self.selection = true videoSelection:play() selectionMusic:play() end} --Lista con imagen, posX, posY, scale y función del bóton

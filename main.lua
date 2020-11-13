@@ -126,7 +126,6 @@ function startGame(character)
   
   sound = sfx
   sound:new()
-  sound.inGameMusic:play()
   
   video = nil
   
