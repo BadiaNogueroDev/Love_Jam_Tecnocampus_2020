@@ -36,7 +36,7 @@ function flyingEnemyBullet:update(dt)
   
   self.bulletHitbox.body:setPosition(self.position.x, self.position.y)
   --Si excede de los limites establecidos se borra de la lista que hace el update y el draw
-  if self.position.y > 550 or self.position.x < objects.player.body:getX() - 250 or self.position.x > objects.player.body:getX() + 250 then
+  if self.position.y > 550 or self.position.x < objects.player.body:getX() - 450 or self.position.x > objects.player.body:getX() + 450 then
     self:destroyBullet()
   end
   

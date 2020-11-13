@@ -16,6 +16,8 @@ function cameraController:new()
   
   self.forward = Vector.new(cam:getPosition())
   cam:setPosition((self.forward.x - (self.forward.x-objects.player.body:getX() - cameraOffSetX)), self.forward.y - (self.forward.y-objects.player.body:getY() + cameraOffSetY))
+  
+  self.background = love.graphics.newImage("sprites/Map.png")
 end
 
 function cameraController:update(dt) 
@@ -32,13 +34,15 @@ function cameraController:draw()
   cam:draw(function(l, t, w, h)
     -- draw camera stuff here
   
+  love.graphics.draw(self.background)
+  
   for _,v in ipairs(playerBulletList) do
     v:draw()
   end
   
-  for _,v in ipairs(mapElements) do
-    love.graphics.polygon("fill", v.body:getWorldPoints(v.shape:getPoints()))
-  end
+  --for _,v in ipairs(mapElements) do
+  --  love.graphics.polygon("fill", v.body:getWorldPoints(v.shape:getPoints()))
+  --end
   
   for _,v in ipairs(enemyBulletList) do
     v:draw()

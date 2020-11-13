@@ -258,7 +258,9 @@ function enemy:die()
 end
 
 function enemy:randomDrop()
-  if math.random(1, 100) <= 5 and self.canDrop then
+  local chance = math.random(1, 100)
+  print(chance)
+  if chance <= 10 and self.canDrop then
     pUp = pickUp:extend()
     pUp:new(self.enemy.body:getX(), self.enemy.body:getY())
     table.insert(pickUpsList, pUp)

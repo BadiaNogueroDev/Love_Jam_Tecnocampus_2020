@@ -19,8 +19,8 @@ function enemyPlacement:new()
   
   enemyPlacement:spawn2()
   
-  --objects.player.body:setX(3700)
-  --objects.player.body:setY(450)
+  objects.player.body:setX(11070)
+  objects.player.body:setY(450)
 end
 
 function enemyPlacement:update(dt)
@@ -35,7 +35,10 @@ function enemyPlacement:update(dt)
     self:spawn5()
   end
   if not self.spawn6Activated and objects.player.body:getX() > 4700 then
-    self:spawn6()
+    --self:spawn6()
+  end
+  if not self.spawn7Activated and objects.player.body:getX() > 5780 then
+    self:spawn7()
   end
 end
 
@@ -163,52 +166,106 @@ function enemyPlacement:spawn6()
   table.insert(actorList, gE)
   
   gE = groundEnemy:extend()
-  gE:new(2420, 240, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  gE:new(4940, 500, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
   
   gE = groundEnemy:extend()
-  gE:new(2420, 240, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  gE:new(4980, 500, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
   
   gE = groundEnemy:extend()
-  gE:new(2420, 240, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  gE:new(5020, 500, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
   
   gE = groundEnemy:extend()
-  gE:new(2420, 240, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  gE:new(5100, 370, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
   
   gE = groundEnemy:extend()
-  gE:new(2420, 240, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  gE:new(5140, 370, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
   
   gE = groundEnemy:extend()
-  gE:new(2420, 240, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  gE:new(5140, 450, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
   
   gE = groundEnemy:extend()
-  gE:new(2420, 240, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
-  table.insert(actorList, gE)
-  
-  gE = groundEnemy:extend()
-  gE:new(2420, 240, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
-  table.insert(actorList, gE)
-  
-  gE = groundEnemy:extend()
-  gE:new(2420, 240, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
-  table.insert(actorList, gE)
-  
-  gE = groundEnemy:extend()
-  gE:new(2420, 240, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  gE:new(5180, 450, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
   
   --ZOMBIE RANGED
   
   gE = groundEnemy:extend()
-  gE:new(4460, 400, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  gE:new(4460, 400, false, 20, 400, 200, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(5260, 370, false, 20, 400, 200, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(5380, 490, false, 20, 400, 200, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
   table.insert(actorList, gE)
   
   self.spawn6Activated = true
 end
 
+function enemyPlacement:spawn7()
+  --ZOMBIE MELEE
+  gE = groundEnemy:extend()
+  gE:new(5500, 400, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(5540, 500, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(5580, 500, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(5020, 500, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(6060, 500, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(6100, 500, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(6180, 450, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(6220, 450, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(6260, 450, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(6320, 450, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(6360, 450, true, 40, 400, 10, 4) --MELEE ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  --ZOMBIE RANGED
+  
+  gE = groundEnemy:extend()
+  gE:new(6500, 295, false, 20, 400, 400, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  gE = groundEnemy:extend()
+  gE:new(6140, 490, false, 20, 400, 400, 2) --RANGED ENEMY (x, y, isMelee, maxSpeed, detectionRange, attackRange, lives)
+  table.insert(actorList, gE)
+  
+  self.spawn7Activated = true
+end
 return enemyPlacement
