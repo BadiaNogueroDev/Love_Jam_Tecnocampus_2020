@@ -14,14 +14,19 @@ function menu:new(x, y, forward)
   --BACKGROUND DEL MENÚ
   background = love.graphics.newImage("sprites/Menu_Background.png") --Guardar imagen en una variable
   
+  howToImage = love.graphics.newImage("sprites/how_to_play.png")
+  
+  howToMusic = love.audio.newSource("sound/how_to_play.ogg", "stream")
+  howToMusic:setVolume(0.6)
+  
   selectionBackground = love.graphics.newImage("sprites/Character_Selection.png")
   
-  selectionMusic = love.audio.newSource("sound/Character Select.mp3", "stream")
-  selectionMusic:setVolume(0.8)
+  selectionMusic = love.audio.newSource("sound/Character Select.ogg", "stream")
+  selectionMusic:setVolume(0.6)
   
   --BOTONES DEL MENÚ
   startButton = love.graphics.newImage("sprites/Start_Button.png")
-  self.startList = {startButton, w/2, 7 * h/10, 4, function() self.selection = true videoSelection:play() selectionMusic:play() end} --Lista con imagen, posX, posY, scale y función del bóton
+  self.startList = {startButton, w/2, 7 * h/10, 4, function() self.howTo = true howToMusic:play() end} --Lista con imagen, posX, posY, scale y función del bóton
   
   exitButton = love.graphics.newImage("sprites/Exit_Button.png")
   self.exitList = {exitButton, w/2, 8.5 * h/10, 3, function() os.exit() end}
@@ -46,11 +51,16 @@ function menu:new(x, y, forward)
   table.insert(selectionButtons, self.character4List)
   
   --BOOL PARA ACTIVAR CHRACTER SELECTION
+  self.howTo = false
+  
   self.selection = false
   
   self.loading = false
   --
   self.mouseUp = false --Bool para solo captar el mouse down en el primer update de pulsar
+  
+  self.timer = 0
+  self.alpha = 0
 end
 
 function menu:update(dt)
@@ -67,10 +77,24 @@ function menu:update(dt)
       self.loading = false
       inGame = true
       videoLoading:pause()
-  elseif not inGame and not self.loading then
+  elseif not inGame and not self.loading and not self.howTo then
     if not video:isPlaying() then
       self:useButton(self.startList)
       self:useButton(self.exitList)
+    end
+  elseif self.howTo then
+    if self.alpha < 255 then
+      self.timer = self.timer + dt
+      self.alpha = self.alpha + self.timer/255
+    end
+    if love.mouse.isDown(1) then
+      if self.mouseUp then
+        self.selection = true 
+        howToMusic:stop()
+        videoSelection:play() 
+        selectionMusic:play()
+      end
+      self.mouseUp = false
     end
   end
   
@@ -82,6 +106,7 @@ function menu:update(dt)
 end
 
 function menu:draw()
+  love.graphics.setColor(1,1,1)
   if not ingame and self.selection then
     love.graphics.draw(videoSelection, 0, 0) --Dibujar videdo
     if not videoSelection:isPlaying() then
@@ -92,6 +117,9 @@ function menu:draw()
     end
   elseif self.loading then
     love.graphics.draw(videoLoading, 0, 0)
+  elseif self.howTo then
+    love.graphics.setColor(1,1,1,self.alpha)
+    love.graphics.draw(howToImage)
   elseif not inGame then
       love.graphics.draw(video, 0, 0) --Dibujar videdo
     if not video:isPlaying() then
@@ -135,6 +163,10 @@ function Min(a, b)
   if a > b then return b
   else return a
   end
+end
+
+function menu:delete()
+  
 end
 
 return menu
