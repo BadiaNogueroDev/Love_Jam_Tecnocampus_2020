@@ -52,11 +52,11 @@ function love.load()
   
   math.randomseed(os.time())
 
-  m = menu
-  m:new()
+  --m = menu
+  --m:new()
   
-  inGame = false
-  --startGame("Henry") --Descomentar para entrar al juego sin menú principal
+  --inGame = false
+  startGame("Sandra") --Descomentar para entrar al juego sin menú principal
 end
 
 function love.update(dt)
@@ -125,21 +125,9 @@ function startGame(character)
   sound = sfx
   sound:new()
   
-  --video = nil
+  video = nil
   
-  --videoSelection = nil
+  videoSelection = nil
   
-  --inGame = true --Descomentar para entrar al juego sin menú principal
-end
-
-function mainMenu()
-  inGame = false
-  
-  m:new()
-  
-  --pickUpsList = {}
-  
-  --actorList = {} --problema
-  
-  --objects = {} --problema
+  inGame = true --Descomentar para entrar al juego sin menú principal
 end

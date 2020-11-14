@@ -282,7 +282,6 @@ end
 function enemy:despawn()
   self.enemy.body:destroy()
   self.enemyHitbox.body:destroy()
-  print("despawn")
   for _,v in ipairs(actorList) do
     if v == self then
       table.remove(actorList, _)

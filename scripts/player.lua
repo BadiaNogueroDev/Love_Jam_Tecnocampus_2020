@@ -131,7 +131,7 @@ function player:update(dt)
     end
     
       --here we are going to create some keyboard events
-    if love.keyboard.isDown("right") then --press the right arrow key to push the ball to the right
+    if love.keyboard.isDown("d") then --press the right arrow key to push the ball to the right
       self.forward.x = 1
       self.currentLegsAnimation = 2
       if self.VelocityX < self.maxSpeed then
@@ -144,7 +144,7 @@ function player:update(dt)
         self.currentTorsoAnimation = 9
       end
       self.torsoAnimations[self.currentTorsoAnimation]:resume()
-    elseif love.keyboard.isDown("left") then --press the left arrow key to push the ball to the left
+    elseif love.keyboard.isDown("a") then --press the left arrow key to push the ball to the left
       self.forward.x = -1
       self.currentLegsAnimation = 2
       if self.VelocityX > -self.maxSpeed then
@@ -168,7 +168,7 @@ function player:update(dt)
     end
     
     --En proces: Que el miri cap a dalt
-    if love.keyboard.isDown("up") then
+    if love.keyboard.isDown("w") then
       if not self.shooting and not self.HMG then
         self.currentTorsoAnimation = 5
       elseif not self.shooting and self.HMG then
@@ -178,7 +178,7 @@ function player:update(dt)
           self.torsoOffsetY = 10
         end
       end
-    elseif love.keyboard.isDown("down") and self.airborn then
+    elseif love.keyboard.isDown("s") and self.airborn then
       if not self.shooting then
         self.lookingDown = true
         if not self.HMG then
@@ -245,9 +245,9 @@ function player:update(dt)
     end
     
     --Shooting
-    if love.keyboard.isDown("z") then
+    if love.keyboard.isDown("return") then
       if canShoot and self.zUp then
-        if love.keyboard.isDown("up") then
+        if love.keyboard.isDown("w") then
           self.forward.y = -1
           self.shootingUp = true
           if not self.HMG then
@@ -258,7 +258,7 @@ function player:update(dt)
             self.torsoOffsetY = 47
           end
           self.lookingDown = false
-        elseif love.keyboard.isDown("down") and self.airborn then
+        elseif love.keyboard.isDown("s") and self.airborn then
           self.shootingUp = false
           self.lookingDown = true
           self.forward.y = 1

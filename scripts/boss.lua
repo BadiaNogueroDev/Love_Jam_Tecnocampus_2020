@@ -170,7 +170,7 @@ function boss:update(dt)
   end
   
   self.timer = self.timer + dt
-  if self.timer >= 20 then
+  if self.timer >= 15 then
     self.timer = 0
     self:drop()
   end

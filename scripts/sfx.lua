@@ -112,12 +112,12 @@ function sfx:new()
   --------------------------In Game Music----------------------
 
   self.inGameMusic = love.audio.newSource(sfxMusic, 'stream')
-  self.inGameMusic:setVolume(0.4)
+  self.inGameMusic:setVolume(0.3)
   self.inGameMusic:setLooping(true)
   --Musica del juego
 
   self.bossMusic = love.audio.newSource("sound/Boss/Boss Theme.ogg", 'stream')
-  self.bossMusic:setVolume(0.4)
+  self.bossMusic:setVolume(0.3)
   self.bossMusic:setLooping(true)
   end
 
