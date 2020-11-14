@@ -103,14 +103,14 @@ function player:new(x, y, character)
   self.playerDeath:setVolume(0.15)
   
   self.playerWalking1 = love.audio.newSource(sfxPlayer[8], 'stream')
-  self.playerWalking1:setVolume(0.4)
+  self.playerWalking1:setVolume(0.3)
   
   self.playerWalking2 = love.audio.newSource(sfxPlayer[8], 'stream')
-  self.playerWalking2:setVolume(0.4)
+  self.playerWalking2:setVolume(0.3)
 end
 
 function player:update(dt)
-  if self.alive then
+  if self.alive and not gFinal.gameFinished then
     self.VelocityX, self.VelocityY = objects.player.body:getLinearVelocity()
     
     if self.ammo <= 0 then
@@ -317,7 +317,7 @@ function player:update(dt)
         self.shot = false
       end
       if self.shooting and not self.shot and (self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == 2 or self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == 4 or self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == 6 or self.torsoAnimations[self.currentTorsoAnimation]:getCurrentFrameCounter() == 8) then
-        b = bullet:extend()
+        local b = bullet:extend()
         b:new(objects.player.body:getX(), objects.player.body:getY()+ 8, self.forward, "Heavy")
         --table.insert(playerBulletList, b)
         table.insert(playerBulletList, b)
@@ -337,7 +337,7 @@ function player:update(dt)
         self.playerWalking2:play()
       end
     end
-  else
+  elseif not self.alive then
     if not self.dying then
       self.playerDeath:play()
       self.torsoOffsetY = 1
@@ -358,6 +358,13 @@ function player:update(dt)
     else
       self.respawnTimeLeft = self.respawnTimeLeft + dt
     end
+  else
+    if not self.HMG then
+      self.currentTorsoAnimation = 3
+    elseif self.HMG then
+      self.currentTorsoAnimation = 11
+    end
+    self.currentLegsAnimation = 1
   end
   
   --Temps de recarrega per tornar a disparar

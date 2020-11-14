@@ -20,7 +20,7 @@ end
 
 function gameFinal:update(dt)
   if self.gameFinished then
-    self.timer = self.timer + dt
+    self.timer = self.timer + dt/2
     self.alpha = self.alpha + self.timer/255
     if self.alpha >= 1 then
       

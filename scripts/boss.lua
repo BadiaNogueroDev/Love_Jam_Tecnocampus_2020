@@ -2,6 +2,8 @@ boss = Object:extend()
 
 local flyingEnemyBullet = flyingEnemyBullet or require "scripts/flyingEnemyBullet"
 
+local bossFireball = bossFireball or require "scripts/bossFireball"
+
 function boss:new(x, y, health)
   --Initialize the propierties position
   self.posX = x
@@ -27,7 +29,7 @@ function boss:new(x, y, health)
   self.spriteSheet = love.graphics.newImage('sprites/Boss Sprite Sheet.png')
   gBoss = anim8.newGrid(200, 200, self.spriteSheet:getWidth(), self.spriteSheet:getHeight()) --NUMEROS PROVISIONALS
   self.bossBodyAnimations = {anim8.newAnimation(gBoss('1-12',2), 0.10),--IDLE (1r Valor: Rang de frames. 2n Valor: Fila del sheet. 3r Valor: Velocitat de la animació)
-                             anim8.newAnimation(gBoss('1-1',7), 0.10)} --MORIR
+                             anim8.newAnimation(gBoss('1-20',7), 0.10)} --MORIR
   
   --METRALLETA
   self.currentGunAnimation = 1
@@ -41,6 +43,10 @@ function boss:new(x, y, health)
                             anim8.newAnimation(gBoss('12-20',6), 0.04)}  --POSITION 4 ATTACK
                             
   
+  
+  self.currentCannonAnimation = 1
+  self.bossCannonAnimation = {anim8.newAnimation(gBoss('1-1',1), 0.04),  --1 IDLE
+                              anim8.newAnimation(gBoss('1-12',1), 0.04)} --2 ATTACKING
   
   --Enemy hitbox in the physics system
   self.upperHitbox = {}
@@ -60,16 +66,22 @@ function boss:new(x, y, health)
 	self.lowerHitbox.fixture:setUserData(self)
   table.insert(objects, self.lowerHitbox)
   
-  --Player shooting
+  --Boss shooting
   self.canShoot = false --El personatge pot disparar
   self.shooting = false --El personatge esta disparant
   self.shot = false --El personatge ja ha disparat la bala
   self.fireRate = 2
   self.nextFire = 0 --Timer, se li sumara dt fins arribar a fireRate
   
+  self.changeAttackTimer = 0
+  self.changeAttackTreshold = 12
+  
   self.gunPosition = 1
   
   self.timer = 0
+  
+  self.attackType = 1 --1 GUN, 2 FIREBALL
+  self.attackNumber = 0
   
   --Audio
   sound.inGameMusic:stop()
@@ -80,22 +92,29 @@ function boss:new(x, y, health)
   
   self.bossAttack = love.audio.newSource("sound/Boss/Boss_Attack.wav", 'stream')
   self.bossAttack:setVolume(0.4)
+  
+  self.bossFireball = love.audio.newSource("sound/Boss/Boss_Fireball.wav", 'stream')
+  self.bossFireball:setVolume(0.4)
+  
+  self.bossDeath = love.audio.newSource("sound/Boss/Boss_Death.wav", 'stream')
+  self.bossDeath:setVolume(1)
 end
 
 function boss:update(dt)
   if self.health <= 0 then
     self.alive = false
     if not self.dying then
+      self.bossDeath:play()
       self.currentBodyAnimation = 2
       self.bossBodyAnimations[self.currentBodyAnimation]:gotoFrame(1)
       self.bossBodyAnimations[self.currentBodyAnimation]:resume()
       self.dying = true
+      self:die()
       self.upperHitbox.body:destroy()
       self.lowerHitbox.body:destroy()
     end
     if self.bossBodyAnimations[self.currentBodyAnimation]:getCurrentFrameCounter() == self.bossBodyAnimations[self.currentBodyAnimation]:getTotalFrameCounter() then
       self.bossBodyAnimations[self.currentBodyAnimation]:pauseAtEnd()
-      self:die()
     end
   end
   
@@ -127,32 +146,67 @@ function boss:update(dt)
  
   --SHOOTING
   if self.alive then
-    if self.canShoot then
-      self.currentGunAnimation = self.gunPosition * 2
-      self.bossGunAnimations[self.currentGunAnimation]:gotoFrame(1)
-      self.bossGunAnimations[self.currentGunAnimation]:resume()
-      self.nextFire = 0
-      self.canShoot = false
-      self.shot = false
-      self.shooting = true
-    elseif not self.shooting then
-      --self.currentGunAnimation = 1
-    end
-    
-    --Coordinar el spawn de la bala amb el moment de la animacio que li toca
-    if self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() % 3 == 0 then
+    if self.attackType == 1 then  --GUN
+      if self.canShoot then
+        self.currentGunAnimation = self.gunPosition * 2
+        self.bossGunAnimations[self.currentGunAnimation]:gotoFrame(1)
+        self.bossGunAnimations[self.currentGunAnimation]:resume()
+        self.nextFire = 0
+        self.canShoot = false
         self.shot = false
-    end
-    if self.shooting and not self.shot and (self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() == 2 or self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() == 5 or self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() == 8) then
-      enemyBullet = flyingEnemyBullet:extend()
-      enemyBullet:new(self.posX + 50* self.forward.x, self.posY + 40, self.forward, 3)
-      table.insert(enemyBulletList, enemyBullet)
-      self.bossAttack:stop()
-      self.bossAttack:play()
-      self.shot = true
-    elseif self.shooting and self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() == self.bossGunAnimations[self.currentGunAnimation]:getTotalFrameCounter() then
-      self.shooting = false
-      self.fireRate = math.random(1.5,2.5)
+        self.shooting = true
+      elseif not self.shooting then
+        --self.currentGunAnimation = 1
+      end
+      
+      --Coordinar el spawn de la bala amb el moment de la animacio que li toca
+      if self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() % 3 == 0 then
+          self.shot = false
+      end
+      if self.shooting and not self.shot and (self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() == 2 or self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() == 5 or self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() == 8) then
+        enemyBullet = flyingEnemyBullet:extend()
+        enemyBullet:new(self.posX + 50* self.forward.x, self.posY + 40, self.forward, 3)
+        table.insert(enemyBulletList, enemyBullet)
+        self.bossAttack:stop()
+        self.bossAttack:play()
+        self.shot = true
+      elseif self.shooting and self.bossGunAnimations[self.currentGunAnimation]:getCurrentFrameCounter() == self.bossGunAnimations[self.currentGunAnimation]:getTotalFrameCounter() then
+        self.shooting = false
+        self.fireRate = math.random(1.5,2.5)
+      end--]]
+      
+      
+    elseif self.attackType == 2 then  --FIREBALL
+      if self.canShoot then
+        self.currentCannonAnimation = 2
+        self.bossCannonAnimation[self.currentCannonAnimation]:gotoFrame(1)
+        self.bossCannonAnimation[self.currentCannonAnimation]:resume()
+        self.nextFire = 0
+        self.canShoot = false
+        self.shot = false
+        self.shooting = true
+      elseif not self.shooting then
+        self.currentCannonAnimation = 1
+      end
+      
+      --Coordinar el spawn de la bala amb el moment de la animacio que li toca
+      if self.shooting and not self.shot and self.bossCannonAnimation[self.currentCannonAnimation]:getCurrentFrameCounter() == 11 then
+        local fireball = bossFireball:extend()
+        fireball:new(self.posX - 40, self.posY, self.forward, 3)
+        table.insert(enemyBulletList, fireball)
+        self.bossFireball:play()
+        self.shot = true
+      elseif self.shooting and self.bossCannonAnimation[self.currentCannonAnimation]:getCurrentFrameCounter() == self.bossCannonAnimation[self.currentCannonAnimation]:getTotalFrameCounter() then
+        self.currentCannonAnimation = 1
+        self.shooting = false
+        self.fireRate = math.random(1.5,2.5)
+        self.attackNumber = self.attackNumber + 1
+      end
+      
+      if self.attackNumber == 2 then
+        self.attackNumber = 0
+        self.attackType = 1
+      end
     end
     
     --Temps de recarrega per tornar a disparar
@@ -160,6 +214,13 @@ function boss:update(dt)
     if self.nextFire >= self.fireRate then
       self.canShoot = true
     end
+  end
+    
+    self.changeAttackTimer = self.changeAttackTimer + dt
+  if not self.shooting and self.changeAttackTimer >= self.changeAttackTreshold then
+    self.attackType = 2
+    self.changeAttackTimer = 0
+    self.changeAttackTreshold = math.random(7.5, 15)
   end
     
   if self.damaged then
@@ -170,7 +231,7 @@ function boss:update(dt)
   end
   
   self.timer = self.timer + dt
-  if self.timer >= 15 then
+  if self.timer >= 13 then
     self.timer = 0
     self:drop()
   end
@@ -183,6 +244,11 @@ function boss:update(dt)
   for i=1,#self.bossGunAnimations do
     self.bossGunAnimations[i]:update(dt)
   end
+  
+  for i=1,#self.bossCannonAnimation do
+    self.bossCannonAnimation[i]:update(dt)
+  end
+  
 end
 
 function boss:draw()
@@ -201,9 +267,14 @@ function boss:draw()
     
     if self.alive then
       self.bossGunAnimations[self.currentGunAnimation]:draw(self.spriteSheet, self.posX, self.posY, 0 ,1 ,1, self.characterWidth/2 + 5, 3 + self.torsoOffsetY)
+      self.bossCannonAnimation[self.currentCannonAnimation]:draw(self.spriteSheet, self.posX, self.posY, 0 ,1 ,1, self.characterWidth/2 + 5, self.torsoOffsetY + 4)
     end 
     love.graphics.setColor(1,1,1)
   end)
+end
+
+function boss:changeAttack()
+  
 end
 
 function boss:die()

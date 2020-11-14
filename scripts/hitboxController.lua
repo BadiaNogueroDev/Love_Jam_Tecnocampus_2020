@@ -32,7 +32,7 @@ function beginCallback(fixture1, fixture2, contact)
       v:destroyBullet()
     elseif (fixture1:getUserData() == v and fixture2:getUserData() == "player") or (fixture2:getUserData() == v and fixture1:getUserData() == "player") then
       v:destroyBullet()
-      p:takeDamage()
+      --p:takeDamage()
     end
   end
   

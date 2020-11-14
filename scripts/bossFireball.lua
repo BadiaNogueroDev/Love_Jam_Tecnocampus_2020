@@ -1,6 +1,6 @@
-flyingEnemyBullet = Object:extend()
+bossFireball = Object:extend()
 
-function flyingEnemyBullet:new(x, y, forward, animation)
+function bossFireball:new(x, y, forward)
   --Initialize the player position
   self.position = Vector.new(x, y)
   self.posX = x
@@ -12,14 +12,11 @@ function flyingEnemyBullet:new(x, y, forward, animation)
   self.forward = Vector.new(forward.x, forward.y)
   self.type = "enemyAttack"
   
-  self.currentAnimation = animation
+  self.currentAnimation = 1
   self.spriteSheet = love.graphics.newImage('sprites/Enemy Bullets.png')
   gEnemy = anim8.newGrid(37, 34, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
-  self.animations = {anim8.newAnimation(gEnemy('1-5',1), 0.07),  --1 POTA
-                     anim8.newAnimation(gEnemy('1-3',2), 0.15),  --2 LASER
-                     anim8.newAnimation(gEnemy('1-16',4), 0.03), --3 BOSS BULLET
-                     anim8.newAnimation(gEnemy('1-16',6), 0.03)} --4 FIRE BALL
-  
+  self.animation = {anim8.newAnimation(gEnemy('1-16',6), 0.07),
+                    anim8.newAnimation(gEnemy('11-16',6), 0.07)}
   
   self.bulletHitbox = {}
   self.bulletHitbox.body = love.physics.newBody(hitboxes, self.position.x, self.position.y, "dynamic")
@@ -28,48 +25,43 @@ function flyingEnemyBullet:new(x, y, forward, animation)
   self.bulletHitbox.fixture:setSensor(true)
 	self.bulletHitbox.fixture:setUserData(self)
   table.insert(objects, self.bulletHitbox)
+  
+  self.bulletHitbox.body:applyLinearImpulse((objects.player.body:getX() - self.posX) / 65, -10)
   --print("X: "..self.forward.x)
   --print("Y: "..self.forward.y)
 end
 
-function flyingEnemyBullet:update(dt)
-  --print(self.bulletHitbox.body:getPosition())
-  self.position = self.position + self.forward * self.speed * dt
+function bossFireball:update(dt)
+  self.position.x = self.bulletHitbox.body:getX()
+  self.position.y = self.bulletHitbox.body:getY()
   
   self.bulletHitbox.body:setPosition(self.position.x, self.position.y)
   --Si excede de los limites establecidos se borra de la lista que hace el update y el draw
-  if self.position.y > 550 or self.position.x < objects.player.body:getX() - 450 or self.position.x > objects.player.body:getX() + 450 then
+  if self.position.y > 700 or self.position.x < objects.player.body:getX() - 450 or self.position.x > objects.player.body:getX() + 450 then
     self:destroyBullet()
   end
   
-  for i=1,#self.animations do
-    self.animations[i]:update(dt)
+  if self.animation[self.currentAnimation]:getCurrentFrameCounter() == self.animation[self.currentAnimation]:getTotalFrameCounter() then
+    self.currentAnimation = 2
   end
+  
+  self.animation[self.currentAnimation]:update(dt)
 end
 
-function flyingEnemyBullet:draw(cam)  
+function bossFireball:draw(cam)  
   love.graphics.setColor(1,1,1)
   --love.graphics.polygon("line", self.bulletHitbox.body:getWorldPoints(self.bulletHitbox.shape:getPoints())) --DEBUG PHYSICS HITBOX
   
-  if self.currentAnimation == 3 then
-    self.animations[self.currentAnimation]:draw(self.spriteSheet, self.position.x, self.position.y, math.acos(self.forward.x), 1, 1, 37/2, 34/2)
-  else
-    if self.forward.x == 0 then
-      self.animations[self.currentAnimation]:draw(self.spriteSheet, self.position.x, self.position.y, 0, 1, 1, 37/2, 34/2)
-    else
-      self.animations[self.currentAnimation]:draw(self.spriteSheet, self.position.x, self.position.y, 0, -self.forward.x, 1, 37/2, 34/2)
-    end
-  end
+  self.animation[self.currentAnimation]:draw(self.spriteSheet, self.position.x, self.position.y, 0, 1, 1, 37/2, 34/2)
 end
 
-function flyingEnemyBullet:destroyBullet()
+function bossFireball:destroyBullet()
   for _,v in ipairs(enemyBulletList) do
     if v == self then
       table.remove(enemyBulletList, _)
-      --print("removed")
       self.bulletHitbox.body:destroy()
     end
   end
 end
 
-return flyingEnemyBullet
+return bossFireball
