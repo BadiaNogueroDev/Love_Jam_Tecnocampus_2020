@@ -32,8 +32,8 @@ function enemyPlacement:new()
   
   enemyPlacement:spawn1()
   
-  --objects.player.body:setX(14850)
-  --objects.player.body:setY(250)
+  objects.player.body:setX(12850)
+  objects.player.body:setY(250)
 end
 
 function enemyPlacement:update(dt)
@@ -48,7 +48,7 @@ function enemyPlacement:update(dt)
     self:spawn4()
   end
   if not self.spawn5Activated and objects.player.body:getX() > 3740 then
-    self:spawn5() --UFO
+    --self:spawn5() --UFO
   end
   if not self.spawn6Activated and objects.player.body:getX() > 4700 then
     self:spawn6()
@@ -57,7 +57,7 @@ function enemyPlacement:update(dt)
     self:spawn7()
   end
   if not self.spawn8Activated and objects.player.body:getX() > 7020 then
-    self:spawn8() --UFO
+    --self:spawn8() --UFO
   end
   if not self.spawn9Activated and objects.player.body:getX() > 7820 then
     self:spawn9()
@@ -69,10 +69,10 @@ function enemyPlacement:update(dt)
     self:spawn11()
   end
   if not self.spawn12Activated and objects.player.body:getX() > 10500 then
-    self:spawn12() --UFO
+    --self:spawn12() --UFO
   end
   if not self.spawn13Activated and objects.player.body:getX() > 10900 then
-    self:spawn13() --UFO
+    --self:spawn13() --UFO
   end
   if not self.spawn14Activated and objects.player.body:getX() > 11980 then
     self:spawn14()
@@ -87,7 +87,7 @@ function enemyPlacement:update(dt)
     self:spawn17()
   end
   if not self.spawn18Activated and objects.player.body:getX() > 14260 then
-    self:spawn18() --UFO
+    --self:spawn18() --UFO
   end
   if not self.spawn19Activated and objects.player.body:getX() > 14750 then
     self:spawn19() --BOSS

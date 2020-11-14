@@ -10,7 +10,7 @@ function player:new(x, y, character)
   self.speed = 1000
   self.maxSpeed = 100
   self.jumpForce = -120
-  self.torsoOffsetY = 1
+  self.torsoOffsetY = 4
   self.shootingUp = false
   self.lookingDown = false
   self.lookingUp = false
@@ -119,15 +119,15 @@ function player:update(dt)
     
     --Solució temporal al canviar el offset per disparar a dalt i abaix
     if self.shootingUp and not self.HMG then
-      self.torsoOffsetY = 41
+      self.torsoOffsetY = 44
     elseif self.shootingUp and self.HMG then
-      self.torsoOffsetY = 48
+      self.torsoOffsetY = 51
     elseif self.lookingUp and not self.airborn and self.HMG then
-      self.torsoOffsetY = 10
+      self.torsoOffsetY = 13
     elseif self.lookingDown then
-      self.torsoOffsetY = -5
+      self.torsoOffsetY = -2
     else
-      self.torsoOffsetY = 1
+      self.torsoOffsetY = 4
     end
     
       --here we are going to create some keyboard events
@@ -175,7 +175,7 @@ function player:update(dt)
         self.currentTorsoAnimation = 13
         self.lookingUp = true
         if not self.airborn then
-          self.torsoOffsetY = 10
+          self.torsoOffsetY = 13
         end
       end
     elseif love.keyboard.isDown("s") and self.airborn then
@@ -183,14 +183,14 @@ function player:update(dt)
         self.lookingDown = true
         if not self.HMG then
           self.currentTorsoAnimation = 7
-          self.torsoOffsetY = -5 --Solució temporal al canviar el offset per disparar a dalt i abaix
+          self.torsoOffsetY = -2 --Solució temporal al canviar el offset per disparar a dalt i abaix
         elseif self.HMG then
           self.currentTorsoAnimation = 15
-          self.torsoOffsetY = -5
+          self.torsoOffsetY = -2
         end
       end
     elseif not self.shooting then
-      self.torsoOffsetY = 1
+      self.torsoOffsetY = 4
       self.lookingDown = false
       self.lookingUp = false
     end
@@ -252,10 +252,10 @@ function player:update(dt)
           self.shootingUp = true
           if not self.HMG then
             self.currentTorsoAnimation = 6
-            self.torsoOffsetY = 41 --Solució temporal al canviar el offset per disparar a dalt i abaix
+            self.torsoOffsetY = 44 --Solució temporal al canviar el offset per disparar a dalt i abaix
           elseif self.HMG then
             self.currentTorsoAnimation = 14
-            self.torsoOffsetY = 47
+            self.torsoOffsetY = 51
           end
           self.lookingDown = false
         elseif love.keyboard.isDown("s") and self.airborn then
@@ -264,10 +264,10 @@ function player:update(dt)
           self.forward.y = 1
           if not self.HMG then
             self.currentTorsoAnimation = 8
-            self.torsoOffsetY = -5 --Solució temporal al canviar el offset per disparar a dalt i abaix
+            self.torsoOffsetY = -2 --Solució temporal al canviar el offset per disparar a dalt i abaix
           elseif self.HMG then
             self.currentTorsoAnimation = 16
-            self.torsoOffsetY = -5
+            self.torsoOffsetY = -2
           end
         else
           if not self.HMG then
@@ -280,7 +280,7 @@ function player:update(dt)
           self.lookingDown = false
           self.forward.y = 0
           --self.currentTorsoAnimation = 2
-          self.torsoOffsetY = 1  --Solució temporal al canviar el offset per disparar a dalt i abaix
+          self.torsoOffsetY = 4  --Solució temporal al canviar el offset per disparar a dalt i abaix
         end
         if self.HMG then
           sound:shoot(2)
@@ -340,7 +340,7 @@ function player:update(dt)
   elseif not self.alive then
     if not self.dying then
       self.playerDeath:play()
-      self.torsoOffsetY = 1
+      self.torsoOffsetY = 4
       self.currentTorsoAnimation = 17
       self.torsoAnimations[self.currentTorsoAnimation]:gotoFrame(1)
       self.torsoAnimations[self.currentTorsoAnimation]:resume()
@@ -402,11 +402,11 @@ function player:draw()
     --love.graphics.polygon("fill", objects.player.body:getWorldPoints(objects.player.shape:getPoints())) --DEBUG PHYSICS HITBOX
     
     if self.alive and not self.invencible then
-      self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 5, 3)
+      self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 5, 6)
       self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2 + self.torsoOffsetY)
     elseif self.invencibleTimeLeft < 0.5 or self.invencibleTimeLeft % 0.4 > 0.3 then
       if self.alive then
-        self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 5, 3)
+        self.legsAnimations[self.currentLegsAnimation]:draw(self.legsSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 5, 6)
       end
       self.torsoAnimations[self.currentTorsoAnimation]:draw(self.torsoSpriteSheet, objects.player.body:getX(), objects.player.body:getY(), 0 ,self.forward.x,1, self.characterWidth/2 + 4, self.characterHeight/2 + self.torsoOffsetY)
     end
@@ -426,7 +426,7 @@ function player:changeLegsAnimation(number)
 end
 
 function player:takeDamage()
-  if not self.invencible then
+  if not self.invencible and not gFinal.gameFinished then
     self.alive = false
   end
 end

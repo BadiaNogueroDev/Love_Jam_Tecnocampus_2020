@@ -50,19 +50,33 @@ function boss:new(x, y, health)
   
   --Enemy hitbox in the physics system
   self.upperHitbox = {}
-  self.upperHitbox.body = love.physics.newBody(hitboxes, self.posX, self.posY +40, "static")
+  self.upperHitbox.body = love.physics.newBody(world, self.posX, self.posY +40, "static")
   self.upperHitbox.shape = love.physics.newRectangleShape(0, 0, self.characterWidth/2, self.characterHeight/2) --the ball's shape has a radius of 20
   self.upperHitbox.fixture = love.physics.newFixture(self.upperHitbox.body, self.upperHitbox.shape, 1) -- Attach fixture to body and give it a density of 1.
-  self.upperHitbox.fixture:setSensor(true)
+  table.insert(objects, self.upperHitbox)
+  
+  --Enemy hitbox in the physics system
+  self.lowerHitbox = {}
+  self.lowerHitbox.body = love.physics.newBody(world, self.posX, self.posY+self.characterHeight/2, "static")
+  self.lowerHitbox.shape = love.physics.newRectangleShape(0, 0, self.characterWidth, self.characterHeight/2 - 40) --the ball's shape has a radius of 20
+  self.lowerHitbox.fixture = love.physics.newFixture(self.lowerHitbox.body, self.lowerHitbox.shape, 1) -- Attach fixture to body and give it a density of 1.
+  table.insert(objects, self.lowerHitbox)
+  
+  --Enemy hitbox in the physics system
+  self.upperHitbox = {}
+  self.upperHitbox.body = love.physics.newBody(hitboxes, self.posX, self.posY +40, "static")
+  self.upperHitbox.shape = love.physics.newRectangleShape(0, 0, self.characterWidth/2 - 4, self.characterHeight/2 - 4) --the ball's shape has a radius of 20
+  self.upperHitbox.fixture = love.physics.newFixture(self.upperHitbox.body, self.upperHitbox.shape, 1) -- Attach fixture to body and give it a density of 1.
+  --self.upperHitbox.fixture:setSensor(true)
 	self.upperHitbox.fixture:setUserData(self)
   table.insert(objects, self.upperHitbox)
   
   --Enemy hitbox in the physics system
   self.lowerHitbox = {}
   self.lowerHitbox.body = love.physics.newBody(hitboxes, self.posX, self.posY+self.characterHeight/2, "static")
-  self.lowerHitbox.shape = love.physics.newRectangleShape(0, 0, self.characterWidth, self.characterHeight/2 - 40) --the ball's shape has a radius of 20
+  self.lowerHitbox.shape = love.physics.newRectangleShape(0, 0, self.characterWidth - 4, self.characterHeight/2 - 44) --the ball's shape has a radius of 20
   self.lowerHitbox.fixture = love.physics.newFixture(self.lowerHitbox.body, self.lowerHitbox.shape, 1) -- Attach fixture to body and give it a density of 1.
-  self.lowerHitbox.fixture:setSensor(true)
+  --self.lowerHitbox.fixture:setSensor(true)
 	self.lowerHitbox.fixture:setUserData(self)
   table.insert(objects, self.lowerHitbox)
   
@@ -192,7 +206,7 @@ function boss:update(dt)
       --Coordinar el spawn de la bala amb el moment de la animacio que li toca
       if self.shooting and not self.shot and self.bossCannonAnimation[self.currentCannonAnimation]:getCurrentFrameCounter() == 11 then
         local fireball = bossFireball:extend()
-        fireball:new(self.posX - 40, self.posY, self.forward, 3)
+        fireball:new(self.posX - 40, self.posY - 10, self.forward, 3)
         table.insert(enemyBulletList, fireball)
         self.bossFireball:play()
         self.shot = true

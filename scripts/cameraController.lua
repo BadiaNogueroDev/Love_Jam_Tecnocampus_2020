@@ -2,7 +2,7 @@ local gamera = require "lib/gamera"
 
 cameraController = Object:extend()
 
-cam = gamera.new(0,0,15360,600)
+cam = gamera.new(0,0,15200,600)
 
 function cameraController:new()
 --CAMERA FUNCTIONS
