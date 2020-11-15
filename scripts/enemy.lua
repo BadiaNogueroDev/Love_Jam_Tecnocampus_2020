@@ -219,7 +219,6 @@ function enemy:update(dt)
     
   if self.playerDistance >= 1000 or self.playerDistance <= -1000 then
     self:despawn()
-    print("despawn")
   end
     
   --Fa que funcioni el update del anim8
