@@ -16,7 +16,7 @@ function menu:new(x, y, forward)
   
   howToImage = love.graphics.newImage("sprites/how_to_play.png")
   
-  howToMusic = love.audio.newSource("sound/how_to_play.ogg", "stream")
+  howToMusic = love.audio.newSource("sound/how_to_play.ogg", 'stream')
   howToMusic:setVolume(0.6)
   
   selectionBackground = love.graphics.newImage("sprites/Character_Selection.png")
