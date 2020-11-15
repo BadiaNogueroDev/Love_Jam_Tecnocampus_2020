@@ -87,28 +87,27 @@ function flyingEnemy:update(dt, player)
   if self.alive then  
     self.playerDistanceX = self.enemy.body:getX() - objects.player.body:getX()
     self.playerDistanceY = self.enemy.body:getY() - objects.player.body:getY()
-  end
 
-  --DETECCIÓ I MOVIMENT
-  if self.playerDistanceX >= -self.detectionRange and self.playerDistanceX <= self.detectionRange and self.alive and not p.invencible then
-    self.posX, self.posY = self.enemy.body:getPosition()
-    self.enemy.body:setY(self.enemy.body:getY() - (self.playerDistanceY + 120) * self.speed * dt)
-    self.enemy.body:setX(self.enemy.body:getX() - self.playerDistanceX * self.speed * dt)
-  
-    self.enemyHitbox.body:setPosition(self.enemy.body:getPosition()) --Posar la hitbox fixe al objecte
-    if self.playerDistanceX <= self.attackRange and self.playerDistanceX >= -self.attackRange then
-      if self.canShoot then
-        self.nextFire = 0
-        self.canShoot = false
-        self.enemyUFOBala:stop()
-        self.enemyUFOBala:play()
-        enemyBullet = flyingEnemyBullet:extend()
-        enemyBullet:new(self.enemy.body:getX(), self.enemy.body:getY(),self.forward ,2)
-        table.insert(enemyBulletList, enemyBullet)
+    --DETECCIÓ I MOVIMENT
+    if self.playerDistanceX >= -self.detectionRange and self.playerDistanceX <= self.detectionRange and self.alive and not p.invencible then
+      self.posX, self.posY = self.enemy.body:getPosition()
+      self.enemy.body:setY(self.enemy.body:getY() - (self.playerDistanceY + 120) * self.speed * dt)
+      self.enemy.body:setX(self.enemy.body:getX() - self.playerDistanceX * self.speed * dt)
+    
+      self.enemyHitbox.body:setPosition(self.enemy.body:getPosition()) --Posar la hitbox fixe al objecte
+      if self.playerDistanceX <= self.attackRange and self.playerDistanceX >= -self.attackRange then
+        if self.canShoot then
+          self.nextFire = 0
+          self.canShoot = false
+          self.enemyUFOBala:stop()
+          self.enemyUFOBala:play()
+          enemyBullet = flyingEnemyBullet:extend()
+          enemyBullet:new(self.enemy.body:getX(), self.enemy.body:getY(),self.forward ,2)
+          table.insert(enemyBulletList, enemyBullet)
+        end
       end
     end
   end
-  
   if self.damaged then
       if self.damagedTimeLeft >= self.damagedTime then
         self.damaged = false
@@ -173,6 +172,7 @@ end
 function flyingEnemy:despawn()
   self.enemy.body:destroy()
   self.enemyHitbox.body:destroy()
+  self.alive = false
   self.die()
 end
 
