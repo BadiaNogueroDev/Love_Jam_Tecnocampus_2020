@@ -90,6 +90,7 @@ function menu:update(dt)
     if love.mouse.isDown(1) then
       if self.mouseUp then
         self.selection = true 
+        self.howTo = false
         howToMusic:stop()
         videoSelection:play() 
         selectionMusic:play()

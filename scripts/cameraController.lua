@@ -23,7 +23,8 @@ end
 function cameraController:update(dt) 
   self.forward = Vector.new(cam:getPosition())
   
-  if objects.player.body:getY() - cameraOffSetY - self.forward.y > -26 and objects.player.body:getY() - cameraOffSetY - self.forward.y < 50 or p.invencibleTimeLeft > 1 then
+  print(p.invencibleTimeLeft)
+  if objects.player.body:getY() - cameraOffSetY - self.forward.y > -26 and objects.player.body:getY() - cameraOffSetY - self.forward.y < 50 or (p.invencibleTimeLeft < 1 and self.invulnerable) then
     cam:setPosition((self.forward.x - (self.forward.x-objects.player.body:getX() - cameraOffSetX) * math.min(dt*6, 1)), self.forward.y)
   else
     cam:setPosition((self.forward.x - (self.forward.x-objects.player.body:getX() - cameraOffSetX) * math.min(dt*6, 1)), self.forward.y - (self.forward.y-objects.player.body:getY() + cameraOffSetY) * math.min(dt*2, 1))
