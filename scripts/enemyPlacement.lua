@@ -31,13 +31,9 @@ function enemyPlacement:new()
   self.spawn19Activated = false
   
   enemyPlacement:spawn1()
-  
-  objects.player.body:setX(2850)
-  objects.player.body:setY(250)
 end
 
 function enemyPlacement:update(dt)
-  --print(objects.player.body:getX())
   if not self.spawn2Activated and objects.player.body:getX() > 1060 then
     self:spawn2()
   end
