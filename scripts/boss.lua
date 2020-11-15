@@ -245,7 +245,7 @@ function boss:update(dt)
   end
   
   self.timer = self.timer + dt
-  if self.timer >= 13 then
+  if self.timer >= 13 and self.alive then
     self.timer = 0
     self:drop()
   end
